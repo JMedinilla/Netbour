@@ -9,11 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
 
-public class FrgMeeting extends Fragment {
+public class FrgMeeting extends Fragment implements PresenterMeeting.View {
     private ListMeeting callback;
 
-    interface ListMeeting {
+    public interface ListMeeting {
 
     }
 

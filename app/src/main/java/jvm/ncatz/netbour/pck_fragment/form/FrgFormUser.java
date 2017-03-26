@@ -13,7 +13,7 @@ import jvm.ncatz.netbour.R;
 public class FrgFormUser extends Fragment {
     private FormUser callback;
 
-    interface FormUser {
+    public interface FormUser {
 
     }
 

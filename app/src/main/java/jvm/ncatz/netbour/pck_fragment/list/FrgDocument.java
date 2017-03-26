@@ -9,11 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
 
-public class FrgDocument extends Fragment {
+public class FrgDocument extends Fragment implements PresenterDocument.View {
     private ListDocument callback;
 
-    interface ListDocument {
+    public interface ListDocument {
 
     }
 

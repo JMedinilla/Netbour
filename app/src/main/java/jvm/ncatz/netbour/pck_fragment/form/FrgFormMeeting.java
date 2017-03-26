@@ -13,7 +13,7 @@ import jvm.ncatz.netbour.R;
 public class FrgFormMeeting extends Fragment {
     private FormMeeting callback;
 
-    interface FormMeeting {
+    public interface FormMeeting {
 
     }
 

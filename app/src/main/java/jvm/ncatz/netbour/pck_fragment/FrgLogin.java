@@ -9,11 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterLogin;
 
-public class FrgLogin extends Fragment {
+public class FrgLogin extends Fragment implements PresenterLogin.View {
     private ILogin callback;
 
-    interface ILogin {
+    public interface ILogin {
 
     }
 

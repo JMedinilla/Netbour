@@ -13,7 +13,7 @@ import jvm.ncatz.netbour.R;
 public class FrgHome extends Fragment {
     private IHome callback;
 
-    interface IHome {
+    public interface IHome {
 
     }
 

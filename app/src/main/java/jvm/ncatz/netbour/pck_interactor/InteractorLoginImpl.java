@@ -1,4 +1,6 @@
 package jvm.ncatz.netbour.pck_interactor;
 
-public class InteractorLoginImpl {
+import jvm.ncatz.netbour.pck_interface.interactor.InteractorLogin;
+
+public class InteractorLoginImpl implements InteractorLogin {
 }

@@ -1,4 +1,6 @@
 package jvm.ncatz.netbour.pck_interactor;
 
-public class InteractorDocumentImpl {
+import jvm.ncatz.netbour.pck_interface.interactor.InteractorDocument;
+
+public class InteractorDocumentImpl implements InteractorDocument {
 }

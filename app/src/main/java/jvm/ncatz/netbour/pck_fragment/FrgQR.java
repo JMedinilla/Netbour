@@ -13,7 +13,7 @@ import jvm.ncatz.netbour.R;
 public class FrgQR extends Fragment {
     private IQR callback;
 
-    interface IQR {
+    public interface IQR {
 
     }
 

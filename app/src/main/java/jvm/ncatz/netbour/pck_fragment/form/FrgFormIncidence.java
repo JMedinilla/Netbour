@@ -13,7 +13,7 @@ import jvm.ncatz.netbour.R;
 public class FrgFormIncidence extends Fragment {
     private FormIncidence callback;
 
-    interface FormIncidence {
+    public interface FormIncidence {
 
     }
 

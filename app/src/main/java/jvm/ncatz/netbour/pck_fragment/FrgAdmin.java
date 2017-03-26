@@ -13,7 +13,7 @@ import jvm.ncatz.netbour.R;
 public class FrgAdmin extends Fragment {
     private IAdmin callback;
 
-    interface IAdmin {
+    public interface IAdmin {
 
     }
 

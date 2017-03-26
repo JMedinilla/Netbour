@@ -9,11 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
 
-public class FrgCommunity extends Fragment {
+public class FrgCommunity extends Fragment implements PresenterCommunity.View {
     private ListCommunity callback;
 
-    interface ListCommunity {
+    public interface ListCommunity {
 
     }
 

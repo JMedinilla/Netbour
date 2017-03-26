@@ -1,4 +1,7 @@
 package jvm.ncatz.netbour.pck_presenter;
 
-public class PresenterEntryImpl {
+import jvm.ncatz.netbour.pck_interface.interactor.InteractorEntry;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterEntry;
+
+public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Listener {
 }

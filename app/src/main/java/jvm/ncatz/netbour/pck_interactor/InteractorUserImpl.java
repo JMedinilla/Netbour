@@ -1,4 +1,6 @@
 package jvm.ncatz.netbour.pck_interactor;
 
-public class InteractorUserImpl {
+import jvm.ncatz.netbour.pck_interface.interactor.InteractorUser;
+
+public class InteractorUserImpl implements InteractorUser {
 }

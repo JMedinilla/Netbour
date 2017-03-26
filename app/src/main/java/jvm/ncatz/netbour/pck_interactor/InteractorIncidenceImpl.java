@@ -1,4 +1,6 @@
 package jvm.ncatz.netbour.pck_interactor;
 
-public class InteractorIncidenceImpl {
+import jvm.ncatz.netbour.pck_interface.interactor.InteractorIncidence;
+
+public class InteractorIncidenceImpl implements InteractorIncidence {
 }

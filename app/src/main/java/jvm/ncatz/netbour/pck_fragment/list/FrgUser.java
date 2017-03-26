@@ -9,11 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
 
-public class FrgUser extends Fragment {
+public class FrgUser extends Fragment implements PresenterUser.View {
     private ListUser callback;
 
-    interface ListUser {
+    public interface ListUser {
 
     }
 
