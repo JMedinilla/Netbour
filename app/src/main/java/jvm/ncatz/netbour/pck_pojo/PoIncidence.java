@@ -1,7 +1,7 @@
 package jvm.ncatz.netbour.pck_pojo;
 
 public class PoIncidence {
-    private String key;
+    private long createdAt;
     private String title;
     private String description;
     private long date;
@@ -9,11 +9,11 @@ public class PoIncidence {
     private String authorName;
 
     public PoIncidence() {
-
+        //
     }
 
-    public PoIncidence(String key, String title, String description, long date, String photo, String authorName) {
-        this.key = key;
+    public PoIncidence(long createdAt, String title, String description, long date, String photo, String authorName) {
+        this.createdAt = createdAt;
         this.title = title;
         this.description = description;
         this.date = date;
@@ -21,12 +21,12 @@ public class PoIncidence {
         this.authorName = authorName;
     }
 
-    public String getKey() {
-        return key;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getTitle() {

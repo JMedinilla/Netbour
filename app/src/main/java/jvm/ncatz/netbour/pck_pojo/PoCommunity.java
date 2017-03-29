@@ -1,7 +1,7 @@
 package jvm.ncatz.netbour.pck_pojo;
 
 public class PoCommunity {
-    private String key;
+    private long createdAt;
     private String province;
     private String municipality;
     private String street;
@@ -10,11 +10,11 @@ public class PoCommunity {
     private int flats;
 
     public PoCommunity() {
-
+        //
     }
 
-    public PoCommunity(String key, String province, String municipality, String street, String number, String postal, int flats) {
-        this.key = key;
+    public PoCommunity(long createdAt, String province, String municipality, String street, String number, String postal, int flats) {
+        this.createdAt = createdAt;
         this.province = province;
         this.municipality = municipality;
         this.street = street;
@@ -23,12 +23,12 @@ public class PoCommunity {
         this.flats = flats;
     }
 
-    public String getKey() {
-        return key;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getProvince() {

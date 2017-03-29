@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/groupOptions"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/groupOptions_Incidences"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOptions_Incidences" />
+        <item
+            android:id="@+id/groupOptions_Board"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOptions_Board" />
+        <item
+            android:id="@+id/groupOptions_ComBoard"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOptions_ComBoard" />
+        <item
+            android:id="@+id/groupOptions_Documents"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOptions_Documents" />
+        <item
+            android:id="@+id/groupOptions_Meetings"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOptions_Meetings" />
+        <item
+            android:id="@+id/groupOptions_Users"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOptions_Users" />
+        <item
+            android:id="@+id/groupOptions_Communities"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOptions_Communities" />
+        <item
+            android:id="@+id/groupOptions_Profile"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOptions_Profile" />
+    </group>
+    <group
+        android:id="@+id/groupOthers"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/groupOthers_Settings"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOthers_Settings" />
+        <item
+            android:id="@+id/groupOthers_Help"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOthers_Help" />
+        <item
+            android:id="@+id/groupOthers_About"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupOthers_About" />
+    </group>
+    <group
+        android:id="@+id/groupClose"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/groupClose_Close"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/groupClose_Close" />
+    </group>
+</menu>

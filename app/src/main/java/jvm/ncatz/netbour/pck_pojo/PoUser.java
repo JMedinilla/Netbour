@@ -1,7 +1,7 @@
 package jvm.ncatz.netbour.pck_pojo;
 
 public class PoUser {
-    private String key;
+    private long createdAt;
     private String floor;
     private String door;
     private String phone;
@@ -11,11 +11,11 @@ public class PoUser {
     private String photo;
 
     private PoUser() {
-
+        //
     }
 
-    public PoUser(String key, String floor, String door, String phone, String email, String name, int category, String photo) {
-        this.key = key;
+    public PoUser(long createdAt, String floor, String door, String phone, String email, String name, int category, String photo) {
+        this.createdAt = createdAt;
         this.floor = floor;
         this.door = door;
         this.phone = phone;
@@ -25,12 +25,12 @@ public class PoUser {
         this.photo = photo;
     }
 
-    public String getKey() {
-        return key;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getFloor() {

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
 
-public class FrgHome extends Fragment {
+public class FrgProfile extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class FrgHome extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         return view;
     }
 

@@ -1,7 +1,7 @@
 package jvm.ncatz.netbour.pck_pojo;
 
 public class PoEntry {
-    private String key;
+    private long createdAt;
     private String title;
     private String content;
     private long date;
@@ -9,11 +9,11 @@ public class PoEntry {
     private String authorName;
 
     public PoEntry() {
-
+        //
     }
 
-    public PoEntry(String key, String title, String content, long date, int category, String authorName) {
-        this.key = key;
+    public PoEntry(long createdAt, String title, String content, long date, int category, String authorName) {
+        this.createdAt = createdAt;
         this.title = title;
         this.content = content;
         this.date = date;
@@ -21,12 +21,12 @@ public class PoEntry {
         this.authorName = authorName;
     }
 
-    public String getKey() {
-        return key;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getTitle() {

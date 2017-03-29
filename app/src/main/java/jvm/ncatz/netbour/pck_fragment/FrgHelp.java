@@ -10,12 +10,7 @@ import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
 
-public class FrgAdmin extends Fragment {
-    private IAdmin callback;
-
-    public interface IAdmin {
-
-    }
+public class FrgHelp extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,7 +21,7 @@ public class FrgAdmin extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_admin, container, false);
+        View view = inflater.inflate(R.layout.fragment_help, container, false);
         return view;
     }
 
@@ -38,13 +33,11 @@ public class FrgAdmin extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (IAdmin) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        callback = null;
     }
 
     @Override

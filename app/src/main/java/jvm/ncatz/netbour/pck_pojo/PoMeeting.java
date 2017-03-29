@@ -1,33 +1,33 @@
 package jvm.ncatz.netbour.pck_pojo;
 
 public class PoMeeting {
-    private String key;
-    private long date;
+    private long createdAt;
+    private String date;
     private String description;
 
     public PoMeeting() {
-
+        //
     }
 
-    public PoMeeting(String key, long date, String description) {
-        this.key = key;
+    public PoMeeting(long createdAt, String date, String description) {
+        this.createdAt = createdAt;
         this.date = date;
         this.description = description;
     }
 
-    public String getKey() {
-        return key;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

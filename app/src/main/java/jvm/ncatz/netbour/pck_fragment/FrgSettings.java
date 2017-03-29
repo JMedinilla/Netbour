@@ -5,33 +5,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
-import jvm.ncatz.netbour.pck_interface.presenter.PresenterLogin;
 
-public class FrgLogin extends Fragment implements PresenterLogin.View {
-    private ILogin callback;
-
-    public interface ILogin {
-
-    }
+public class FrgSettings extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
         return view;
     }
 
@@ -43,13 +33,11 @@ public class FrgLogin extends Fragment implements PresenterLogin.View {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (ILogin) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        callback = null;
     }
 
     @Override
@@ -60,15 +48,5 @@ public class FrgLogin extends Fragment implements PresenterLogin.View {
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 }
