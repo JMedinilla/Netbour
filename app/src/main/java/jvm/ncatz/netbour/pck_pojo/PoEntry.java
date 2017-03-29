@@ -7,18 +7,20 @@ public class PoEntry {
     private long date;
     private int category;
     private String authorName;
+    private boolean deleted;
 
     public PoEntry() {
         //
     }
 
-    public PoEntry(long createdAt, String title, String content, long date, int category, String authorName) {
+    public PoEntry(long createdAt, String title, String content, long date, int category, String authorName, boolean deleted) {
         this.createdAt = createdAt;
         this.title = title;
         this.content = content;
         this.date = date;
         this.category = category;
         this.authorName = authorName;
+        this.deleted = deleted;
     }
 
     public long getCreatedAt() {
@@ -67,5 +69,13 @@ public class PoEntry {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

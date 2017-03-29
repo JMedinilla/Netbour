@@ -5,16 +5,18 @@ public class PoDocument {
     private String title;
     private String description;
     private String link;
+    private boolean deleted;
 
     public PoDocument() {
         //
     }
 
-    public PoDocument(long createdAt, String title, String description, String link) {
+    public PoDocument(long createdAt, String title, String description, String link, boolean deleted) {
         this.createdAt = createdAt;
         this.title = title;
         this.description = description;
         this.link = link;
+        this.deleted = deleted;
     }
 
     public long getCreatedAt() {
@@ -47,5 +49,13 @@ public class PoDocument {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

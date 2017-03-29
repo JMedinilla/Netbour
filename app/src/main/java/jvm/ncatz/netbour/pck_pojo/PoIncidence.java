@@ -7,18 +7,20 @@ public class PoIncidence {
     private long date;
     private String photo;
     private String authorName;
+    private boolean deleted;
 
     public PoIncidence() {
         //
     }
 
-    public PoIncidence(long createdAt, String title, String description, long date, String photo, String authorName) {
+    public PoIncidence(long createdAt, String title, String description, long date, String photo, String authorName, boolean deleted) {
         this.createdAt = createdAt;
         this.title = title;
         this.description = description;
         this.date = date;
         this.photo = photo;
         this.authorName = authorName;
+        this.deleted = deleted;
     }
 
     public long getCreatedAt() {
@@ -67,5 +69,13 @@ public class PoIncidence {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

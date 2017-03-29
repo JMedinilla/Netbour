@@ -13,11 +13,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import jvm.ncatz.netbour.pck_fragment.FrgQR;
 import jvm.ncatz.netbour.pck_fragment.form.FrgFormCommunity;
 import jvm.ncatz.netbour.pck_fragment.form.FrgFormDocument;
@@ -65,6 +67,9 @@ public class ActivityHome extends AppCompatActivity
     Toolbar toolbar;
     @BindView(R.id.activity_main_action)
     FloatingActionButton actionButton;
+
+    CircleImageView profile_image;
+    TextView profile_name;
 
     @OnClick(R.id.activity_main_action)
     public void actionClick(View view) {
@@ -192,8 +197,14 @@ public class ActivityHome extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        fragment_opened = FRAGMENT_HOME;
+        View header = navigationView.getHeaderView(0);
+        if (header != null) {
+            profile_image = (CircleImageView) header.findViewById(R.id.header_circle_image);
+            profile_name = (TextView) header.findViewById(R.id.header_txtName);
+        }
+
         showHome();
+        fragment_opened = FRAGMENT_HOME;
     }
 
     @Override
@@ -280,30 +291,37 @@ public class ActivityHome extends AppCompatActivity
 
     private void showCommunities() {
         actionButton.setVisibility(View.VISIBLE);
+        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
     }
 
     private void showUsers() {
         actionButton.setVisibility(View.VISIBLE);
+        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
     }
 
     private void showMeetings() {
         actionButton.setVisibility(View.VISIBLE);
+        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
     }
 
     private void showDocuments() {
         actionButton.setVisibility(View.VISIBLE);
+        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
     }
 
     private void showEntrySecond() {
         actionButton.setVisibility(View.VISIBLE);
+        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
     }
 
     private void showEntryFirst() {
         actionButton.setVisibility(View.VISIBLE);
+        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
     }
 
     private void showIncidents() {
         actionButton.setVisibility(View.VISIBLE);
+        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
     }
 
     private void closeSesion() {

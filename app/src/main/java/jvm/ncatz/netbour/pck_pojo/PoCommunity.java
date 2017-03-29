@@ -8,12 +8,13 @@ public class PoCommunity {
     private String number;
     private String postal;
     private int flats;
+    private boolean deleted;
 
     public PoCommunity() {
         //
     }
 
-    public PoCommunity(long createdAt, String province, String municipality, String street, String number, String postal, int flats) {
+    public PoCommunity(long createdAt, String province, String municipality, String street, String number, String postal, int flats, boolean deleted) {
         this.createdAt = createdAt;
         this.province = province;
         this.municipality = municipality;
@@ -21,6 +22,7 @@ public class PoCommunity {
         this.number = number;
         this.postal = postal;
         this.flats = flats;
+        this.deleted = deleted;
     }
 
     public long getCreatedAt() {
@@ -77,5 +79,13 @@ public class PoCommunity {
 
     public void setFlats(int flats) {
         this.flats = flats;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

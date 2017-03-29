@@ -9,12 +9,13 @@ public class PoUser {
     private String name;
     private int category;
     private String photo;
+    private boolean deleted;
 
     private PoUser() {
         //
     }
 
-    public PoUser(long createdAt, String floor, String door, String phone, String email, String name, int category, String photo) {
+    public PoUser(long createdAt, String floor, String door, String phone, String email, String name, int category, String photo, boolean deleted) {
         this.createdAt = createdAt;
         this.floor = floor;
         this.door = door;
@@ -23,6 +24,7 @@ public class PoUser {
         this.name = name;
         this.category = category;
         this.photo = photo;
+        this.deleted = deleted;
     }
 
     public long getCreatedAt() {
@@ -87,5 +89,13 @@ public class PoUser {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

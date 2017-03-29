@@ -5,35 +5,35 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/groupOptions_Incidences"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/tooltip_image"
             android:title="@string/groupOptions_Incidences" />
         <item
             android:id="@+id/groupOptions_Board"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/clipboard_alert"
             android:title="@string/groupOptions_Board" />
         <item
             android:id="@+id/groupOptions_ComBoard"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/clipboard"
             android:title="@string/groupOptions_ComBoard" />
         <item
             android:id="@+id/groupOptions_Documents"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/file_document"
             android:title="@string/groupOptions_Documents" />
         <item
             android:id="@+id/groupOptions_Meetings"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/timetable"
             android:title="@string/groupOptions_Meetings" />
         <item
             android:id="@+id/groupOptions_Users"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/account_multiple"
             android:title="@string/groupOptions_Users" />
         <item
             android:id="@+id/groupOptions_Communities"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/home_modern"
             android:title="@string/groupOptions_Communities" />
         <item
             android:id="@+id/groupOptions_Profile"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/account_card_details"
             android:title="@string/groupOptions_Profile" />
     </group>
     <group
@@ -41,15 +41,15 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/groupOthers_Settings"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/settings"
             android:title="@string/groupOthers_Settings" />
         <item
             android:id="@+id/groupOthers_Help"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/help"
             android:title="@string/groupOthers_Help" />
         <item
             android:id="@+id/groupOthers_About"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/android"
             android:title="@string/groupOthers_About" />
     </group>
     <group
@@ -57,7 +57,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/groupClose_Close"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/logout_variant"
             android:title="@string/groupClose_Close" />
     </group>
 </menu>

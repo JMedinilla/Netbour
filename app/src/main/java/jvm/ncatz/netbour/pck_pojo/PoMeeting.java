@@ -4,15 +4,17 @@ public class PoMeeting {
     private long createdAt;
     private String date;
     private String description;
+    private boolean deleted;
 
     public PoMeeting() {
         //
     }
 
-    public PoMeeting(long createdAt, String date, String description) {
+    public PoMeeting(long createdAt, String date, String description, boolean deleted) {
         this.createdAt = createdAt;
         this.date = date;
         this.description = description;
+        this.deleted = deleted;
     }
 
     public long getCreatedAt() {
@@ -37,5 +39,13 @@ public class PoMeeting {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
