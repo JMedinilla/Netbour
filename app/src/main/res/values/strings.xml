@@ -12,4 +12,9 @@
     <string name="groupOthers_Help">Admin info</string>
     <string name="groupOthers_About">About</string>
     <string name="groupClose_Close">Close sesion</string>
+    <string name="adapterUsers_txtNameTitle">Name:</string>
+    <string name="adapterUsers_txtEmailTitle">Email:</string>
+    <string name="adapterUsers_txtPhoneTitle">Phone:</string>
+    <string name="adapterUsers_txtCategoryTitle">Category:</string>
+    <string name="adapterUsers_txtFlatTitle">Flat:</string>
 </resources>
