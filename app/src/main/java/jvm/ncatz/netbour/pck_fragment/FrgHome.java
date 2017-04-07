@@ -11,11 +11,6 @@ import android.view.ViewGroup;
 import jvm.ncatz.netbour.R;
 
 public class FrgHome extends Fragment {
-    private IHome callback;
-
-    public interface IHome {
-
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,13 +33,11 @@ public class FrgHome extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (IHome) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        callback = null;
     }
 
     @Override

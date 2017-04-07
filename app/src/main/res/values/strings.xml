@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Netbour</string>
+    <string name="groupOptions_Incidences">Incidents</string>
+    <string name="groupOptions_Board">Board</string>
+    <string name="groupOptions_ComBoard">Community Board</string>
+    <string name="groupOptions_Documents">Documents</string>
+    <string name="groupOptions_Meetings">Meetings</string>
+    <string name="groupOptions_Users">Users</string>
+    <string name="groupOptions_Communities">Communities</string>
+    <string name="groupOptions_Profile">Profile</string>
+    <string name="groupOthers_Settings">Settings</string>
+    <string name="groupOthers_Help">Admin info</string>
+    <string name="groupOthers_About">About</string>
+    <string name="groupClose_Close">Close sesion</string>
+    <string name="adapterUsers_txtNameTitle">Name:</string>
+    <string name="adapterUsers_txtEmailTitle">Email:</string>
+    <string name="adapterUsers_txtPhoneTitle">Phone:</string>
+    <string name="adapterUsers_txtCategoryTitle">Category:</string>
+    <string name="adapterUsers_txtFlatTitle">Flat:</string>
 </resources>
