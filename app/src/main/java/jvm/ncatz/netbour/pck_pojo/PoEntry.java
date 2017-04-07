@@ -1,6 +1,12 @@
 package jvm.ncatz.netbour.pck_pojo;
 
-public class PoEntry {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class PoEntry implements Parcelable {
+    public static final int CATEGORY_FIRST = 1;
+    public static final int CATEGORY_SECOND = 2;
+
     private long createdAt;
     private String title;
     private String content;
@@ -77,5 +83,43 @@ public class PoEntry {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    protected PoEntry(Parcel in) {
+        createdAt = in.readLong();
+        title = in.readString();
+        content = in.readString();
+        date = in.readLong();
+        category = in.readInt();
+        authorName = in.readString();
+        deleted = in.readByte() != 0;
+    }
+
+    public static final Creator<PoEntry> CREATOR = new Creator<PoEntry>() {
+        @Override
+        public PoEntry createFromParcel(Parcel in) {
+            return new PoEntry(in);
+        }
+
+        @Override
+        public PoEntry[] newArray(int size) {
+            return new PoEntry[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(createdAt);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeLong(date);
+        dest.writeInt(category);
+        dest.writeString(authorName);
+        dest.writeByte((byte) (deleted ? 1 : 0));
     }
 }

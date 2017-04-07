@@ -1,6 +1,9 @@
 package jvm.ncatz.netbour.pck_pojo;
 
-public class PoMeeting {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class PoMeeting implements Parcelable {
     private long createdAt;
     private String date;
     private String description;
@@ -47,5 +50,37 @@ public class PoMeeting {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    protected PoMeeting(Parcel in) {
+        createdAt = in.readLong();
+        date = in.readString();
+        description = in.readString();
+        deleted = in.readByte() != 0;
+    }
+
+    public static final Creator<PoMeeting> CREATOR = new Creator<PoMeeting>() {
+        @Override
+        public PoMeeting createFromParcel(Parcel in) {
+            return new PoMeeting(in);
+        }
+
+        @Override
+        public PoMeeting[] newArray(int size) {
+            return new PoMeeting[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(createdAt);
+        dest.writeString(date);
+        dest.writeString(description);
+        dest.writeByte((byte) (deleted ? 1 : 0));
     }
 }

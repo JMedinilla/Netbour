@@ -1,6 +1,9 @@
 package jvm.ncatz.netbour.pck_pojo;
 
-public class PoIncidence {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class PoIncidence implements Parcelable {
     private long createdAt;
     private String title;
     private String description;
@@ -77,5 +80,43 @@ public class PoIncidence {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    protected PoIncidence(Parcel in) {
+        createdAt = in.readLong();
+        title = in.readString();
+        description = in.readString();
+        date = in.readLong();
+        photo = in.readString();
+        authorName = in.readString();
+        deleted = in.readByte() != 0;
+    }
+
+    public static final Creator<PoIncidence> CREATOR = new Creator<PoIncidence>() {
+        @Override
+        public PoIncidence createFromParcel(Parcel in) {
+            return new PoIncidence(in);
+        }
+
+        @Override
+        public PoIncidence[] newArray(int size) {
+            return new PoIncidence[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(createdAt);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeLong(date);
+        dest.writeString(photo);
+        dest.writeString(authorName);
+        dest.writeByte((byte) (deleted ? 1 : 0));
     }
 }

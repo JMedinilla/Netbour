@@ -1,6 +1,9 @@
 package jvm.ncatz.netbour.pck_pojo;
 
-public class PoDocument {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class PoDocument implements Parcelable {
     private long createdAt;
     private String title;
     private String description;
@@ -57,5 +60,39 @@ public class PoDocument {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    protected PoDocument(Parcel in) {
+        createdAt = in.readLong();
+        title = in.readString();
+        description = in.readString();
+        link = in.readString();
+        deleted = in.readByte() != 0;
+    }
+
+    public static final Creator<PoDocument> CREATOR = new Creator<PoDocument>() {
+        @Override
+        public PoDocument createFromParcel(Parcel in) {
+            return new PoDocument(in);
+        }
+
+        @Override
+        public PoDocument[] newArray(int size) {
+            return new PoDocument[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(createdAt);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(link);
+        dest.writeByte((byte) (deleted ? 1 : 0));
     }
 }

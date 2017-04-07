@@ -1,6 +1,9 @@
 package jvm.ncatz.netbour.pck_pojo;
 
-public class PoCommunity {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class PoCommunity implements Parcelable {
     private long createdAt;
     private String province;
     private String municipality;
@@ -87,5 +90,45 @@ public class PoCommunity {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    protected PoCommunity(Parcel in) {
+        createdAt = in.readLong();
+        province = in.readString();
+        municipality = in.readString();
+        street = in.readString();
+        number = in.readString();
+        postal = in.readString();
+        flats = in.readInt();
+        deleted = in.readByte() != 0;
+    }
+
+    public static final Creator<PoCommunity> CREATOR = new Creator<PoCommunity>() {
+        @Override
+        public PoCommunity createFromParcel(Parcel in) {
+            return new PoCommunity(in);
+        }
+
+        @Override
+        public PoCommunity[] newArray(int size) {
+            return new PoCommunity[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(createdAt);
+        dest.writeString(province);
+        dest.writeString(municipality);
+        dest.writeString(street);
+        dest.writeString(number);
+        dest.writeString(postal);
+        dest.writeInt(flats);
+        dest.writeByte((byte) (deleted ? 1 : 0));
     }
 }
