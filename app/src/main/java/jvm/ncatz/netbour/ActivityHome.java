@@ -5,6 +5,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -134,61 +135,73 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
                 switch (item.getItemId()) {
                     case R.id.groupOptions_Incidences:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_LIST_INCIDENCE;
                         showIncidents();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Board:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_LIST_ENTRY;
                         showEntryFirst();
                         transaction = true;
                         break;
                     case R.id.groupOptions_ComBoard:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_LIST_ENTRY;
                         showEntrySecond();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Documents:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_LIST_DOCUMENT;
                         showDocuments();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Meetings:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_LIST_MEETING;
                         showMeetings();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Users:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_LIST_USER;
                         showUsers();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Communities:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_LIST_COMMUNITY;
                         showCommunities();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Profile:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_PROFILE;
                         showProfile();
                         transaction = true;
                         break;
                     case R.id.groupOthers_Settings:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_SETTINGS;
                         showSettings();
                         transaction = true;
                         break;
                     case R.id.groupOthers_Help:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_HELP;
                         showHelp();
                         transaction = true;
                         break;
                     case R.id.groupOthers_About:
+                        clearFragmentStack();
                         fragment_opened = FRAGMENT_ABOUT;
                         showAbout();
                         transaction = true;
                         break;
                     case R.id.groupClose_Close:
+                        clearFragmentStack();
                         closeSesion();
                         transaction = true;
                         break;
@@ -420,6 +433,13 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgHome, "frgHome");
         transaction.commit();
+    }
+
+    private void clearFragmentStack() {
+        FragmentManager manager = getSupportFragmentManager();
+        for (int i = 0; i < manager.getBackStackEntryCount(); i++) {
+            manager.popBackStack();
+        }
     }
 
     private void showSnackbar(String message, int duration) {
