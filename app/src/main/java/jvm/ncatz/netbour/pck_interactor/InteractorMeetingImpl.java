@@ -58,9 +58,7 @@ public class InteractorMeetingImpl implements InteractorMeeting {
 
     @Override
     public void attachFirebase() {
-        if (eventListener != null) {
-            query.addValueEventListener(eventListener);
-        }
+        query.addValueEventListener(eventListener);
     }
 
     @Override

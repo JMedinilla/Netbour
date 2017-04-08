@@ -58,9 +58,7 @@ public class InteractorDocumentImpl implements InteractorDocument {
 
     @Override
     public void attachFirebase() {
-        if (eventListener != null) {
-            query.addValueEventListener(eventListener);
-        }
+        query.addValueEventListener(eventListener);
     }
 
     @Override

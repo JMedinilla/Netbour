@@ -115,7 +115,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
-        actual_code = "";
+        actual_code = "default";
 
         toolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(toolbar);

@@ -17,7 +17,6 @@ public class InteractorCommunityImpl implements InteractorCommunity {
     private InteractorCommunity.Listener listener;
 
     private DatabaseReference databaseReference;
-    private Query query;
     private ValueEventListener eventListener;
 
     public InteractorCommunityImpl(InteractorCommunity.Listener listener) {
@@ -27,7 +26,6 @@ public class InteractorCommunityImpl implements InteractorCommunity {
     @Override
     public void instanceFirebase() {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities");
-        query = FirebaseDatabase.getInstance().getReference().child("communities").orderByChild("postal");
         eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -58,15 +56,13 @@ public class InteractorCommunityImpl implements InteractorCommunity {
 
     @Override
     public void attachFirebase() {
-        if (eventListener != null) {
-            query.addValueEventListener(eventListener);
-        }
+        databaseReference.addValueEventListener(eventListener);
     }
 
     @Override
     public void dettachFirebase() {
         if (eventListener != null) {
-            query.removeEventListener(eventListener);
+            databaseReference.removeEventListener(eventListener);
         }
     }
 }
