@@ -385,7 +385,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         frgEntry = new FrgEntry();
         transaction = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
-        bundle.putInt("categoryFirst", PoEntry.CATEGORY_FIRST);
+        bundle.putInt("category", PoEntry.CATEGORY_FIRST);
         frgEntry.setArguments(bundle);
         transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
         transaction.commit();
@@ -397,7 +397,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         frgEntry = new FrgEntry();
         transaction = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
-        bundle.putInt("categorySecond", PoEntry.CATEGORY_SECOND);
+        bundle.putInt("category", PoEntry.CATEGORY_SECOND);
         frgEntry.setArguments(bundle);
         transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
         transaction.commit();

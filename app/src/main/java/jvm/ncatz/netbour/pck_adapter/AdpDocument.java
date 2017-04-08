@@ -7,17 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 
 public class AdpDocument extends ArrayAdapter<PoDocument> {
     private Context context;
 
-    private class DocumentHolder {
+    static class ViewHolder {
+        @BindView(R.id.adapterDocument_txtTitle)
+        TextView adapterDocumentTxtTitle;
+        @BindView(R.id.adapterDocument_txtDescription)
+        TextView adapterDocumentTxtDescription;
 
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
     public AdpDocument(@NonNull Context context, List<PoDocument> list) {
@@ -28,22 +38,20 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        DocumentHolder holder;
-
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.adapter_document, parent, false);
-            holder = new DocumentHolder();
+        ViewHolder holder;
+        if (convertView != null) {
+            holder = (ViewHolder) convertView.getTag();
         } else {
-            holder = (DocumentHolder) view.getTag();
+            convertView = LayoutInflater.from(context).inflate(R.layout.adapter_document, parent, false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
         }
-
-        PoDocument user = getItem(position);
-        if (user != null) {
-
+        PoDocument document = getItem(position);
+        if (document != null) {
+            holder.adapterDocumentTxtTitle.setText(document.getTitle());
+            holder.adapterDocumentTxtDescription.setText(document.getDescription());
         }
-
-        return view;
+        return convertView;
     }
 
     @Nullable

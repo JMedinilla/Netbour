@@ -10,14 +10,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpCommunity;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
@@ -34,6 +35,13 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.View {
 
     @BindView(R.id.fragListCommunity_list)
     ListView communityList;
+    @BindView(R.id.fragListCommunity_empty)
+    TextView communityEmpty;
+
+    @OnItemClick(R.id.fragListCommunity_list)
+    public void itemClick(int position) {
+        //
+    }
 
     public interface ListCommunity {
         //
@@ -47,27 +55,24 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.View {
 
         List<PoCommunity> list = new ArrayList<>();
         adpCommunity = new AdpCommunity(getActivity(), list);
+        presenterCommunity = new PresenterCommunityImpl(this);
+
+        presenterCommunity.instanceFirebase();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_community, container, false);
-        ButterKnife.bind(view);
-        communityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //
-            }
-        });
+        ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        communityList.setDivider(null);
         communityList.setAdapter(adpCommunity);
+        communityList.setDivider(null);
     }
 
     @Override
@@ -88,11 +93,13 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.View {
     public void onStart() {
         super.onStart();
         callbackBack.backFromForm();
+        presenterCommunity.attachFirebase();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        presenterCommunity.dettachFirebase();
     }
 
     @Override
@@ -103,5 +110,25 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void returnList(List<PoCommunity> list) {
+        communityList.setVisibility(View.VISIBLE);
+        communityEmpty.setVisibility(View.GONE);
+        updateList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        communityList.setVisibility(View.GONE);
+        communityEmpty.setVisibility(View.VISIBLE);
+        List<PoCommunity> list = new ArrayList<>();
+        updateList(list);
+    }
+
+    private void updateList(List<PoCommunity> list) {
+        adpCommunity.clear();
+        adpCommunity.addAll(list);
     }
 }

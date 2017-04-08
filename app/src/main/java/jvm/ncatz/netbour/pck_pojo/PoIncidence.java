@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoIncidence implements Parcelable {
-    private long createdAt;
     private String title;
     private String description;
     private long date;
@@ -16,22 +15,13 @@ public class PoIncidence implements Parcelable {
         //
     }
 
-    public PoIncidence(long createdAt, String title, String description, long date, String photo, String authorName, boolean deleted) {
-        this.createdAt = createdAt;
+    public PoIncidence(String title, String description, long date, String photo, String authorName, boolean deleted) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.photo = photo;
         this.authorName = authorName;
         this.deleted = deleted;
-    }
-
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getTitle() {
@@ -83,7 +73,6 @@ public class PoIncidence implements Parcelable {
     }
 
     protected PoIncidence(Parcel in) {
-        createdAt = in.readLong();
         title = in.readString();
         description = in.readString();
         date = in.readLong();
@@ -111,7 +100,6 @@ public class PoIncidence implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(createdAt);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeLong(date);

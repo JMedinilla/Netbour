@@ -17,4 +17,9 @@
     <string name="adapterUsers_txtPhoneTitle">Phone:</string>
     <string name="adapterUsers_txtCategoryTitle">Category:</string>
     <string name="adapterUsers_txtFlatTitle">Flat:</string>
+    <string name="adapterUserNeighbour">Neighbour</string>
+    <string name="adapterUserPresident">President</string>
+    <string name="adapterUserAdmin">Administrator</string>
+    <string name="nothing_to_show">There is nothing to show</string>
+    <string name="adapterCommunity_txtFlatsTitle">Flats:</string>
 </resources>

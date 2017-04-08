@@ -7,17 +7,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 
 public class AdpMeeting extends ArrayAdapter<PoMeeting> {
     private Context context;
 
-    private class MeetingHolder {
+    static class ViewHolder {
+        @BindView(R.id.adapterMeeting_txtDate)
+        TextView adapterMeetingTxtDate;
+        @BindView(R.id.adapterMeeting_txtDescription)
+        TextView adapterMeetingTxtDescription;
 
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
     public AdpMeeting(@NonNull Context context, List<PoMeeting> list) {
@@ -28,22 +40,28 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        MeetingHolder holder;
-
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.adapter_meeting, parent, false);
-            holder = new MeetingHolder();
+        ViewHolder holder;
+        if (convertView != null) {
+            holder = (ViewHolder) convertView.getTag();
         } else {
-            holder = (MeetingHolder) view.getTag();
+            convertView = LayoutInflater.from(context).inflate(R.layout.adapter_meeting, parent, false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
         }
+        PoMeeting meeting = getItem(position);
+        if (meeting != null) {
+            Date date = new Date(meeting.getDate());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
 
-        PoMeeting user = getItem(position);
-        if (user != null) {
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+            holder.adapterMeetingTxtDate.setText(day + "/" + month + "/" + year);
+            holder.adapterMeetingTxtDescription.setText(meeting.getDescription());
         }
-
-        return view;
+        return convertView;
     }
 
     @Nullable

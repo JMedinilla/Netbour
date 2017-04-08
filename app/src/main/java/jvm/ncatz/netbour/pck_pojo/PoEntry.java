@@ -7,7 +7,6 @@ public class PoEntry implements Parcelable {
     public static final int CATEGORY_FIRST = 1;
     public static final int CATEGORY_SECOND = 2;
 
-    private long createdAt;
     private String title;
     private String content;
     private long date;
@@ -19,22 +18,13 @@ public class PoEntry implements Parcelable {
         //
     }
 
-    public PoEntry(long createdAt, String title, String content, long date, int category, String authorName, boolean deleted) {
-        this.createdAt = createdAt;
+    public PoEntry(String title, String content, long date, int category, String authorName, boolean deleted) {
         this.title = title;
         this.content = content;
         this.date = date;
         this.category = category;
         this.authorName = authorName;
         this.deleted = deleted;
-    }
-
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getTitle() {
@@ -86,7 +76,6 @@ public class PoEntry implements Parcelable {
     }
 
     protected PoEntry(Parcel in) {
-        createdAt = in.readLong();
         title = in.readString();
         content = in.readString();
         date = in.readLong();
@@ -114,7 +103,6 @@ public class PoEntry implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(createdAt);
         dest.writeString(title);
         dest.writeString(content);
         dest.writeLong(date);

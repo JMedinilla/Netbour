@@ -4,8 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoMeeting implements Parcelable {
-    private long createdAt;
-    private String date;
+    private long date;
     private String description;
     private boolean deleted;
 
@@ -13,26 +12,17 @@ public class PoMeeting implements Parcelable {
         //
     }
 
-    public PoMeeting(long createdAt, String date, String description, boolean deleted) {
-        this.createdAt = createdAt;
+    public PoMeeting(long createdAt, long date, String description, boolean deleted) {
         this.date = date;
         this.description = description;
         this.deleted = deleted;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -53,8 +43,7 @@ public class PoMeeting implements Parcelable {
     }
 
     protected PoMeeting(Parcel in) {
-        createdAt = in.readLong();
-        date = in.readString();
+        date = in.readLong();
         description = in.readString();
         deleted = in.readByte() != 0;
     }
@@ -78,8 +67,7 @@ public class PoMeeting implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(createdAt);
-        dest.writeString(date);
+        dest.writeLong(date);
         dest.writeString(description);
         dest.writeByte((byte) (deleted ? 1 : 0));
     }

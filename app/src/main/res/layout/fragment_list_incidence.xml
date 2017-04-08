@@ -4,8 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/fragListIncidence_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawableTop="@drawable/emoticon_sad"
+        android:text="@string/nothing_to_show"
+        android:textColor="@color/blue_grey_800"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/fragListIncidence_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 </RelativeLayout>
