@@ -25,9 +25,9 @@ public class InteractorEntryImpl implements InteractorEntry {
     }
 
     @Override
-    public void instanceFirebase(final int category) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child("aaa").child("entries");
-        query = FirebaseDatabase.getInstance().getReference().child("communities").child("aaa").child("entries").orderByKey();
+    public void instanceFirebase(String code, final int category) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("entries");
+        query = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("entries").orderByKey();
         eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -41,11 +41,13 @@ public class InteractorEntryImpl implements InteractorEntry {
                             }
                         }
                     }
-                    if (list.size() >= 0) {
+                    if (list.size() > 0) {
                         listener.returnList(list);
                     } else {
                         listener.returnListEmpty();
                     }
+                } else {
+                    listener.returnListEmpty();
                 }
             }
 

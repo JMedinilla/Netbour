@@ -39,11 +39,13 @@ public class InteractorCommunityImpl implements InteractorCommunity {
                             list.add(community);
                         }
                     }
-                    if (list.size() >= 0) {
+                    if (list.size() > 0) {
                         listener.returnList(list);
                     } else {
                         listener.returnListEmpty();
                     }
+                } else {
+                    listener.returnListEmpty();
                 }
             }
 

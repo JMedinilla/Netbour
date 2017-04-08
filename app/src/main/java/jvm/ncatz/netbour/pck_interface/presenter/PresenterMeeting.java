@@ -6,7 +6,7 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 
 public interface PresenterMeeting {
 
-    void instanceFirebase();
+    void instanceFirebase(String code);
 
     void attachFirebase();
 

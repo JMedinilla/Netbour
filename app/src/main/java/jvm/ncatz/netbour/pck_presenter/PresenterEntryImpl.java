@@ -17,8 +17,8 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
     }
 
     @Override
-    public void instanceFirebase(int category) {
-        interactorEntry.instanceFirebase(category);
+    public void instanceFirebase(String code, int category) {
+        interactorEntry.instanceFirebase(code, category);
     }
 
     @Override

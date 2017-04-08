@@ -17,8 +17,8 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     }
 
     @Override
-    public void instanceFirebase() {
-        interactorUser.instanceFirebase();
+    public void instanceFirebase(String code) {
+        interactorUser.instanceFirebase(code);
     }
 
     @Override

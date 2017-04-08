@@ -57,7 +57,11 @@ public class FrgUser extends Fragment implements PresenterUser.View {
         adpUser = new AdpUser(getActivity(), list);
         presenterUser = new PresenterUserImpl(this);
 
-        presenterUser.instanceFirebase();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String code = bundle.getString("comcode");
+            presenterUser.instanceFirebase(code);
+        }
     }
 
     @Nullable

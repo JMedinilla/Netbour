@@ -6,7 +6,7 @@ import jvm.ncatz.netbour.pck_pojo.PoDocument;
 
 public interface InteractorDocument {
 
-    void instanceFirebase();
+    void instanceFirebase(String code);
 
     void attachFirebase();
 

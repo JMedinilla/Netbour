@@ -17,8 +17,8 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     }
 
     @Override
-    public void instanceFirebase() {
-        interactorIncidence.instanceFirebase();
+    public void instanceFirebase(String code) {
+        interactorIncidence.instanceFirebase(code);
     }
 
     @Override

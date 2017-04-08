@@ -57,7 +57,11 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.View {
         adpMeeting = new AdpMeeting(getActivity(), list);
         presenterMeeting = new PresenterMeetingImpl(this);
 
-        presenterMeeting.instanceFirebase();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String code = bundle.getString("comcode");
+            presenterMeeting.instanceFirebase(code);
+        }
     }
 
     @Nullable

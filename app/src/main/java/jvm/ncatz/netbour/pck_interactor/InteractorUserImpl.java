@@ -25,9 +25,9 @@ public class InteractorUserImpl implements InteractorUser {
     }
 
     @Override
-    public void instanceFirebase() {
+    public void instanceFirebase(String code) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
-        query = FirebaseDatabase.getInstance().getReference().child("users").orderByKey();
+        query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("community").equalTo(code);
         eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -39,11 +39,13 @@ public class InteractorUserImpl implements InteractorUser {
                             list.add(user);
                         }
                     }
-                    if (list.size() >= 0) {
+                    if (list.size() > 0) {
                         listener.returnList(list);
                     } else {
                         listener.returnListEmpty();
                     }
+                } else {
+                    listener.returnListEmpty();
                 }
             }
 

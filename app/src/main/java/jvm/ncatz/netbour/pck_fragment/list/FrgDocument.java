@@ -57,7 +57,11 @@ public class FrgDocument extends Fragment implements PresenterDocument.View {
         adpDocument = new AdpDocument(getActivity(), list);
         presenterDocument = new PresenterDocumentImpl(this);
 
-        presenterDocument.instanceFirebase();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String code = bundle.getString("comcode");
+            presenterDocument.instanceFirebase(code);
+        }
     }
 
     @Nullable

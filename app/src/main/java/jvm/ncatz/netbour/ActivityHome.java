@@ -59,14 +59,13 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     public static final int FRAGMENT_ABOUT = 104;
     public static final int FRAGMENT_LIST_COMMUNITY = 110;
     public static final int FRAGMENT_LIST_DOCUMENT = 111;
-    public static final int FRAGMENT_LIST_ENTRY = 112;
-    public static final int FRAGMENT_LIST_INCIDENCE = 113;
-    public static final int FRAGMENT_LIST_MEETING = 114;
-    public static final int FRAGMENT_LIST_USER = 115;
+    public static final int FRAGMENT_LIST_ENTRYF = 112;
+    public static final int FRAGMENT_LIST_ENTRYS = 113;
+    public static final int FRAGMENT_LIST_INCIDENCE = 114;
+    public static final int FRAGMENT_LIST_MEETING = 115;
+    public static final int FRAGMENT_LIST_USER = 116;
     public static final int DURATION_SHORT = 1;
     public static final int DURATION_LONG = 2;
-
-    private int fragment_opened;
 
     @BindView(R.id.activity_main_drawer)
     DrawerLayout drawerLayout;
@@ -91,7 +90,8 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
             case FRAGMENT_LIST_DOCUMENT:
                 openFormDocument(null);
                 break;
-            case FRAGMENT_LIST_ENTRY:
+            case FRAGMENT_LIST_ENTRYF:
+            case FRAGMENT_LIST_ENTRYS:
                 openFormEntry(null);
                 break;
             case FRAGMENT_LIST_INCIDENCE:
@@ -106,24 +106,16 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         }
     }
 
-    private FrgCommunity frgCommunity;
-    private FrgDocument frgDocument;
-    private FrgEntry frgEntry;
-    private FrgIncidence frgIncidence;
-    private FrgMeeting frgMeeting;
-    private FrgUser frgUser;
-    private FrgHome frgHome;
-    private FrgProfile frgProfile;
-    private FrgSettings frgSettings;
-    private FrgHelp frgHelp;
-
-    private FragmentTransaction transaction;
+    private int fragment_opened;
+    private String actual_code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+
+        actual_code = "";
 
         toolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(toolbar);
@@ -136,67 +128,56 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
                 switch (item.getItemId()) {
                     case R.id.groupOptions_Incidences:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_LIST_INCIDENCE;
                         showIncidents();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Board:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_LIST_ENTRY;
                         showEntryFirst();
                         transaction = true;
                         break;
                     case R.id.groupOptions_ComBoard:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_LIST_ENTRY;
                         showEntrySecond();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Documents:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_LIST_DOCUMENT;
                         showDocuments();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Meetings:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_LIST_MEETING;
                         showMeetings();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Users:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_LIST_USER;
                         showUsers();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Communities:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_LIST_COMMUNITY;
                         showCommunities();
                         transaction = true;
                         break;
                     case R.id.groupOptions_Profile:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_PROFILE;
                         showProfile();
                         transaction = true;
                         break;
                     case R.id.groupOthers_Settings:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_SETTINGS;
                         showSettings();
                         transaction = true;
                         break;
                     case R.id.groupOthers_Help:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_HELP;
                         showHelp();
                         transaction = true;
                         break;
                     case R.id.groupOthers_About:
                         clearFragmentStack();
-                        fragment_opened = FRAGMENT_ABOUT;
                         showAbout();
                         transaction = true;
                         break;
@@ -211,10 +192,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
                 }
                 if (transaction) {
                     item.setChecked(true);
-                    ActionBar actionBar = getSupportActionBar();
-                    if (actionBar != null) {
-                        actionBar.setTitle(item.getTitle());
-                    }
+                    changeActionTitle(item.getTitle());
                 }
                 drawerLayout.closeDrawers();
                 return true;
@@ -233,18 +211,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
             profile_name = (TextView) header.findViewById(R.id.header_txtName);
         }
 
-        frgHome = new FrgHome();
-        frgProfile = new FrgProfile();
-        frgSettings = new FrgSettings();
-        frgHelp = new FrgHelp();
-        frgCommunity = new FrgCommunity();
-        frgDocument = new FrgDocument();
-        frgIncidence = new FrgIncidence();
-        frgMeeting = new FrgMeeting();
-        frgUser = new FrgUser();
-
         showHome();
-        fragment_opened = FRAGMENT_HOME;
     }
 
     @Override
@@ -263,165 +230,276 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     }
 
     private void openFormCommunity(PoCommunity community) {
-        FrgFormCommunity frgFormCommunity = new FrgFormCommunity();
         actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("communityForm", community);
+
+        FrgFormCommunity frgFormCommunity = new FrgFormCommunity();
         frgFormCommunity.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgFormCommunity, "frgFormCommunity");
         transaction.addToBackStack("frgFormCommunity");
         transaction.commit();
     }
 
     private void openFormUser(PoUser user) {
-        FrgFormUser frgFormUser = new FrgFormUser();
         actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("userForm", user);
+
+        FrgFormUser frgFormUser = new FrgFormUser();
         frgFormUser.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgFormUser, "frgFormUser");
         transaction.addToBackStack("frgFormUser");
         transaction.commit();
     }
 
     private void openFormMeeting(PoMeeting meeting) {
-        FrgFormMeeting frgFormMeeting = new FrgFormMeeting();
         actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("meetingForm", meeting);
+
+        FrgFormMeeting frgFormMeeting = new FrgFormMeeting();
         frgFormMeeting.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgFormMeeting, "frgFormMeeting");
         transaction.addToBackStack("frgFormMeeting");
         transaction.commit();
     }
 
     private void openFormDocument(PoDocument document) {
-        FrgFormDocument frgFormDocument = new FrgFormDocument();
         actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("documentForm", document);
+
+        FrgFormDocument frgFormDocument = new FrgFormDocument();
         frgFormDocument.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgFormDocument, "frgFormDocument");
         transaction.addToBackStack("frgFormDocument");
         transaction.commit();
     }
 
     private void openFormEntry(PoEntry entry) {
-        FrgFormEntry frgFormEntry = new FrgFormEntry();
         actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("entryForm", entry);
+
+        FrgFormEntry frgFormEntry = new FrgFormEntry();
         frgFormEntry.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgFormEntry, "frgFormEntry");
         transaction.addToBackStack("frgFormEntry");
         transaction.commit();
     }
 
     private void openFormIncidence(PoIncidence incidence) {
-        FrgFormIncidence frgFormIncidence = new FrgFormIncidence();
         actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("incidenceForm", incidence);
+
+        FrgFormIncidence frgFormIncidence = new FrgFormIncidence();
         frgFormIncidence.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgFormIncidence, "frgFormIncidence");
         transaction.addToBackStack("frgFormIncidence");
         transaction.commit();
     }
 
     private void showAbout() {
-        actionButton.setVisibility(View.INVISIBLE);
-        //
+        if (fragment_opened != FRAGMENT_ABOUT) {
+            actionButton.setVisibility(View.INVISIBLE);
+
+            //
+
+            fragment_opened = FRAGMENT_ABOUT;
+        }
     }
 
     private void showHelp() {
-        actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgHelp, "frgHelp");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_HELP) {
+            actionButton.setVisibility(View.INVISIBLE);
+
+            FrgHelp frgHelp = new FrgHelp();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgHelp, "frgHelp");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_HELP;
+        }
     }
 
     private void showSettings() {
-        actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgSettings, "frgSettings");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_SETTINGS) {
+            actionButton.setVisibility(View.INVISIBLE);
+
+            FrgSettings frgSettings = new FrgSettings();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgSettings, "frgSettings");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_SETTINGS;
+        }
     }
 
     private void showProfile() {
-        actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgProfile, "frgProfile");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_PROFILE) {
+            actionButton.setVisibility(View.INVISIBLE);
+
+            FrgProfile frgProfile = new FrgProfile();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgProfile, "frgProfile");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_PROFILE;
+        }
     }
 
     private void showCommunities() {
-        actionButton.setVisibility(View.VISIBLE);
-        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgCommunity, "frgCommunity");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_LIST_COMMUNITY) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            FrgCommunity frgCommunity = new FrgCommunity();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgCommunity, "frgCommunity");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_COMMUNITY;
+        }
     }
 
     private void showUsers() {
-        actionButton.setVisibility(View.VISIBLE);
-        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgUser, "frgUser");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_LIST_USER) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("comcode", actual_code);
+
+            FrgUser frgUser = new FrgUser();
+            frgUser.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgUser, "frgUser");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_USER;
+        }
     }
 
     private void showMeetings() {
-        actionButton.setVisibility(View.VISIBLE);
-        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgMeeting, "frgMeeting");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_LIST_MEETING) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("comcode", actual_code);
+
+            FrgMeeting frgMeeting = new FrgMeeting();
+            frgMeeting.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgMeeting, "frgMeeting");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_MEETING;
+        }
     }
 
     private void showDocuments() {
-        actionButton.setVisibility(View.VISIBLE);
-        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgDocument, "frgDocument");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_LIST_DOCUMENT) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("comcode", actual_code);
+
+            FrgDocument frgDocument = new FrgDocument();
+            frgDocument.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgDocument, "frgDocument");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_DOCUMENT;
+        }
     }
 
     private void showEntryFirst() {
-        actionButton.setVisibility(View.VISIBLE);
-        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-        frgEntry = new FrgEntry();
-        transaction = getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putInt("category", PoEntry.CATEGORY_FIRST);
-        frgEntry.setArguments(bundle);
-        transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_LIST_ENTRYF) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("category", PoEntry.CATEGORY_FIRST);
+            bundle.putString("comcode", actual_code);
+
+            FrgEntry frgEntry = new FrgEntry();
+            frgEntry.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_ENTRYF;
+        }
     }
 
     private void showEntrySecond() {
-        actionButton.setVisibility(View.VISIBLE);
-        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-        frgEntry = new FrgEntry();
-        transaction = getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putInt("category", PoEntry.CATEGORY_SECOND);
-        frgEntry.setArguments(bundle);
-        transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_LIST_ENTRYS) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("category", PoEntry.CATEGORY_SECOND);
+            bundle.putString("comcode", actual_code);
+
+            FrgEntry frgEntry = new FrgEntry();
+            frgEntry.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_ENTRYS;
+        }
     }
 
     private void showIncidents() {
-        actionButton.setVisibility(View.VISIBLE);
-        actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgIncidence, "frgIncidence");
-        transaction.commit();
+        if (fragment_opened != FRAGMENT_LIST_INCIDENCE) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("comcode", actual_code);
+
+            FrgIncidence frgIncidence = new FrgIncidence();
+            frgIncidence.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgIncidence, "frgIncidence");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_INCIDENCE;
+        }
     }
 
     private void closeSesion() {
@@ -430,9 +508,15 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
     private void showHome() {
         actionButton.setVisibility(View.INVISIBLE);
-        transaction = getSupportFragmentManager().beginTransaction();
+
+        FrgHome frgHome = new FrgHome();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgHome, "frgHome");
         transaction.commit();
+
+        fragment_opened = FRAGMENT_HOME;
+        changeActionTitle(getString(R.string.app_name));
     }
 
     private void clearFragmentStack() {
@@ -472,5 +556,18 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
                 break;
         }
         toast.show();
+    }
+
+    @Override
+    public void changeCode(String code) {
+        actual_code = code;
+        showHome();
+    }
+
+    private void changeActionTitle(CharSequence title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
     }
 }

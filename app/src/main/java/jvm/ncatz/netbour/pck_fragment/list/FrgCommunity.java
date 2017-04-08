@@ -40,11 +40,14 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.View {
 
     @OnItemClick(R.id.fragListCommunity_list)
     public void itemClick(int position) {
-        //
+        PoCommunity com = adpCommunity.getItem(position);
+        if (com != null) {
+            callback.changeCode(com.getCode());
+        }
     }
 
     public interface ListCommunity {
-        //
+        void changeCode(String code);
     }
 
     @Override

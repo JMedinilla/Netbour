@@ -17,8 +17,8 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
     }
 
     @Override
-    public void instanceFirebase() {
-        interactorDocument.instanceFirebase();
+    public void instanceFirebase(String code) {
+        interactorDocument.instanceFirebase(code);
     }
 
     @Override

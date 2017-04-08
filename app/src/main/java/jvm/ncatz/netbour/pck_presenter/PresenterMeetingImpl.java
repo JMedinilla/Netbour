@@ -17,8 +17,8 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
     }
 
     @Override
-    public void instanceFirebase() {
-        interactorMeeting.instanceFirebase();
+    public void instanceFirebase(String code) {
+        interactorMeeting.instanceFirebase(code);
     }
 
     @Override

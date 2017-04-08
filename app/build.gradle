@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 25
@@ -46,4 +47,3 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.github.bassaer:materialdesigncolors:1.0.0'
 }
-apply plugin: 'com.google.gms.google-services'

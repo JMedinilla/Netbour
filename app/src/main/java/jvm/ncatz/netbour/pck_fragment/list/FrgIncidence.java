@@ -57,7 +57,11 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.View {
         adpIncidence = new AdpIncidence(getActivity(), list);
         presenterIncidence = new PresenterIncidenceImpl(this);
 
-        presenterIncidence.instanceFirebase();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String code = bundle.getString("comcode");
+            presenterIncidence.instanceFirebase(code);
+        }
     }
 
     @Nullable

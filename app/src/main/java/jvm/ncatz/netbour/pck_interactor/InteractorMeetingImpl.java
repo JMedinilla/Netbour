@@ -25,9 +25,9 @@ public class InteractorMeetingImpl implements InteractorMeeting {
     }
 
     @Override
-    public void instanceFirebase() {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child("aaa").child("meetings");
-        query = FirebaseDatabase.getInstance().getReference().child("communities").child("aaa").child("meetings").orderByKey();
+    public void instanceFirebase(String code) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("meetings");
+        query = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("meetings").orderByKey();
         eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -39,11 +39,13 @@ public class InteractorMeetingImpl implements InteractorMeeting {
                             list.add(meeting);
                         }
                     }
-                    if (list.size() >= 0) {
+                    if (list.size() > 0) {
                         listener.returnList(list);
                     } else {
                         listener.returnListEmpty();
                     }
+                } else {
+                    listener.returnListEmpty();
                 }
             }
 

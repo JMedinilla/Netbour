@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoCommunity implements Parcelable {
+    private String code;
     private String province;
     private String municipality;
     private String street;
@@ -16,7 +17,8 @@ public class PoCommunity implements Parcelable {
         //
     }
 
-    public PoCommunity(String province, String municipality, String street, String number, String postal, int flats, boolean deleted) {
+    public PoCommunity(String code, String province, String municipality, String street, String number, String postal, int flats, boolean deleted) {
+        this.code = code;
         this.province = province;
         this.municipality = municipality;
         this.street = street;
@@ -24,6 +26,14 @@ public class PoCommunity implements Parcelable {
         this.postal = postal;
         this.flats = flats;
         this.deleted = deleted;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getProvince() {
@@ -83,6 +93,7 @@ public class PoCommunity implements Parcelable {
     }
 
     protected PoCommunity(Parcel in) {
+        code = in.readString();
         province = in.readString();
         municipality = in.readString();
         street = in.readString();
@@ -111,6 +122,7 @@ public class PoCommunity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(code);
         dest.writeString(province);
         dest.writeString(municipality);
         dest.writeString(street);

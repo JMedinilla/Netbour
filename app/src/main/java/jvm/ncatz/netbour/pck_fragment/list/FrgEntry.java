@@ -60,10 +60,11 @@ public class FrgEntry extends Fragment implements PresenterEntry.View {
         Bundle bundle = getArguments();
         if (bundle != null) {
             int cat = bundle.getInt("category");
+            String code = bundle.getString("comcode");
             if (cat == PoEntry.CATEGORY_FIRST) {
-                presenterEntry.instanceFirebase(PoEntry.CATEGORY_FIRST);
+                presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
             } else {
-                presenterEntry.instanceFirebase(PoEntry.CATEGORY_SECOND);
+                presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_SECOND);
             }
         }
     }

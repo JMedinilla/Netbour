@@ -6,7 +6,7 @@ import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 
 public interface InteractorIncidence {
 
-    void instanceFirebase();
+    void instanceFirebase(String code);
 
     void attachFirebase();
 

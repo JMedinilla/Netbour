@@ -6,7 +6,7 @@ import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public interface InteractorUser {
 
-    void instanceFirebase();
+    void instanceFirebase(String code);
 
     void attachFirebase();
 
