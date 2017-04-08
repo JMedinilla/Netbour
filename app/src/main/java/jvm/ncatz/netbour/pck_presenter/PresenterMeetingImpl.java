@@ -8,11 +8,13 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 
 public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting.Listener {
-    private PresenterMeeting.View view;
+    private ViewList viewList;
+    private ViewForm viewForm;
     private InteractorMeetingImpl interactorMeeting;
 
-    public PresenterMeetingImpl(PresenterMeeting.View view) {
-        this.view = view;
+    public PresenterMeetingImpl(ViewList viewList, ViewForm viewForm) {
+        this.viewList = viewList;
+        this.viewForm = viewForm;
         interactorMeeting = new InteractorMeetingImpl(this);
     }
 
@@ -33,11 +35,11 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
 
     @Override
     public void returnList(List<PoMeeting> list) {
-        view.returnList(list);
+        viewList.returnList(list);
     }
 
     @Override
     public void returnListEmpty() {
-        view.returnListEmpty();
+        viewList.returnListEmpty();
     }
 }

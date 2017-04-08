@@ -26,7 +26,7 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 import jvm.ncatz.netbour.pck_presenter.PresenterDocumentImpl;
 
-public class FrgDocument extends Fragment implements PresenterDocument.View {
+public class FrgDocument extends Fragment implements PresenterDocument.ViewList {
     private ListDocument callback;
     private FrgBack callbackBack;
 
@@ -55,7 +55,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.View {
 
         List<PoDocument> list = new ArrayList<>();
         adpDocument = new AdpDocument(getActivity(), list);
-        presenterDocument = new PresenterDocumentImpl(this);
+        presenterDocument = new PresenterDocumentImpl(this, null);
 
         Bundle bundle = getArguments();
         if (bundle != null) {

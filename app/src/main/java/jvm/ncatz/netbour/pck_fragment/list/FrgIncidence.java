@@ -26,7 +26,7 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
 
-public class FrgIncidence extends Fragment implements PresenterIncidence.View {
+public class FrgIncidence extends Fragment implements PresenterIncidence.ViewList {
     private ListIncidence callback;
     private FrgBack callbackBack;
 
@@ -55,7 +55,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.View {
 
         List<PoIncidence> list = new ArrayList<>();
         adpIncidence = new AdpIncidence(getActivity(), list);
-        presenterIncidence = new PresenterIncidenceImpl(this);
+        presenterIncidence = new PresenterIncidenceImpl(this, null);
 
         Bundle bundle = getArguments();
         if (bundle != null) {

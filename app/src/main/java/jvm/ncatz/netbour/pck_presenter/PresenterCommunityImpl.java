@@ -8,11 +8,13 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 
 public class PresenterCommunityImpl implements PresenterCommunity, InteractorCommunity.Listener {
-    private PresenterCommunity.View view;
+    private ViewList viewList;
+    private ViewForm viewForm;
     private InteractorCommunityImpl interactorCommunity;
 
-    public PresenterCommunityImpl(PresenterCommunity.View view) {
-        this.view = view;
+    public PresenterCommunityImpl(ViewList viewList, ViewForm viewForm) {
+        this.viewList = viewList;
+        this.viewForm = viewForm;
         interactorCommunity = new InteractorCommunityImpl(this);
     }
 
@@ -33,11 +35,11 @@ public class PresenterCommunityImpl implements PresenterCommunity, InteractorCom
 
     @Override
     public void returnList(List<PoCommunity> list) {
-        view.returnList(list);
+        viewList.returnList(list);
     }
 
     @Override
     public void returnListEmpty() {
-        view.returnListEmpty();
+        viewList.returnListEmpty();
     }
 }

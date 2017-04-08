@@ -12,10 +12,14 @@ public interface PresenterIncidence {
 
     void dettachFirebase();
 
-    interface View {
+    interface ViewList {
 
         void returnList(List<PoIncidence> list);
 
         void returnListEmpty();
+    }
+
+    interface ViewForm {
+
     }
 }

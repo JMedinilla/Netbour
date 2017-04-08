@@ -26,7 +26,7 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 import jvm.ncatz.netbour.pck_presenter.PresenterCommunityImpl;
 
-public class FrgCommunity extends Fragment implements PresenterCommunity.View {
+public class FrgCommunity extends Fragment implements PresenterCommunity.ViewList {
     private ListCommunity callback;
     private FrgBack callbackBack;
 
@@ -58,7 +58,7 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.View {
 
         List<PoCommunity> list = new ArrayList<>();
         adpCommunity = new AdpCommunity(getActivity(), list);
-        presenterCommunity = new PresenterCommunityImpl(this);
+        presenterCommunity = new PresenterCommunityImpl(this, null);
 
         presenterCommunity.instanceFirebase();
     }

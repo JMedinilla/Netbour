@@ -8,11 +8,13 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener {
-    private PresenterUser.View view;
+    private ViewList viewList;
+    private ViewForm viewForm;
     private InteractorUserImpl interactorUser;
 
-    public PresenterUserImpl(PresenterUser.View view) {
-        this.view = view;
+    public PresenterUserImpl(ViewList viewList, ViewForm viewForm) {
+        this.viewList = viewList;
+        this.viewForm = viewForm;
         interactorUser = new InteractorUserImpl(this);
     }
 
@@ -33,11 +35,11 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
 
     @Override
     public void returnList(List<PoUser> list) {
-        view.returnList(list);
+        viewList.returnList(list);
     }
 
     @Override
     public void returnListEmpty() {
-        view.returnListEmpty();
+        viewList.returnListEmpty();
     }
 }

@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
+import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
 
-public class FrgFormIncidence extends Fragment {
+public class FrgFormIncidence extends Fragment implements PresenterIncidence.ViewForm {
     private FormIncidence callback;
+
+    private PresenterIncidenceImpl presenterIncidence;
 
     public interface FormIncidence {
 
@@ -21,6 +25,8 @@ public class FrgFormIncidence extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        presenterIncidence = new PresenterIncidenceImpl(null, this);
     }
 
     @Nullable

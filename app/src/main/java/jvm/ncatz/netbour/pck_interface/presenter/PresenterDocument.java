@@ -12,10 +12,14 @@ public interface PresenterDocument {
 
     void dettachFirebase();
 
-    interface View {
+    interface ViewList {
 
         void returnList(List<PoDocument> list);
 
         void returnListEmpty();
+    }
+
+    interface ViewForm {
+
     }
 }

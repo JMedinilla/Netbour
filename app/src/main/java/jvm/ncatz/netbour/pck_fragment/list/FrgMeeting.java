@@ -26,7 +26,7 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_presenter.PresenterMeetingImpl;
 
-public class FrgMeeting extends Fragment implements PresenterMeeting.View {
+public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     private ListMeeting callback;
     private FrgBack callbackBack;
 
@@ -55,7 +55,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.View {
 
         List<PoMeeting> list = new ArrayList<>();
         adpMeeting = new AdpMeeting(getActivity(), list);
-        presenterMeeting = new PresenterMeetingImpl(this);
+        presenterMeeting = new PresenterMeetingImpl(this, null);
 
         Bundle bundle = getArguments();
         if (bundle != null) {

@@ -8,11 +8,13 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 
 public class PresenterIncidenceImpl implements PresenterIncidence, InteractorIncidence.Listener {
-    private PresenterIncidence.View view;
+    private ViewList viewList;
+    private ViewForm viewForm;
     private InteractorIncidenceImpl interactorIncidence;
 
-    public PresenterIncidenceImpl(PresenterIncidence.View view) {
-        this.view = view;
+    public PresenterIncidenceImpl(ViewList viewList, ViewForm viewForm) {
+        this.viewList = viewList;
+        this.viewForm = viewForm;
         interactorIncidence = new InteractorIncidenceImpl(this);
     }
 
@@ -33,11 +35,11 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
 
     @Override
     public void returnList(List<PoIncidence> list) {
-        view.returnList(list);
+        viewList.returnList(list);
     }
 
     @Override
     public void returnListEmpty() {
-        view.returnListEmpty();
+        viewList.returnListEmpty();
     }
 }

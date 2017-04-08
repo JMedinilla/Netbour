@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterEntry;
+import jvm.ncatz.netbour.pck_presenter.PresenterEntryImpl;
 
-public class FrgFormEntry extends Fragment {
+public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
     private FormEntry callback;
+
+    private PresenterEntryImpl presenterEntry;
 
     public interface FormEntry {
 
@@ -21,6 +25,8 @@ public class FrgFormEntry extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        presenterEntry = new PresenterEntryImpl(null, this);
     }
 
     @Nullable

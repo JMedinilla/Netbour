@@ -8,11 +8,13 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 
 public class PresenterDocumentImpl implements PresenterDocument, InteractorDocument.Listener {
-    private PresenterDocument.View view;
+    private ViewList viewList;
+    private ViewForm viewForm;
     private InteractorDocumentImpl interactorDocument;
 
-    public PresenterDocumentImpl(PresenterDocument.View view) {
-        this.view = view;
+    public PresenterDocumentImpl(ViewList viewList, ViewForm viewForm) {
+        this.viewList = viewList;
+        this.viewForm = viewForm;
         interactorDocument = new InteractorDocumentImpl(this);
     }
 
@@ -33,11 +35,11 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
 
     @Override
     public void returnList(List<PoDocument> list) {
-        view.returnList(list);
+        viewList.returnList(list);
     }
 
     @Override
     public void returnListEmpty() {
-        view.returnListEmpty();
+        viewList.returnListEmpty();
     }
 }

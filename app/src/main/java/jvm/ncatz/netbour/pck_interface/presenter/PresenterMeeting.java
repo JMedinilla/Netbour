@@ -12,10 +12,14 @@ public interface PresenterMeeting {
 
     void dettachFirebase();
 
-    interface View {
+    interface ViewList {
 
         void returnList(List<PoMeeting> list);
 
         void returnListEmpty();
+    }
+
+    interface ViewForm {
+
     }
 }

@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
+import jvm.ncatz.netbour.pck_presenter.PresenterDocumentImpl;
 
-public class FrgFormDocument extends Fragment {
+public class FrgFormDocument extends Fragment implements PresenterDocument.ViewForm {
     private FormDocument callback;
+
+    private PresenterDocumentImpl presenterDocument;
 
     public interface FormDocument {
 
@@ -21,6 +25,8 @@ public class FrgFormDocument extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        presenterDocument = new PresenterDocumentImpl(null, this);
     }
 
     @Nullable

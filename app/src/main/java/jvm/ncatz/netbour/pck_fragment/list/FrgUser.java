@@ -26,7 +26,7 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterUserImpl;
 
-public class FrgUser extends Fragment implements PresenterUser.View {
+public class FrgUser extends Fragment implements PresenterUser.ViewList {
     private ListUser callback;
     private FrgBack callbackBack;
 
@@ -55,7 +55,7 @@ public class FrgUser extends Fragment implements PresenterUser.View {
 
         List<PoUser> list = new ArrayList<>();
         adpUser = new AdpUser(getActivity(), list);
-        presenterUser = new PresenterUserImpl(this);
+        presenterUser = new PresenterUserImpl(this, null);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
