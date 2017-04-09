@@ -10,14 +10,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpDocument;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
@@ -25,7 +26,7 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 import jvm.ncatz.netbour.pck_presenter.PresenterDocumentImpl;
 
-public class FrgDocument extends Fragment implements PresenterDocument.View {
+public class FrgDocument extends Fragment implements PresenterDocument.ViewList {
     private ListDocument callback;
     private FrgBack callbackBack;
 
@@ -34,6 +35,13 @@ public class FrgDocument extends Fragment implements PresenterDocument.View {
 
     @BindView(R.id.fragListDocument_list)
     ListView documentList;
+    @BindView(R.id.fragListDocument_empty)
+    TextView documentEmpty;
+
+    @OnItemClick(R.id.fragListDocument_list)
+    public void itemClick(int position) {
+        //
+    }
 
     public interface ListDocument {
         //
@@ -47,27 +55,28 @@ public class FrgDocument extends Fragment implements PresenterDocument.View {
 
         List<PoDocument> list = new ArrayList<>();
         adpDocument = new AdpDocument(getActivity(), list);
+        presenterDocument = new PresenterDocumentImpl(this, null);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String code = bundle.getString("comcode");
+            presenterDocument.instanceFirebase(code);
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_document, container, false);
-        ButterKnife.bind(view);
-        documentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //
-            }
-        });
+        ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        documentList.setDivider(null);
         documentList.setAdapter(adpDocument);
+        documentList.setDivider(null);
     }
 
     @Override
@@ -88,11 +97,13 @@ public class FrgDocument extends Fragment implements PresenterDocument.View {
     public void onStart() {
         super.onStart();
         callbackBack.backFromForm();
+        presenterDocument.attachFirebase();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        presenterDocument.dettachFirebase();
     }
 
     @Override
@@ -103,5 +114,25 @@ public class FrgDocument extends Fragment implements PresenterDocument.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void returnList(List<PoDocument> list) {
+        documentList.setVisibility(View.VISIBLE);
+        documentEmpty.setVisibility(View.GONE);
+        updateList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        documentList.setVisibility(View.GONE);
+        documentEmpty.setVisibility(View.VISIBLE);
+        List<PoDocument> list = new ArrayList<>();
+        updateList(list);
+    }
+
+    private void updateList(List<PoDocument> list) {
+        adpDocument.clear();
+        adpDocument.addAll(list);
     }
 }

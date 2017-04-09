@@ -7,17 +7,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 
 public class AdpIncidence extends ArrayAdapter<PoIncidence> {
     private Context context;
 
-    private class IncidenceHolder {
+    static class ViewHolder {
+        @BindView(R.id.adapterIncidence_imgPhoto)
+        ImageView adapterIncidenceImgPhoto;
+        @BindView(R.id.adapterIncidence_txtTitle)
+        TextView adapterIncidenceTxtTitle;
+        @BindView(R.id.adapterIncidence_txtDate)
+        TextView adapterIncidenceTxtDate;
+        @BindView(R.id.adapterIncidence_txtDescription)
+        TextView adapterIncidenceTxtDescription;
+        @BindView(R.id.adapterIncidence_txtAuthor)
+        TextView adapterIncidenceTxtAuthor;
 
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 
     public AdpIncidence(@NonNull Context context, List<PoIncidence> list) {
@@ -28,22 +47,31 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        IncidenceHolder holder;
-
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.adapter_incidence, parent, false);
-            holder = new IncidenceHolder();
+        ViewHolder holder;
+        if (convertView != null) {
+            holder = (ViewHolder) convertView.getTag();
         } else {
-            holder = (IncidenceHolder) view.getTag();
+            convertView = LayoutInflater.from(context).inflate(R.layout.adapter_incidence, parent, false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
         }
+        PoIncidence incidence = getItem(position);
+        if (incidence != null) {
+            Date date = new Date(incidence.getDate());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
 
-        PoIncidence user = getItem(position);
-        if (user != null) {
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+            holder.adapterIncidenceImgPhoto.setImageResource(R.drawable.camera);
+            holder.adapterIncidenceTxtTitle.setText(incidence.getTitle());
+            holder.adapterIncidenceTxtDate.setText(day + "/" + month + "/" + year);
+            holder.adapterIncidenceTxtDescription.setText(incidence.getDescription());
+            holder.adapterIncidenceTxtAuthor.setText(incidence.getAuthorName());
         }
-
-        return view;
+        return convertView;
     }
 
     @Nullable

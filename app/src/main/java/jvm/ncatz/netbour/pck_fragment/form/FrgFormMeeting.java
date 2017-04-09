@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
+import jvm.ncatz.netbour.pck_presenter.PresenterMeetingImpl;
 
-public class FrgFormMeeting extends Fragment {
+public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewForm {
     private FormMeeting callback;
+
+    private PresenterMeetingImpl presenterMeeting;
 
     public interface FormMeeting {
 
@@ -21,6 +25,8 @@ public class FrgFormMeeting extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        presenterMeeting = new PresenterMeetingImpl(null, this);
     }
 
     @Nullable

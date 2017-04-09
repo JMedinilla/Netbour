@@ -10,14 +10,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpIncidence;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
@@ -25,7 +26,7 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
 
-public class FrgIncidence extends Fragment implements PresenterIncidence.View {
+public class FrgIncidence extends Fragment implements PresenterIncidence.ViewList {
     private ListIncidence callback;
     private FrgBack callbackBack;
 
@@ -34,6 +35,13 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.View {
 
     @BindView(R.id.fragListIncidence_list)
     ListView incidenceList;
+    @BindView(R.id.fragListIncidence_empty)
+    TextView incidenceEmpty;
+
+    @OnItemClick(R.id.fragListIncidence_list)
+    public void itemClick(int position) {
+        //
+    }
 
     public interface ListIncidence {
         //
@@ -47,27 +55,28 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.View {
 
         List<PoIncidence> list = new ArrayList<>();
         adpIncidence = new AdpIncidence(getActivity(), list);
+        presenterIncidence = new PresenterIncidenceImpl(this, null);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String code = bundle.getString("comcode");
+            presenterIncidence.instanceFirebase(code);
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_incidence, container, false);
-        ButterKnife.bind(view);
-        incidenceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //
-            }
-        });
+        ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        incidenceList.setDivider(null);
         incidenceList.setAdapter(adpIncidence);
+        incidenceList.setDivider(null);
     }
 
     @Override
@@ -88,11 +97,13 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.View {
     public void onStart() {
         super.onStart();
         callbackBack.backFromForm();
+        presenterIncidence.attachFirebase();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        presenterIncidence.dettachFirebase();
     }
 
     @Override
@@ -103,5 +114,25 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.View {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void returnList(List<PoIncidence> list) {
+        incidenceList.setVisibility(View.VISIBLE);
+        incidenceEmpty.setVisibility(View.GONE);
+        updateList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        incidenceList.setVisibility(View.GONE);
+        incidenceEmpty.setVisibility(View.VISIBLE);
+        List<PoIncidence> list = new ArrayList<>();
+        updateList(list);
+    }
+
+    private void updateList(List<PoIncidence> list) {
+        adpIncidence.clear();
+        adpIncidence.addAll(list);
     }
 }

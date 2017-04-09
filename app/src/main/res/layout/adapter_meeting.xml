@@ -4,19 +4,19 @@
     android:id="@+id/adapterMeeting_mainCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="3dp"
+    app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/adapterMeeting_mainConstraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="3dp">
+        android:padding="4dp">
 
         <ImageView
             android:id="@+id/adapterMeeting_imgPhoto"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="0dp"
             android:layout_marginStart="0dp"
@@ -35,6 +35,9 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="0dp"
+            android:textColor="@color/grey_900"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/adapterMeeting_imgPhoto"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/adapterMeeting_imgPhoto" />
@@ -47,6 +50,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
+            android:textColor="@color/grey_700"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/adapterMeeting_imgPhoto"

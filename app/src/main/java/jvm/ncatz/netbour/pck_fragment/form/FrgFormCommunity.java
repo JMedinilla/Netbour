@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
+import jvm.ncatz.netbour.pck_presenter.PresenterCommunityImpl;
 
-public class FrgFormCommunity extends Fragment {
+public class FrgFormCommunity extends Fragment implements PresenterCommunity.ViewForm {
     private FormCommunity callback;
+
+    private PresenterCommunityImpl presenterCommunity;
 
     public interface FormCommunity {
 
@@ -21,6 +25,8 @@ public class FrgFormCommunity extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        presenterCommunity = new PresenterCommunityImpl(null, this);
     }
 
     @Nullable
