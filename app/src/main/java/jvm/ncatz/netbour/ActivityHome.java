@@ -75,6 +75,8 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.activity_main_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.activity_main_toolbar_text)
+    TextView toolbarText;
     @BindView(R.id.activity_main_action)
     FloatingActionButton actionButton;
 
@@ -114,47 +116,69 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
         actual_code = "default";
-
-        toolbar.setTitle(getString(R.string.app_name));
-        setSupportActionBar(toolbar);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                boolean transaction;
+                boolean transaction = false;
 
                 switch (item.getItemId()) {
                     case R.id.groupOptions_Incidences:
-                        clearFragmentStack();
-                        showIncidents();
-                        transaction = true;
+                        if (!actual_code.equals("default")) {
+                            clearFragmentStack();
+                            showIncidents();
+                            transaction = true;
+                        } else {
+                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                        }
                         break;
                     case R.id.groupOptions_Board:
-                        clearFragmentStack();
-                        showEntryFirst();
-                        transaction = true;
+                        if (!actual_code.equals("default")) {
+                            clearFragmentStack();
+                            showEntryFirst();
+                            transaction = true;
+                        } else {
+                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                        }
                         break;
                     case R.id.groupOptions_ComBoard:
-                        clearFragmentStack();
-                        showEntrySecond();
-                        transaction = true;
+                        if (!actual_code.equals("default")) {
+                            clearFragmentStack();
+                            showEntrySecond();
+                            transaction = true;
+                        } else {
+                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                        }
                         break;
                     case R.id.groupOptions_Documents:
-                        clearFragmentStack();
-                        showDocuments();
-                        transaction = true;
+                        if (!actual_code.equals("default")) {
+                            clearFragmentStack();
+                            showDocuments();
+                            transaction = true;
+                        } else {
+                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                        }
                         break;
                     case R.id.groupOptions_Meetings:
-                        clearFragmentStack();
-                        showMeetings();
-                        transaction = true;
+                        if (!actual_code.equals("default")) {
+                            clearFragmentStack();
+                            showMeetings();
+                            transaction = true;
+                        } else {
+                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                        }
                         break;
                     case R.id.groupOptions_Users:
-                        clearFragmentStack();
-                        showUsers();
-                        transaction = true;
+                        if (!actual_code.equals("default")) {
+                            clearFragmentStack();
+                            showUsers();
+                            transaction = true;
+                        } else {
+                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                        }
                         break;
                     case R.id.groupOptions_Communities:
                         clearFragmentStack();
@@ -186,10 +210,8 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
                         closeSesion();
                         transaction = true;
                         break;
-                    default:
-                        transaction = false;
-                        break;
                 }
+
                 if (transaction) {
                     item.setChecked(true);
                     changeActionTitle(item.getTitle());
@@ -561,13 +583,10 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     @Override
     public void changeCode(String code) {
         actual_code = code;
-        showHome();
+        showSnackbar("Code changed to: " + actual_code, DURATION_LONG);
     }
 
     private void changeActionTitle(CharSequence title) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(title);
-        }
+        toolbarText.setText(title);
     }
 }
