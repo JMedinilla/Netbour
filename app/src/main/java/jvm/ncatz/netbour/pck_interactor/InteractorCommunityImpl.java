@@ -17,6 +17,7 @@ public class InteractorCommunityImpl implements InteractorCommunity {
     private InteractorCommunity.Listener listener;
 
     private DatabaseReference databaseReference;
+    private Query query;
     private ValueEventListener eventListener;
 
     public InteractorCommunityImpl(InteractorCommunity.Listener listener) {
@@ -26,6 +27,7 @@ public class InteractorCommunityImpl implements InteractorCommunity {
     @Override
     public void instanceFirebase() {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities");
+        query = FirebaseDatabase.getInstance().getReference().child("communities").orderByChild("deleted").equalTo(false);
         eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -33,9 +35,7 @@ public class InteractorCommunityImpl implements InteractorCommunity {
                     List<PoCommunity> list = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         PoCommunity community = snapshot.getValue(PoCommunity.class);
-                        if (!community.isDeleted()) {
-                            list.add(community);
-                        }
+                        list.add(community);
                     }
                     if (list.size() > 0) {
                         listener.returnList(list);
@@ -56,13 +56,13 @@ public class InteractorCommunityImpl implements InteractorCommunity {
 
     @Override
     public void attachFirebase() {
-        databaseReference.addValueEventListener(eventListener);
+        query.addValueEventListener(eventListener);
     }
 
     @Override
     public void dettachFirebase() {
         if (eventListener != null) {
-            databaseReference.removeEventListener(eventListener);
+            query.removeEventListener(eventListener);
         }
     }
 }

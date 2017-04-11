@@ -24,4 +24,6 @@
     <string name="adapterCommunity_txtFlatsTitle">Flats:</string>
     <string name="separator">-</string>
     <string name="default_community_code">You have to change the actual community code</string>
+    <string name="swipeMenuEdit">Edit</string>
+    <string name="swipeMenuDelete">Delete</string>
 </resources>

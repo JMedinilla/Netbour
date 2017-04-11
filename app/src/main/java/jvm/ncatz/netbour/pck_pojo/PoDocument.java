@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoDocument implements Parcelable {
+    private long key;
     private String title;
     private String description;
     private String link;
@@ -13,11 +14,20 @@ public class PoDocument implements Parcelable {
         //
     }
 
-    public PoDocument(String title, String description, String link, boolean deleted) {
+    public PoDocument(long key, String title, String description, String link, boolean deleted) {
+        this.key = key;
         this.title = title;
         this.description = description;
         this.link = link;
         this.deleted = deleted;
+    }
+
+    public long getKey() {
+        return key;
+    }
+
+    public void setKey(long key) {
+        this.key = key;
     }
 
     public String getTitle() {
@@ -52,7 +62,8 @@ public class PoDocument implements Parcelable {
         this.deleted = deleted;
     }
 
-    protected PoDocument(Parcel in) {
+    private PoDocument(Parcel in) {
+        key = in.readLong();
         title = in.readString();
         description = in.readString();
         link = in.readString();
@@ -78,6 +89,7 @@ public class PoDocument implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(key);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(link);
