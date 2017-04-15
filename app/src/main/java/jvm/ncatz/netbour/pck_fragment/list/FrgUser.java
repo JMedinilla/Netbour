@@ -49,7 +49,10 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     }
 
     public interface ListUser {
-        //
+
+        void sendUser(PoUser item);
+
+        void deletedUser();
     }
 
     @Override
@@ -107,10 +110,12 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        //
+                        callback.sendUser(adpUser.getItem(position));
+                        userList.smoothCloseMenu();
                         break;
                     case 1:
-                        //
+                        presenterUser.deleteUser(adpUser.getItem(position));
+                        userList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -175,6 +180,11 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         userEmpty.setVisibility(View.VISIBLE);
         List<PoUser> list = new ArrayList<>();
         updateList(list);
+    }
+
+    @Override
+    public void deletedUser() {
+        callback.deletedUser();
     }
 
     private void updateList(List<PoUser> list) {

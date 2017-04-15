@@ -34,6 +34,26 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
     }
 
     @Override
+    public int validateMeeting(PoMeeting meeting) {
+        return 0;
+    }
+
+    @Override
+    public void addMeeting(PoMeeting meeting, String code) {
+        interactorMeeting.addMeeting(meeting, code);
+    }
+
+    @Override
+    public void editMeeting(PoMeeting meeting, String code) {
+        interactorMeeting.editMeeting(meeting, code);
+    }
+
+    @Override
+    public void deleteMeeting(PoMeeting item) {
+        interactorMeeting.deleteMeeting(item);
+    }
+
+    @Override
     public void returnList(List<PoMeeting> list) {
         viewList.returnList(list);
     }
@@ -41,5 +61,20 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void addedMeeting() {
+        viewForm.addedMeeting();
+    }
+
+    @Override
+    public void editedMeeting() {
+        viewForm.editedMeeting();
+    }
+
+    @Override
+    public void deletedMeeting() {
+        viewList.deletedMeeting();
     }
 }

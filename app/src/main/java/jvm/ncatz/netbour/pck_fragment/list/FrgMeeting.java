@@ -49,7 +49,10 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     }
 
     public interface ListMeeting {
-        //
+
+        void sendMeeting(PoMeeting item);
+
+        void deletedMeeting();
     }
 
     @Override
@@ -107,10 +110,12 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        //
+                        callback.sendMeeting(adpMeeting.getItem(position));
+                        meetingList.smoothCloseMenu();
                         break;
                     case 1:
-                        //
+                        presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
+                        meetingList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -175,6 +180,11 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         meetingEmpty.setVisibility(View.VISIBLE);
         List<PoMeeting> list = new ArrayList<>();
         updateList(list);
+    }
+
+    @Override
+    public void deletedMeeting() {
+        callback.deletedMeeting();
     }
 
     private void updateList(List<PoMeeting> list) {

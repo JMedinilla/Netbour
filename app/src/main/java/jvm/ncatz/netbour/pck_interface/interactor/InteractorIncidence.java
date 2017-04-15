@@ -12,10 +12,22 @@ public interface InteractorIncidence {
 
     void dettachFirebase();
 
+    void addIncidence(PoIncidence incidence, String code);
+
+    void editIncidence(PoIncidence incidence, String code);
+
+    void deleteIncidence(PoIncidence item);
+
     interface Listener {
 
         void returnList(List<PoIncidence> list);
 
         void returnListEmpty();
+
+        void addedIncidence();
+
+        void editedIncidence();
+
+        void deletedIncidence();
     }
 }

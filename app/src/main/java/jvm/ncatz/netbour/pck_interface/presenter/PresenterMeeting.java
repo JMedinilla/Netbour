@@ -12,14 +12,27 @@ public interface PresenterMeeting {
 
     void dettachFirebase();
 
+    int validateMeeting(PoMeeting meeting);
+
+    void addMeeting(PoMeeting meeting, String code);
+
+    void editMeeting(PoMeeting meeting, String code);
+
+    void deleteMeeting(PoMeeting item);
+
     interface ViewList {
 
         void returnList(List<PoMeeting> list);
 
         void returnListEmpty();
+
+        void deletedMeeting();
     }
 
     interface ViewForm {
 
+        void addedMeeting();
+
+        void editedMeeting();
     }
 }

@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,9 +47,8 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUser.ListUser, FrgBack,
-        FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry, FrgDocument.ListDocument,
-        FrgCommunity.ListCommunity, FrgFormUser.FormUser, FrgFormMeeting.FormMeeting, FrgFormIncidence.FormIncidence,
-        FrgFormEntry.FormEntry, FrgFormDocument.FormDocument, FrgFormCommunity.FormCommunity {
+        FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry,
+        FrgDocument.ListDocument, FrgCommunity.ListCommunity {
 
     public static final int FRAGMENT_HOME = 100;
     public static final int FRAGMENT_HELP = 101;
@@ -80,9 +78,6 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     @BindView(R.id.activity_main_action)
     FloatingActionButton actionButton;
 
-    CircleImageView profile_image;
-    TextView profile_name;
-
     @OnClick(R.id.activity_main_action)
     public void actionClick(View view) {
         switch (fragment_opened) {
@@ -107,6 +102,9 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
                 break;
         }
     }
+
+    CircleImageView profile_image;
+    TextView profile_name;
 
     private int fragment_opened;
     private String actual_code;
@@ -271,6 +269,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("userForm", user);
+        bundle.putString("comcode", actual_code);
 
         FrgFormUser frgFormUser = new FrgFormUser();
         frgFormUser.setArguments(bundle);
@@ -286,6 +285,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("meetingForm", meeting);
+        bundle.putString("comcode", actual_code);
 
         FrgFormMeeting frgFormMeeting = new FrgFormMeeting();
         frgFormMeeting.setArguments(bundle);
@@ -301,6 +301,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("documentForm", document);
+        bundle.putString("comcode", actual_code);
 
         FrgFormDocument frgFormDocument = new FrgFormDocument();
         frgFormDocument.setArguments(bundle);
@@ -316,6 +317,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("entryForm", entry);
+        bundle.putString("comcode", actual_code);
 
         FrgFormEntry frgFormEntry = new FrgFormEntry();
         frgFormEntry.setArguments(bundle);
@@ -331,6 +333,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("incidenceForm", incidence);
+        bundle.putString("comcode", actual_code);
 
         FrgFormIncidence frgFormIncidence = new FrgFormIncidence();
         frgFormIncidence.setArguments(bundle);
@@ -564,29 +567,73 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         snackbar.show();
     }
 
-    private void showToast(String message, int duration) {
-        Toast toast;
-        switch (duration) {
-            case DURATION_SHORT:
-                toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-                break;
-            case DURATION_LONG:
-                toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
-                break;
-            default:
-                toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-                break;
-        }
-        toast.show();
+    private void changeActionTitle(CharSequence title) {
+        toolbarText.setText(title);
     }
 
     @Override
     public void changeCode(String code) {
         actual_code = code;
-        showSnackbar("Code changed to: " + actual_code, DURATION_LONG);
+        showSnackbar(getString(R.string.changed_code) + actual_code, DURATION_LONG);
     }
 
-    private void changeActionTitle(CharSequence title) {
-        toolbarText.setText(title);
+    @Override
+    public void sendCommunity(PoCommunity item) {
+        openFormCommunity(item);
+    }
+
+    @Override
+    public void deletedCommunity() {
+        showSnackbar(getString(R.string.community_deleted), DURATION_SHORT);
+    }
+
+    @Override
+    public void sendUser(PoUser item) {
+        openFormUser(item);
+    }
+
+    @Override
+    public void deletedUser() {
+        showSnackbar(getString(R.string.user_deleted), DURATION_SHORT);
+    }
+
+    @Override
+    public void sendEntry(PoEntry item) {
+        openFormEntry(item);
+    }
+
+    @Override
+    public void deletedEntry() {
+        showSnackbar(getString(R.string.entry_deleted), DURATION_SHORT);
+    }
+
+    @Override
+    public void sendMeeting(PoMeeting item) {
+        openFormMeeting(item);
+    }
+
+    @Override
+    public void deletedMeeting() {
+        showSnackbar(getString(R.string.meeting_deleted), DURATION_SHORT);
+    }
+
+    @Override
+    public void sendDocument(PoDocument item) {
+        openFormDocument(item);
+    }
+
+    @Override
+    public void deletedDocument() {
+        showSnackbar(getString(R.string.document_deleted), DURATION_SHORT);
+    }
+
+    @Override
+    public void sendIncidence(PoIncidence item) {
+        openFormIncidence(item);
+    }
+
+    @Override
+    public void deletedIncidence() {
+        showSnackbar(getString(R.string.incidence_deleted), DURATION_SHORT);
     }
 }

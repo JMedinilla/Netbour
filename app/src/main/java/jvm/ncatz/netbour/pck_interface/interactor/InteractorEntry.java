@@ -12,10 +12,22 @@ public interface InteractorEntry {
 
     void dettachFirebase();
 
+    void addEntry(PoEntry entry, String code);
+
+    void editEntry(PoEntry entry, String code);
+
+    void deleteEntry(PoEntry item);
+
     interface Listener {
 
         void returnList(List<PoEntry> list);
 
         void returnListEmpty();
+
+        void addedEntry();
+
+        void editedEntry();
+
+        void deletedEntry();
     }
 }

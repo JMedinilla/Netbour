@@ -34,6 +34,26 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     }
 
     @Override
+    public int validateUser(PoUser user) {
+        return 0;
+    }
+
+    @Override
+    public void addUser(PoUser user) {
+        interactorUser.addUser(user);
+    }
+
+    @Override
+    public void editUser(PoUser user) {
+        interactorUser.editUser(user);
+    }
+
+    @Override
+    public void deleteUser(PoUser item) {
+        interactorUser.deleteUser(item);
+    }
+
+    @Override
     public void returnList(List<PoUser> list) {
         viewList.returnList(list);
     }
@@ -41,5 +61,20 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void addedUser() {
+        viewForm.addedUser();
+    }
+
+    @Override
+    public void editedUser() {
+        viewForm.editedUser();
+    }
+
+    @Override
+    public void deletedUser() {
+        viewList.deletedUser();
     }
 }

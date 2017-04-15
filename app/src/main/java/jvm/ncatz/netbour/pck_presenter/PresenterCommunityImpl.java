@@ -34,6 +34,26 @@ public class PresenterCommunityImpl implements PresenterCommunity, InteractorCom
     }
 
     @Override
+    public int validateCommunity(PoCommunity community) {
+        return 0;
+    }
+
+    @Override
+    public void addCommunity(PoCommunity community) {
+        interactorCommunity.addCommunity(community);
+    }
+
+    @Override
+    public void editCommunity(PoCommunity community) {
+        interactorCommunity.editCommunity(community);
+    }
+
+    @Override
+    public void deleteCommunity(PoCommunity item) {
+        interactorCommunity.deleteCommunity(item);
+    }
+
+    @Override
     public void returnList(List<PoCommunity> list) {
         viewList.returnList(list);
     }
@@ -41,5 +61,20 @@ public class PresenterCommunityImpl implements PresenterCommunity, InteractorCom
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void addedCommunity() {
+        viewForm.addedCommunity();
+    }
+
+    @Override
+    public void editedCommunity() {
+        viewForm.editedCommunity();
+    }
+
+    @Override
+    public void deletedCommunity() {
+        viewList.deletedCommunity();
     }
 }

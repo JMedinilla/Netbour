@@ -49,7 +49,10 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     }
 
     public interface ListEntry {
-        //
+
+        void sendEntry(PoEntry item);
+
+        void deletedEntry();
     }
 
     @Override
@@ -112,10 +115,12 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        //
+                        callback.sendEntry(adpEntry.getItem(position));
+                        entryList.smoothCloseMenu();
                         break;
                     case 1:
-                        //
+                        presenterEntry.deleteEntry(adpEntry.getItem(position));
+                        entryList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -180,6 +185,11 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         entryEmpty.setVisibility(View.VISIBLE);
         List<PoEntry> list = new ArrayList<>();
         updateList(list);
+    }
+
+    @Override
+    public void deletedEntry() {
+        callback.deletedEntry();
     }
 
     private void updateList(List<PoEntry> list) {

@@ -12,14 +12,27 @@ public interface PresenterDocument {
 
     void dettachFirebase();
 
+    int validateDocument(PoDocument document);
+
+    void addDocument(PoDocument document, String code);
+
+    void editDocument(PoDocument document, String code);
+
+    void deleteDocument(PoDocument item);
+
     interface ViewList {
 
         void returnList(List<PoDocument> list);
 
         void returnListEmpty();
+
+        void deletedDocument();
     }
 
     interface ViewForm {
 
+        void addedDocument();
+
+        void editedDocument();
     }
 }

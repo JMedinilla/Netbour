@@ -34,6 +34,26 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
     }
 
     @Override
+    public int validateEntry(PoEntry entry) {
+        return 0;
+    }
+
+    @Override
+    public void addEntry(PoEntry entry, String code) {
+        interactorEntry.addEntry(entry, code);
+    }
+
+    @Override
+    public void editEntry(PoEntry entry, String code) {
+        interactorEntry.editEntry(entry, code);
+    }
+
+    @Override
+    public void deleteEntry(PoEntry item) {
+        interactorEntry.deleteEntry(item);
+    }
+
+    @Override
     public void returnList(List<PoEntry> list) {
         viewList.returnList(list);
     }
@@ -41,5 +61,20 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void addedEntry() {
+        viewForm.addedEntry();
+    }
+
+    @Override
+    public void editedEntry() {
+        viewForm.editedEntry();
+    }
+
+    @Override
+    public void deletedEntry() {
+        viewList.deletedEntry();
     }
 }

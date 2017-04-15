@@ -49,7 +49,10 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     }
 
     public interface ListIncidence {
-        //
+
+        void sendIncidence(PoIncidence item);
+
+        void deletedIncidence();
     }
 
     @Override
@@ -107,10 +110,12 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        //
+                        callback.sendIncidence(adpIncidence.getItem(position));
+                        incidenceList.smoothCloseMenu();
                         break;
                     case 1:
-                        //
+                        presenterIncidence.deleteIncidence(adpIncidence.getItem(position));
+                        incidenceList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -175,6 +180,11 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         incidenceEmpty.setVisibility(View.VISIBLE);
         List<PoIncidence> list = new ArrayList<>();
         updateList(list);
+    }
+
+    @Override
+    public void deletedIncidence() {
+        callback.deletedIncidence();
     }
 
     private void updateList(List<PoIncidence> list) {

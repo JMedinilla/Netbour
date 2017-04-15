@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class PoMeeting implements Parcelable {
     private long key;
-    private long date;
+    private String date;
     private String description;
     private boolean deleted;
 
@@ -13,7 +13,7 @@ public class PoMeeting implements Parcelable {
         //
     }
 
-    public PoMeeting(long key, long date, String description, boolean deleted) {
+    public PoMeeting(long key, String date, String description, boolean deleted) {
         this.key = key;
         this.date = date;
         this.description = description;
@@ -22,7 +22,7 @@ public class PoMeeting implements Parcelable {
 
     private PoMeeting(Parcel in) {
         key = in.readLong();
-        date = in.readLong();
+        date = in.readString();
         description = in.readString();
         deleted = in.readByte() != 0;
     }
@@ -35,11 +35,11 @@ public class PoMeeting implements Parcelable {
         this.key = key;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -79,7 +79,7 @@ public class PoMeeting implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(key);
-        dest.writeLong(date);
+        dest.writeString(date);
         dest.writeString(description);
         dest.writeByte((byte) (deleted ? 1 : 0));
     }

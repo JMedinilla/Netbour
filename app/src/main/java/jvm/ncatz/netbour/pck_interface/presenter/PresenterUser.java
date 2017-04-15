@@ -12,14 +12,27 @@ public interface PresenterUser {
 
     void dettachFirebase();
 
+    int validateUser(PoUser user);
+
+    void addUser(PoUser user);
+
+    void editUser(PoUser user);
+
+    void deleteUser(PoUser item);
+
     interface ViewList {
 
         void returnList(List<PoUser> list);
 
         void returnListEmpty();
+
+        void deletedUser();
     }
 
     interface ViewForm {
 
+        void addedUser();
+
+        void editedUser();
     }
 }

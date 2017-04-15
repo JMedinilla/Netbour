@@ -26,7 +26,6 @@ public class InteractorUserImpl implements InteractorUser {
 
     @Override
     public void instanceFirebase(String code) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
         query = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("community").equalTo(code);
         eventListener = new ValueEventListener() {
             @Override
@@ -66,5 +65,30 @@ public class InteractorUserImpl implements InteractorUser {
         if (eventListener != null) {
             query.removeEventListener(eventListener);
         }
+    }
+
+    @Override
+    public void addUser(PoUser user) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(user.getKey()));
+        databaseReference.setValue(user);
+        listener.addedUser();
+    }
+
+    @Override
+    public void editUser(PoUser user) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(user.getKey()));
+        databaseReference.child("category").setValue(user.getCategory());
+        databaseReference.child("door").setValue(user.getDoor());
+        databaseReference.child("floor").setValue(user.getFloor());
+        databaseReference.child("name").setValue(user.getName());
+        databaseReference.child("phone").setValue(user.getPhone());
+        listener.editedUser();
+    }
+
+    @Override
+    public void deleteUser(PoUser item) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(true);
+        listener.deletedUser();
     }
 }

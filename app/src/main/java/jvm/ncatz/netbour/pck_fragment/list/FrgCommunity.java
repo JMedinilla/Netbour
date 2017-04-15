@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -54,6 +53,10 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
 
     public interface ListCommunity {
         void changeCode(String code);
+
+        void sendCommunity(PoCommunity item);
+
+        void deletedCommunity();
     }
 
     @Override
@@ -107,10 +110,12 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        //
+                        callback.sendCommunity(adpCommunity.getItem(position));
+                        communityList.smoothCloseMenu();
                         break;
                     case 1:
-                        //
+                        presenterCommunity.deleteCommunity(adpCommunity.getItem(position));
+                        communityList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -175,6 +180,11 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         communityEmpty.setVisibility(View.VISIBLE);
         List<PoCommunity> list = new ArrayList<>();
         updateList(list);
+    }
+
+    @Override
+    public void deletedCommunity() {
+        callback.deletedCommunity();
     }
 
     private void updateList(List<PoCommunity> list) {

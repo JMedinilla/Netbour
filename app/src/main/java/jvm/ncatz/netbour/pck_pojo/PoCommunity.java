@@ -92,7 +92,7 @@ public class PoCommunity implements Parcelable {
         this.deleted = deleted;
     }
 
-    protected PoCommunity(Parcel in) {
+    private PoCommunity(Parcel in) {
         code = in.readString();
         province = in.readString();
         municipality = in.readString();

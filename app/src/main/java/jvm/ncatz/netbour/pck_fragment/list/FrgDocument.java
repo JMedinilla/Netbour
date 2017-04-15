@@ -49,7 +49,10 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     }
 
     public interface ListDocument {
-        //
+
+        void sendDocument(PoDocument item);
+
+        void deletedDocument();
     }
 
     @Override
@@ -107,10 +110,12 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        //
+                        callback.sendDocument(adpDocument.getItem(position));
+                        documentList.smoothCloseMenu();
                         break;
                     case 1:
-                        //
+                        presenterDocument.deleteDocument(adpDocument.getItem(position));
+                        documentList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -175,6 +180,11 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         documentEmpty.setVisibility(View.VISIBLE);
         List<PoDocument> list = new ArrayList<>();
         updateList(list);
+    }
+
+    @Override
+    public void deletedDocument() {
+        callback.deletedDocument();
     }
 
     private void updateList(List<PoDocument> list) {

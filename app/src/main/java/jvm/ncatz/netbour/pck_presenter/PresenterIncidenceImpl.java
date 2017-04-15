@@ -34,6 +34,26 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     }
 
     @Override
+    public int validateIncidence(PoIncidence incidence) {
+        return 0;
+    }
+
+    @Override
+    public void addIncidence(PoIncidence incidence, String code) {
+        interactorIncidence.addIncidence(incidence, code);
+    }
+
+    @Override
+    public void editIncidence(PoIncidence incidence, String code) {
+        interactorIncidence.editIncidence(incidence, code);
+    }
+
+    @Override
+    public void deleteIncidence(PoIncidence item) {
+        interactorIncidence.deleteIncidence(item);
+    }
+
+    @Override
     public void returnList(List<PoIncidence> list) {
         viewList.returnList(list);
     }
@@ -41,5 +61,20 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void addedIncidence() {
+        viewForm.addedIncidence();
+    }
+
+    @Override
+    public void editedIncidence() {
+        viewForm.editedIncidence();
+    }
+
+    @Override
+    public void deletedIncidence() {
+        viewList.deletedIncidence();
     }
 }

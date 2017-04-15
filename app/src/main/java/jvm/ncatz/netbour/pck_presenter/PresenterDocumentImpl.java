@@ -34,6 +34,26 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
     }
 
     @Override
+    public int validateDocument(PoDocument document) {
+        return 0;
+    }
+
+    @Override
+    public void addDocument(PoDocument document, String code) {
+        interactorDocument.addDocument(document, code);
+    }
+
+    @Override
+    public void editDocument(PoDocument document, String code) {
+        interactorDocument.editDocument(document, code);
+    }
+
+    @Override
+    public void deleteDocument(PoDocument item) {
+        interactorDocument.deleteDocument(item);
+    }
+
+    @Override
     public void returnList(List<PoDocument> list) {
         viewList.returnList(list);
     }
@@ -41,5 +61,20 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void addedDocument() {
+        viewForm.addedDocument();
+    }
+
+    @Override
+    public void editedDocument() {
+        viewForm.editedDocument();
+    }
+
+    @Override
+    public void deletedDocument() {
+        viewList.deletedDocument();
     }
 }
