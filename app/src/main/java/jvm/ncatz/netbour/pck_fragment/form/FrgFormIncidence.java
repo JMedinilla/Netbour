@@ -40,7 +40,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 PoIncidence incidence = new PoIncidence(
                         currentTime,
                         fragFormIncidenceTitle.getText().toString(), fragFormIncidenceDescription.getText().toString(),
-                        currentTime, "http://www.mundodesconocido.es/wp-content/uploads/2012/06/JL_Mundo_Desconocido-911x1024.jpg", "test", false
+                        currentTime, "http://www.mundodesconocido.es/wp-content/uploads/2012/06/JL_Mundo_Desconocido-911x1024.jpg", name, false
                 );
                 if (updateMode) {
                     updateItem.setPhoto(incidence.getPhoto());
@@ -63,6 +63,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     private boolean updateMode;
     private PoIncidence updateItem;
     private String code;
+    private String name;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,12 +72,14 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         updateMode = false;
         updateItem = null;
         code = "";
+        name = "";
 
         presenterIncidence = new PresenterIncidenceImpl(null, this);
 
         Bundle bndl = getArguments();
         if (bndl != null) {
             code = bndl.getString("comcode");
+            name = bndl.getString("myname");
             updateItem = bndl.getParcelable("incidenceForm");
             if (updateItem != null) {
                 updateMode = true;

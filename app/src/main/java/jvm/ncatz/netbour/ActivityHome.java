@@ -108,6 +108,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
     private int fragment_opened;
     private String actual_code;
+    private String actual_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         setSupportActionBar(toolbar);
 
         actual_code = "default";
+        actual_name = "Yo";
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -318,6 +320,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         Bundle bundle = new Bundle();
         bundle.putParcelable("entryForm", entry);
         bundle.putString("comcode", actual_code);
+        bundle.putString("myname", actual_name);
 
         FrgFormEntry frgFormEntry = new FrgFormEntry();
         frgFormEntry.setArguments(bundle);
@@ -334,6 +337,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         Bundle bundle = new Bundle();
         bundle.putParcelable("incidenceForm", incidence);
         bundle.putString("comcode", actual_code);
+        bundle.putString("myname", actual_name);
 
         FrgFormIncidence frgFormIncidence = new FrgFormIncidence();
         frgFormIncidence.setArguments(bundle);

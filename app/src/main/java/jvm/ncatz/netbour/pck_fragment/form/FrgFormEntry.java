@@ -44,7 +44,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                 PoEntry entry = new PoEntry(
                         currentTime,
                         fragFormEntryTitle.getText().toString(), fragFormEntryDescription.getText().toString(),
-                        currentTime, category, "test", false
+                        currentTime, category, name, false
                 );
                 if (updateMode) {
                     updateItem.setTitle(entry.getTitle());
@@ -67,6 +67,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
     private boolean updateMode;
     private PoEntry updateItem;
     private String code;
+    private String name;
     private int category;
 
     @Override
@@ -76,6 +77,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         updateMode = false;
         updateItem = null;
         code = "";
+        name = "";
         category = PoEntry.CATEGORY_SECOND;
 
         presenterEntry = new PresenterEntryImpl(null, this);
@@ -83,6 +85,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         Bundle bndl = getArguments();
         if (bndl != null) {
             code = bndl.getString("comcode");
+            name = bndl.getString("myname");
             updateItem = bndl.getParcelable("entryForm");
             if (updateItem != null) {
                 updateMode = true;

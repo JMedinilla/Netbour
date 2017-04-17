@@ -1,220 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="2dp"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="25dp">
+    android:gravity="center">
 
-    <com.wrapp.floatlabelededittext.FloatLabeledEditText
-        android:id="@+id/fragFormUserEmailFloat"
-        android:layout_width="0dp"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/border_shape"
-        android:padding="2dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/fragFormUserEmail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/email"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/email"
-            android:hint="@string/fragFormUserEmail"
-            android:inputType="textEmailAddress" />
-    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-
-    <com.wrapp.floatlabelededittext.FloatLabeledEditText
-        android:id="@+id/fragFormUserNameFloat"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/border_shape"
-        android:padding="2dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormUserEmailFloat">
-
-        <EditText
-            android:id="@+id/fragFormUserName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/face"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/face"
-            android:hint="@string/fragFormUserName"
-            android:inputType="text" />
-    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-
-    <com.wrapp.floatlabelededittext.FloatLabeledEditText
-        android:id="@+id/fragFormUserPhoneFloat"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/border_shape"
-        android:padding="2dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormUserNameFloat">
-
-        <EditText
-            android:id="@+id/fragFormUserPhone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/cellphone_android"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/cellphone_android"
-            android:hint="@string/fragFormUserPhone"
-            android:inputType="phone" />
-    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-
-    <LinearLayout
-        android:id="@+id/fragFormUserLinear"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormUserPhoneFloat">
+        android:padding="16dp">
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormUserFloorFloat"
+            android:id="@+id/fragFormUserEmailFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="1dp"
-            android:layout_marginRight="1dp"
-            android:layout_weight="5"
             android:background="@drawable/border_shape"
-            android:padding="2dp">
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/fragFormUserFloor"
+                android:id="@+id/fragFormUserEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableLeft="@drawable/home_map_marker"
+                android:drawableLeft="@drawable/email"
                 android:drawablePadding="10dp"
-                android:drawableStart="@drawable/home_map_marker"
-                android:hint="@string/fragFormUserFloor"
-                android:inputType="number" />
+                android:drawableStart="@drawable/email"
+                android:hint="@string/fragFormUserEmail"
+                android:inputType="textEmailAddress" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormUserDoorFloat"
+            android:id="@+id/fragFormUserNameFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_marginStart="1dp"
-            android:layout_weight="5"
             android:background="@drawable/border_shape"
-            android:padding="2dp">
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserEmailFloat">
 
             <EditText
-                android:id="@+id/fragFormUserDoor"
+                android:id="@+id/fragFormUserName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableLeft="@drawable/home_map_marker"
+                android:drawableLeft="@drawable/face"
                 android:drawablePadding="10dp"
-                android:drawableStart="@drawable/home_map_marker"
-                android:hint="@string/fragFormUserDoor"
+                android:drawableStart="@drawable/face"
+                android:hint="@string/fragFormUserName"
+                android:inputType="text" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormUserPhoneFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_shape"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserNameFloat">
+
+            <EditText
+                android:id="@+id/fragFormUserPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/cellphone_android"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/cellphone_android"
+                android:hint="@string/fragFormUserPhone"
+                android:inputType="phone" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <LinearLayout
+            android:id="@+id/fragFormUserLinear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserPhoneFloat">
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/fragFormUserFloorFloat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:background="@drawable/border_shape"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/fragFormUserFloor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/home_map_marker"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/home_map_marker"
+                    android:hint="@string/fragFormUserFloor"
+                    android:inputType="number" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/fragFormUserDoorFloat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:background="@drawable/border_shape"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/fragFormUserDoor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/home_map_marker"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/home_map_marker"
+                    android:hint="@string/fragFormUserDoor"
+                    android:inputType="number" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        </LinearLayout>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormUserPinFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_shape"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserLinear">
+
+            <EditText
+                android:id="@+id/fragFormUserPin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/numeric"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/numeric"
+                android:hint="@string/fragFormUserPin"
                 android:inputType="number" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-    </LinearLayout>
 
-    <com.wrapp.floatlabelededittext.FloatLabeledEditText
-        android:id="@+id/fragFormUserPinFloat"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/border_shape"
-        android:padding="2dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormUserLinear">
-
-        <EditText
-            android:id="@+id/fragFormUserPin"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/numeric"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/numeric"
-            android:hint="@string/fragFormUserPin"
-            android:inputType="number" />
-    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-
-    <RadioGroup
-        android:id="@+id/fragFormUserCategoryGroup"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/border_shape"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormUserPinFloat">
-
-        <RadioButton
-            android:id="@+id/fragFormUserCategoryFirst"
+        <RadioGroup
+            android:id="@+id/fragFormUserCategoryGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/fragFormUserCategoryFirst"
-            android:textSize="16sp" />
+            android:background="@drawable/border_shape"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserPinFloat">
 
-        <RadioButton
-            android:id="@+id/fragFormUserCategorySecond"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/fragFormUserCategorySecond"
-            android:textSize="16sp" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/fragFormUserCategoryFirst"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/fragFormUserCategoryFirst"
+                android:textSize="16sp" />
 
-    <info.hoang8f.widget.FButton
-        android:id="@+id/fragFormUserSave"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="24dp"
-        android:drawableLeft="@drawable/ic_check_white_24dp"
-        android:drawableStart="@drawable/ic_check_white_24dp"
-        android:paddingEnd="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingStart="10dp"
-        android:text="@string/fragFormSave"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormUserCategoryGroup"
-        fbutton:buttonColor="@color/orange_600"
-        fbutton:cornerRadius="12dp"
-        fbutton:shadowColor="@color/orange_900"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="8dp" />
-</android.support.constraint.ConstraintLayout>
+            <RadioButton
+                android:id="@+id/fragFormUserCategorySecond"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/fragFormUserCategorySecond"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/fragFormUserSave"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="24dp"
+            android:drawableLeft="@drawable/ic_check_white_24dp"
+            android:drawableStart="@drawable/ic_check_white_24dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/fragFormSave"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserCategoryGroup"
+            fbutton:buttonColor="@color/orange_600"
+            fbutton:cornerRadius="12dp"
+            fbutton:shadowColor="@color/orange_900"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="8dp" />
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>

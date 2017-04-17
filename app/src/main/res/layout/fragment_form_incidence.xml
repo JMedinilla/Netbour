@@ -1,101 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="2dp">
+    android:gravity="center">
 
-    <ImageView
-        android:id="@+id/fragFormIncidenceImage"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/border_shape"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/tooltip_image"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.wrapp.floatlabelededittext.FloatLabeledEditText
-        android:id="@+id/fragFormIncidenceTitleFloat"
-        android:layout_width="0dp"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/border_shape"
-        android:padding="2dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormIncidenceImage">
+        android:padding="16dp">
 
-        <EditText
-            android:id="@+id/fragFormIncidenceTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/format_title"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/format_title"
-            android:hint="@string/fragFormIncidenceTitle"
-            android:inputType="text" />
-    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        <ImageView
+            android:id="@+id/fragFormIncidenceImage"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="@drawable/border_shape"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/tooltip_image"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.wrapp.floatlabelededittext.FloatLabeledEditText
-        android:id="@+id/fragFormIncidenceDescriptionFloat"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/border_shape"
-        android:padding="2dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormIncidenceTitleFloat">
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormIncidenceTitleFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_shape"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormIncidenceImage">
 
-        <EditText
-            android:id="@+id/fragFormIncidenceDescription"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/format_color_text"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/format_color_text"
-            android:gravity="top|start"
-            android:hint="@string/fragFormIncidenceDescription"
-            android:inputType="textMultiLine"
-            android:lines="6"
-            android:maxLines="6"
-            android:minLines="6"
-            android:scrollbars="vertical" />
-    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            <EditText
+                android:id="@+id/fragFormIncidenceTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/format_title"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/format_title"
+                android:hint="@string/fragFormIncidenceTitle"
+                android:inputType="text" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
-    <info.hoang8f.widget.FButton
-        android:id="@+id/fragFormIncidenceSave"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="24dp"
-        android:drawableLeft="@drawable/ic_check_white_24dp"
-        android:drawableStart="@drawable/ic_check_white_24dp"
-        android:paddingEnd="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingStart="10dp"
-        android:text="@string/fragFormSave"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragFormIncidenceDescriptionFloat"
-        fbutton:buttonColor="@color/orange_600"
-        fbutton:cornerRadius="12dp"
-        fbutton:shadowColor="@color/orange_900"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="8dp" />
-</android.support.constraint.ConstraintLayout>
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormIncidenceDescriptionFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_shape"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormIncidenceTitleFloat">
+
+            <EditText
+                android:id="@+id/fragFormIncidenceDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/format_color_text"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/format_color_text"
+                android:gravity="top|start"
+                android:hint="@string/fragFormIncidenceDescription"
+                android:inputType="textMultiLine"
+                android:lines="6"
+                android:maxLines="6"
+                android:minLines="6"
+                android:scrollbars="vertical" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/fragFormIncidenceSave"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="24dp"
+            android:drawableLeft="@drawable/ic_check_white_24dp"
+            android:drawableStart="@drawable/ic_check_white_24dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/fragFormSave"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormIncidenceDescriptionFloat"
+            fbutton:buttonColor="@color/orange_600"
+            fbutton:cornerRadius="12dp"
+            fbutton:shadowColor="@color/orange_900"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="8dp" />
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>
