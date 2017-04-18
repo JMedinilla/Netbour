@@ -578,7 +578,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     @Override
     public void changeCode(String code) {
         actual_code = code;
-        showSnackbar(getString(R.string.changed_code) + actual_code, DURATION_LONG);
+        showSnackbar(getString(R.string.changed_code) + " " + actual_code, DURATION_LONG);
     }
 
     @Override

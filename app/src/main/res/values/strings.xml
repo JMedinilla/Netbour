@@ -60,4 +60,20 @@
     <string name="fragFormUserEmail">Email</string>
     <string name="fragFormUserCategoryFirst">Neighbour</string>
     <string name="fragFormUserCategorySecond">President</string>
+    <string name="ERROR_FORMAT">Invalid email</string>
+    <string name="ERROR_EMPTY">Cannot be empty</string>
+    <string name="ERROR_SHORT_0">Too short (min 0)</string>
+    <string name="ERROR_SHORT_3">Too short (min 3)</string>
+    <string name="ERROR_SHORT_4">Too short (min 4)</string>
+    <string name="ERROR_SHORT_5">Too short (min 5)</string>
+    <string name="ERROR_SHORT_6">Too short (min 6)</string>
+    <string name="ERROR_SHORT_9">Too short (min 9)</string>
+    <string name="ERROR_SHORT_15">Too short (min 15)</string>
+    <string name="ERROR_LONG_5">Too long (max 5)</string>
+    <string name="ERROR_LONG_8">Too long (max 8)</string>
+    <string name="ERROR_LONG_9">Too long (max 9)</string>
+    <string name="ERROR_LONG_16">Too long (max 16)</string>
+    <string name="ERROR_LONG_20">Too long (max 20)</string>
+    <string name="ERROR_LONG_255">Too long (max 255)</string>
+    <string name="ERROR_LONG_400">Too long (max 400)</string>
 </resources>

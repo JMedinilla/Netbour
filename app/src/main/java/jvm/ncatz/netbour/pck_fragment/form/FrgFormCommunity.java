@@ -37,21 +37,17 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
 
     @OnClick(R.id.fragFormCommunitySave)
     public void onViewClicked() {
+        int flats = 0;
+        if (fragFormCommunityFlats.getText().toString().length() > 0) {
+            flats = Integer.parseInt(fragFormCommunityFlats.getText().toString());
+        }
         PoCommunity community = new PoCommunity(
                 fragFormCommunityCode.getText().toString(), fragFormCommunityProvince.getText().toString(),
                 fragFormCommunityMunicipality.getText().toString(), fragFormCommunityStreet.getText().toString(),
                 fragFormCommunityNumber.getText().toString(), fragFormCommunityPostal.getText().toString(),
-                Integer.parseInt(fragFormCommunityFlats.getText().toString()), false
+                flats, false
         );
-        if (updateMode) {
-            presenterCommunity.editCommunity(community);
-        } else {
-            switch (presenterCommunity.validateCommunity(community)) {
-                case 0:
-                    presenterCommunity.addCommunity(community);
-                    break;
-            }
-        }
+        presenterCommunity.validateCommunity(community);
     }
 
     private PresenterCommunityImpl presenterCommunity;
@@ -103,5 +99,51 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
     @Override
     public void editedCommunity() {
         getActivity().onBackPressed();
+    }
+
+    @Override
+    public void validationResponse(PoCommunity community, int error) {
+        switch (error) {
+            case PresenterCommunity.SUCCESS:
+                if (updateMode) {
+                    presenterCommunity.editCommunity(community);
+                } else {
+                    presenterCommunity.addCommunity(community);
+                }
+                break;
+            case PresenterCommunity.ERROR_CODE_EMPTY:
+                fragFormCommunityCode.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterCommunity.ERROR_CODE_SHORT:
+                fragFormCommunityCode.setError(getString(R.string.ERROR_SHORT_4));
+                break;
+            case PresenterCommunity.ERROR_CODE_LONG:
+                fragFormCommunityCode.setError(getString(R.string.ERROR_LONG_8));
+                break;
+            case PresenterCommunity.ERROR_POSTAL_EMPTY:
+                fragFormCommunityPostal.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterCommunity.ERROR_POSTAL_SHORT:
+                fragFormCommunityPostal.setError(getString(R.string.ERROR_SHORT_5));
+                break;
+            case PresenterCommunity.ERROR_POSTAL_LONG:
+                fragFormCommunityPostal.setError(getString(R.string.ERROR_LONG_5));
+                break;
+            case PresenterCommunity.ERROR_PROVINCE_EMPTY:
+                fragFormCommunityProvince.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterCommunity.ERROR_MUNICIPALITY_EMPTY:
+                fragFormCommunityMunicipality.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterCommunity.ERROR_NUMBER_EMPTY:
+                fragFormCommunityNumber.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterCommunity.ERROR_FLATS_EMPTY:
+                fragFormCommunityFlats.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterCommunity.ERROR_STREET_EMPTY:
+                fragFormCommunityStreet.setError(getString(R.string.ERROR_EMPTY));
+                break;
+        }
     }
 }

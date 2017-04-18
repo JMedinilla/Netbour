@@ -5,6 +5,13 @@ import java.util.List;
 import jvm.ncatz.netbour.pck_pojo.PoEntry;
 
 public interface PresenterEntry {
+    int SUCCESS = 0;
+    int ERROR_TITLE_EMPTY = 10;
+    int ERROR_TITLE_SHORT = 11;
+    int ERROR_TITLE_LONG = 12;
+    int ERROR_DESCRIPTION_EMPTY = 20;
+    int ERROR_DESCRIPTION_SHORT = 21;
+    int ERROR_DESCRIPTION_LONG = 22;
 
     void instanceFirebase(String code, int category);
 
@@ -12,7 +19,7 @@ public interface PresenterEntry {
 
     void dettachFirebase();
 
-    int validateEntry(PoEntry entry);
+    void validateEntry(PoEntry entry);
 
     void addEntry(PoEntry entry, String code);
 
@@ -34,5 +41,7 @@ public interface PresenterEntry {
         void addedEntry();
 
         void editedEntry();
+
+        void validationResponse(PoEntry entry, int error);
     }
 }

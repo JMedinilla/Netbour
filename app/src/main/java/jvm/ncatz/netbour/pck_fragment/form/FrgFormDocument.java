@@ -34,18 +34,7 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
                 fragFormDocumentTitle.getText().toString(), fragFormDocumentDescription.getText().toString(),
                 fragFormDocumentLink.getText().toString(), false
         );
-        if (updateMode) {
-            updateItem.setTitle(document.getTitle());
-            updateItem.setLink(document.getLink());
-            updateItem.setDescription(document.getDescription());
-            presenterDocument.editDocument(updateItem, code);
-        } else {
-            switch (presenterDocument.validateDocument(document)) {
-                case 0:
-                    presenterDocument.addDocument(document, code);
-                    break;
-            }
-        }
+        presenterDocument.validateDocument(document);
     }
 
     private PresenterDocumentImpl presenterDocument;
@@ -95,5 +84,48 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
     @Override
     public void editedDocument() {
         getActivity().onBackPressed();
+    }
+
+    @Override
+    public void validationResponse(PoDocument document, int error) {
+        switch (error) {
+            case PresenterDocument.SUCCESS:
+                if (updateMode) {
+                    updateItem.setTitle(document.getTitle());
+                    updateItem.setLink(document.getLink());
+                    updateItem.setDescription(document.getDescription());
+                    presenterDocument.editDocument(updateItem, code);
+                } else {
+                    presenterDocument.addDocument(document, code);
+                }
+                break;
+            case PresenterDocument.ERROR_TITLE_EMPTY:
+                fragFormDocumentTitle.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterDocument.ERROR_TITLE_SHORT:
+                fragFormDocumentTitle.setError(getString(R.string.ERROR_SHORT_6));
+                break;
+            case PresenterDocument.ERROR_TITLE_LONG:
+                fragFormDocumentTitle.setError(getString(R.string.ERROR_LONG_20));
+                break;
+            case PresenterDocument.ERROR_LINK_EMPTY:
+                fragFormDocumentLink.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterDocument.ERROR_LINK_SHORT:
+                fragFormDocumentLink.setError(getString(R.string.ERROR_SHORT_15));
+                break;
+            case PresenterDocument.ERROR_LINK_LONG:
+                fragFormDocumentLink.setError(getString(R.string.ERROR_LONG_255));
+                break;
+            case PresenterDocument.ERROR_DESCRIPTION_EMPTY:
+                fragFormDocumentDescription.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterDocument.ERROR_DESCRIPTION_SHORT:
+                fragFormDocumentDescription.setError(getString(R.string.ERROR_SHORT_0));
+                break;
+            case PresenterDocument.ERROR_DESCRIPTION_LONG:
+                fragFormDocumentDescription.setError(getString(R.string.ERROR_LONG_400));
+                break;
+        }
     }
 }

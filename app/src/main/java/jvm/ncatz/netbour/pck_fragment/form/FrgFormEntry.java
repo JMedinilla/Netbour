@@ -46,18 +46,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                         fragFormEntryTitle.getText().toString(), fragFormEntryDescription.getText().toString(),
                         currentTime, category, name, false
                 );
-                if (updateMode) {
-                    updateItem.setTitle(entry.getTitle());
-                    updateItem.setContent(entry.getContent());
-                    updateItem.setCategory(entry.getCategory());
-                    presenterEntry.editEntry(updateItem, code);
-                } else {
-                    switch (presenterEntry.validateEntry(entry)) {
-                        case 0:
-                            presenterEntry.addEntry(entry, code);
-                            break;
-                    }
-                }
+                presenterEntry.validateEntry(entry);
                 break;
         }
     }
@@ -120,5 +109,39 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
     @Override
     public void editedEntry() {
         getActivity().onBackPressed();
+    }
+
+    @Override
+    public void validationResponse(PoEntry entry, int error) {
+        switch (error) {
+            case PresenterEntry.SUCCESS:
+                if (updateMode) {
+                    updateItem.setTitle(entry.getTitle());
+                    updateItem.setContent(entry.getContent());
+                    updateItem.setCategory(entry.getCategory());
+                    presenterEntry.editEntry(updateItem, code);
+                } else {
+                    presenterEntry.addEntry(entry, code);
+                }
+                break;
+            case PresenterEntry.ERROR_TITLE_EMPTY:
+                fragFormEntryTitle.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterEntry.ERROR_TITLE_SHORT:
+                fragFormEntryTitle.setError(getString(R.string.ERROR_SHORT_6));
+                break;
+            case PresenterEntry.ERROR_TITLE_LONG:
+                fragFormEntryTitle.setError(getString(R.string.ERROR_LONG_20));
+                break;
+            case PresenterEntry.ERROR_DESCRIPTION_EMPTY:
+                fragFormEntryDescription.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterEntry.ERROR_DESCRIPTION_SHORT:
+                fragFormEntryDescription.setError(getString(R.string.ERROR_SHORT_0));
+                break;
+            case PresenterEntry.ERROR_DESCRIPTION_LONG:
+                fragFormEntryDescription.setError(getString(R.string.ERROR_LONG_400));
+                break;
+        }
     }
 }

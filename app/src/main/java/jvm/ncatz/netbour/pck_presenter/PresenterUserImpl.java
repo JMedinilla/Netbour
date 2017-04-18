@@ -1,5 +1,8 @@
 package jvm.ncatz.netbour.pck_presenter;
 
+import android.text.TextUtils;
+import android.util.Patterns;
+
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_interactor.InteractorUserImpl;
@@ -34,8 +37,55 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     }
 
     @Override
-    public int validateUser(PoUser user) {
-        return 0;
+    public void validateUser(PoUser user, String pin, boolean updateMode) {
+        boolean error = false;
+        if (TextUtils.equals("", user.getEmail())) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_EMAIL_EMPTY);
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(user.getEmail()).matches()) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_EMAIL_FORMAT);
+        }
+        if (TextUtils.equals("", user.getName())) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_NAME_EMPTY);
+        } else if (user.getName().length() < 3) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_NAME_SHORT);
+        } else if (user.getName().length() > 16) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_NAME_LONG);
+        }
+        if (TextUtils.equals("", user.getPhone())) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_PHONE_EMPTY);
+        } else if (user.getPhone().length() < 9) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_PHONE_SHORT);
+        } else if (user.getPhone().length() > 9) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_PHONE_LONG);
+        }
+        if (TextUtils.equals("", user.getFloor())) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_FLOOR_RMPTY);
+        }
+        if (TextUtils.equals("", user.getDoor())) {
+            error = true;
+            viewForm.validationResponse(user, ERROR_DOOR_EMPTY);
+        }
+        if (!updateMode) {
+            if (TextUtils.equals("", pin)) {
+                error = true;
+                viewForm.validationResponse(user, ERROR_PIN_EMPTY);
+            } else if (pin.length() < 6) {
+                error = true;
+                viewForm.validationResponse(user, ERROR_PIN_SHORT);
+            }
+        }
+        if (!error) {
+            viewForm.validationResponse(user, SUCCESS);
+        }
     }
 
     @Override

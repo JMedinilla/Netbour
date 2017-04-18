@@ -1,5 +1,8 @@
 package jvm.ncatz.netbour.pck_presenter;
 
+import android.net.Uri;
+import android.text.TextUtils;
+
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_interactor.InteractorIncidenceImpl;
@@ -34,8 +37,35 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     }
 
     @Override
-    public int validateIncidence(PoIncidence incidence) {
-        return 0;
+    public void validateIncidence(PoIncidence incidence, Uri selectedImage) {
+        boolean error = false;
+        if (TextUtils.equals("", incidence.getTitle())) {
+            error = true;
+            viewForm.validationResponse(incidence, ERROR_TITLE_EMPTY);
+        } else if (incidence.getTitle().length() < 6) {
+            error = true;
+            viewForm.validationResponse(incidence, ERROR_TITLE_SHORT);
+        } else if (incidence.getTitle().length() > 20) {
+            error = true;
+            viewForm.validationResponse(incidence, ERROR_TITLE_LONG);
+        }
+        if (TextUtils.equals("", incidence.getDescription())) {
+            error = true;
+            viewForm.validationResponse(incidence, ERROR_DESCRIPTION_EMPTY);
+        } else if (incidence.getDescription().length() < 0) {
+            error = true;
+            viewForm.validationResponse(incidence, ERROR_DESCRIPTION_SHORT);
+        } else if (incidence.getDescription().length() > 400) {
+            error = true;
+            viewForm.validationResponse(incidence, ERROR_DESCRIPTION_LONG);
+        }
+        if (selectedImage == null) {
+            error = true;
+            viewForm.validationResponse(incidence, ERROR_URI_EMPTY);
+        }
+        if (!error) {
+            viewForm.validationResponse(incidence, SUCCESS);
+        }
     }
 
     @Override

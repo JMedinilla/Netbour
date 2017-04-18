@@ -1,5 +1,7 @@
 package jvm.ncatz.netbour.pck_presenter;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_interactor.InteractorEntryImpl;
@@ -34,8 +36,31 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
     }
 
     @Override
-    public int validateEntry(PoEntry entry) {
-        return 0;
+    public void validateEntry(PoEntry entry) {
+        boolean error = false;
+        if (TextUtils.equals("", entry.getTitle())) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_TITLE_EMPTY);
+        } else if (entry.getTitle().length() < 6) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_TITLE_SHORT);
+        } else if (entry.getTitle().length() > 20) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_TITLE_LONG);
+        }
+        if (TextUtils.equals("", entry.getContent())) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_DESCRIPTION_EMPTY);
+        } else if (entry.getContent().length() < 0) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_DESCRIPTION_SHORT);
+        } else if (entry.getContent().length() > 400) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_DESCRIPTION_LONG);
+        }
+        if (!error) {
+            viewForm.validationResponse(entry, SUCCESS);
+        }
     }
 
     @Override

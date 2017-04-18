@@ -1,5 +1,7 @@
 package jvm.ncatz.netbour.pck_presenter;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_interactor.InteractorMeetingImpl;
@@ -34,8 +36,25 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
     }
 
     @Override
-    public int validateMeeting(PoMeeting meeting) {
-        return 0;
+    public void validateMeeting(PoMeeting meeting) {
+        boolean error = false;
+        if (TextUtils.equals("", meeting.getDate())) {
+            error = true;
+            viewForm.validationResponse(meeting, ERROR_DATE_EMPTY);
+        }
+        if (TextUtils.equals("", meeting.getDescription())) {
+            error = true;
+            viewForm.validationResponse(meeting, ERROR_DESCRIPTION_EMPTY);
+        } else if (meeting.getDescription().length() < 0) {
+            error = true;
+            viewForm.validationResponse(meeting, ERROR_DESCRIPTION_SHORT);
+        } else if (meeting.getDescription().length() > 400) {
+            error = true;
+            viewForm.validationResponse(meeting, ERROR_DESCRIPTION_LONG);
+        }
+        if (!error) {
+            viewForm.validationResponse(meeting, SUCCESS);
+        }
     }
 
     @Override

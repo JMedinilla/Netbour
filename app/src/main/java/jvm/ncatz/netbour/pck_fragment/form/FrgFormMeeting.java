@@ -42,17 +42,7 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
                         System.currentTimeMillis(), fragFormMeetingDate.getText().toString(),
                         fragFormMeetingDescription.getText().toString(), false
                 );
-                if (updateMode) {
-                    updateItem.setDate(meeting.getDate());
-                    updateItem.setDescription(meeting.getDescription());
-                    presenterMeeting.editMeeting(updateItem, code);
-                } else {
-                    switch (presenterMeeting.validateMeeting(meeting)) {
-                        case 0:
-                            presenterMeeting.addMeeting(meeting, code);
-                            break;
-                    }
-                }
+                presenterMeeting.validateMeeting(meeting);
                 break;
         }
     }
@@ -117,5 +107,32 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
     @Override
     public void editedMeeting() {
         getActivity().onBackPressed();
+    }
+
+    @Override
+    public void validationResponse(PoMeeting meeting, int error) {
+        switch (error) {
+            case PresenterMeeting.SUCCESS:
+                if (updateMode) {
+                    updateItem.setDate(meeting.getDate());
+                    updateItem.setDescription(meeting.getDescription());
+                    presenterMeeting.editMeeting(updateItem, code);
+                } else {
+                    presenterMeeting.addMeeting(meeting, code);
+                }
+                break;
+            case PresenterMeeting.ERROR_DATE_EMPTY:
+                fragFormMeetingDate.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterMeeting.ERROR_DESCRIPTION_EMPTY:
+                fragFormMeetingDescription.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterMeeting.ERROR_DESCRIPTION_SHORT:
+                fragFormMeetingDescription.setError(getString(R.string.ERROR_SHORT_0));
+                break;
+            case PresenterMeeting.ERROR_DESCRIPTION_LONG:
+                fragFormMeetingDescription.setError(getString(R.string.ERROR_LONG_400));
+                break;
+        }
     }
 }

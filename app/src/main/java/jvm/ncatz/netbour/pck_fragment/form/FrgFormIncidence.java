@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour.pck_fragment.form;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -40,20 +41,9 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 PoIncidence incidence = new PoIncidence(
                         currentTime,
                         fragFormIncidenceTitle.getText().toString(), fragFormIncidenceDescription.getText().toString(),
-                        currentTime, "http://www.mundodesconocido.es/wp-content/uploads/2012/06/JL_Mundo_Desconocido-911x1024.jpg", name, false
+                        currentTime, "", name, false
                 );
-                if (updateMode) {
-                    updateItem.setPhoto(incidence.getPhoto());
-                    updateItem.setTitle(incidence.getTitle());
-                    updateItem.setDescription(incidence.getDescription());
-                    presenterIncidence.editIncidence(updateItem, code);
-                } else {
-                    switch (presenterIncidence.validateIncidence(incidence)) {
-                        case 0:
-                            presenterIncidence.addIncidence(incidence, code);
-                            break;
-                    }
-                }
+                presenterIncidence.validateIncidence(incidence, selectedImage);
                 break;
         }
     }
@@ -64,6 +54,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     private PoIncidence updateItem;
     private String code;
     private String name;
+    private Uri selectedImage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +64,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         updateItem = null;
         code = "";
         name = "";
+        selectedImage = null;
 
         presenterIncidence = new PresenterIncidenceImpl(null, this);
 
@@ -108,5 +100,42 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     @Override
     public void editedIncidence() {
         getActivity().onBackPressed();
+    }
+
+    @Override
+    public void validationResponse(PoIncidence incidence, int error) {
+        switch (error) {
+            case PresenterIncidence.SUCCESS:
+                if (updateMode) {
+                    updateItem.setPhoto(incidence.getPhoto());
+                    updateItem.setTitle(incidence.getTitle());
+                    updateItem.setDescription(incidence.getDescription());
+                    presenterIncidence.editIncidence(updateItem, code);
+                } else {
+                    presenterIncidence.addIncidence(incidence, code);
+                }
+                break;
+            case PresenterIncidence.ERROR_TITLE_EMPTY:
+                fragFormIncidenceTitle.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterIncidence.ERROR_TITLE_SHORT:
+                fragFormIncidenceTitle.setError(getString(R.string.ERROR_SHORT_6));
+                break;
+            case PresenterIncidence.ERROR_TITLE_LONG:
+                fragFormIncidenceTitle.setError(getString(R.string.ERROR_LONG_20));
+                break;
+            case PresenterIncidence.ERROR_DESCRIPTION_EMPTY:
+                fragFormIncidenceDescription.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterIncidence.ERROR_DESCRIPTION_SHORT:
+                fragFormIncidenceDescription.setError(getString(R.string.ERROR_SHORT_0));
+                break;
+            case PresenterIncidence.ERROR_DESCRIPTION_LONG:
+                fragFormIncidenceDescription.setError(getString(R.string.ERROR_LONG_400));
+                break;
+            case PresenterIncidence.ERROR_URI_EMPTY:
+                //
+                break;
+        }
     }
 }

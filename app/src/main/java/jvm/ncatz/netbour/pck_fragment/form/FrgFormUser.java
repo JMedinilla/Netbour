@@ -55,20 +55,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                         fragFormUserPhone.getText().toString(), fragFormUserEmail.getText().toString(),
                         fragFormUserName.getText().toString(), category, false
                 );
-                if (updateMode) {
-                    updateItem.setName(user.getName());
-                    updateItem.setPhone(user.getPhone());
-                    updateItem.setFloor(user.getFloor());
-                    updateItem.setDoor(user.getDoor());
-                    updateItem.setCategory(user.getCategory());
-                    presenterUser.editUser(updateItem);
-                } else {
-                    switch (presenterUser.validateUser(user)) {
-                        case 0:
-                            presenterUser.addUser(user);
-                            break;
-                    }
-                }
+                presenterUser.validateUser(user, fragFormUserPin.getText().toString(), updateMode);
                 break;
         }
     }
@@ -134,5 +121,59 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
     @Override
     public void editedUser() {
         getActivity().onBackPressed();
+    }
+
+    @Override
+    public void validationResponse(PoUser user, int error) {
+        switch (error) {
+            case PresenterUser.SUCCESS:
+                if (updateMode) {
+                    updateItem.setName(user.getName());
+                    updateItem.setPhone(user.getPhone());
+                    updateItem.setFloor(user.getFloor());
+                    updateItem.setDoor(user.getDoor());
+                    updateItem.setCategory(user.getCategory());
+                    presenterUser.editUser(updateItem);
+                } else {
+                    presenterUser.addUser(user);
+                }
+                break;
+            case PresenterUser.ERROR_EMAIL_EMPTY:
+                fragFormUserEmail.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterUser.ERROR_EMAIL_FORMAT:
+                fragFormUserEmail.setError(getString(R.string.ERROR_FORMAT));
+                break;
+            case PresenterUser.ERROR_NAME_EMPTY:
+                fragFormUserName.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterUser.ERROR_NAME_SHORT:
+                fragFormUserName.setError(getString(R.string.ERROR_SHORT_3));
+                break;
+            case PresenterUser.ERROR_NAME_LONG:
+                fragFormUserName.setError(getString(R.string.ERROR_LONG_16));
+                break;
+            case PresenterUser.ERROR_PHONE_EMPTY:
+                fragFormUserPhone.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterUser.ERROR_PHONE_SHORT:
+                fragFormUserPhone.setError(getString(R.string.ERROR_SHORT_9));
+                break;
+            case PresenterUser.ERROR_PHONE_LONG:
+                fragFormUserPhone.setError(getString(R.string.ERROR_LONG_9));
+                break;
+            case PresenterUser.ERROR_FLOOR_RMPTY:
+                fragFormUserFloor.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterUser.ERROR_DOOR_EMPTY:
+                fragFormUserDoor.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterUser.ERROR_PIN_EMPTY:
+                fragFormUserPin.setError(getString(R.string.ERROR_EMPTY));
+                break;
+            case PresenterUser.ERROR_PIN_SHORT:
+                fragFormUserPin.setError(getString(R.string.ERROR_SHORT_6));
+                break;
+        }
     }
 }
