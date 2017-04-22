@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -50,15 +48,7 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
         }
         PoMeeting meeting = getItem(position);
         if (meeting != null) {
-            Date date = new Date(meeting.getDate());
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-            holder.adapterMeetingTxtDate.setText(day + "/" + month + "/" + year);
+            holder.adapterMeetingTxtDate.setText(meeting.getDate());
             holder.adapterMeetingTxtDescription.setText(meeting.getDescription());
         }
         return convertView;

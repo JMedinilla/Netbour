@@ -1,5 +1,7 @@
 package jvm.ncatz.netbour.pck_presenter;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_interactor.InteractorEntryImpl;
@@ -34,6 +36,49 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
     }
 
     @Override
+    public void validateEntry(PoEntry entry) {
+        boolean error = false;
+        if (TextUtils.equals("", entry.getTitle())) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_TITLE_EMPTY);
+        } else if (entry.getTitle().length() < 6) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_TITLE_SHORT);
+        } else if (entry.getTitle().length() > 20) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_TITLE_LONG);
+        }
+        if (TextUtils.equals("", entry.getContent())) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_DESCRIPTION_EMPTY);
+        } else if (entry.getContent().length() < 0) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_DESCRIPTION_SHORT);
+        } else if (entry.getContent().length() > 400) {
+            error = true;
+            viewForm.validationResponse(entry, ERROR_DESCRIPTION_LONG);
+        }
+        if (!error) {
+            viewForm.validationResponse(entry, SUCCESS);
+        }
+    }
+
+    @Override
+    public void addEntry(PoEntry entry, String code) {
+        interactorEntry.addEntry(entry, code);
+    }
+
+    @Override
+    public void editEntry(PoEntry entry, String code) {
+        interactorEntry.editEntry(entry, code);
+    }
+
+    @Override
+    public void deleteEntry(PoEntry item) {
+        interactorEntry.deleteEntry(item);
+    }
+
+    @Override
     public void returnList(List<PoEntry> list) {
         viewList.returnList(list);
     }
@@ -41,5 +86,20 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void addedEntry() {
+        viewForm.addedEntry();
+    }
+
+    @Override
+    public void editedEntry() {
+        viewForm.editedEntry();
+    }
+
+    @Override
+    public void deletedEntry() {
+        viewList.deletedEntry();
     }
 }

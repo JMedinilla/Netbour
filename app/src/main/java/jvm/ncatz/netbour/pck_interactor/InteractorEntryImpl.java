@@ -20,13 +20,15 @@ public class InteractorEntryImpl implements InteractorEntry {
     private Query query;
     private ValueEventListener eventListener;
 
+    private String communityCode;
+
     public InteractorEntryImpl(InteractorEntry.Listener listener) {
         this.listener = listener;
     }
 
     @Override
     public void instanceFirebase(String code, final int category) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("entries");
+        communityCode = code;
         query = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("entries").orderByKey();
         eventListener = new ValueEventListener() {
             @Override
@@ -68,5 +70,27 @@ public class InteractorEntryImpl implements InteractorEntry {
         if (eventListener != null) {
             query.removeEventListener(eventListener);
         }
+    }
+
+    @Override
+    public void addEntry(PoEntry entry, String code) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("entries").child(String.valueOf(entry.getKey()));
+        databaseReference.setValue(entry);
+        listener.addedEntry();
+    }
+
+    @Override
+    public void editEntry(PoEntry entry, String code) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("entries").child(String.valueOf(entry.getKey()));
+        databaseReference.child("content").setValue(entry.getContent());
+        databaseReference.child("title").setValue(entry.getTitle());
+        listener.editedEntry();
+    }
+
+    @Override
+    public void deleteEntry(PoEntry item) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("entries").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(true);
+        listener.deletedEntry();
     }
 }

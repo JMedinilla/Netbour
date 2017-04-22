@@ -4,7 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoMeeting implements Parcelable {
-    private long date;
+    private long key;
+    private String date;
     private String description;
     private boolean deleted;
 
@@ -12,17 +13,33 @@ public class PoMeeting implements Parcelable {
         //
     }
 
-    public PoMeeting(long createdAt, long date, String description, boolean deleted) {
+    public PoMeeting(long key, String date, String description, boolean deleted) {
+        this.key = key;
         this.date = date;
         this.description = description;
         this.deleted = deleted;
     }
 
-    public long getDate() {
+    private PoMeeting(Parcel in) {
+        key = in.readLong();
+        date = in.readString();
+        description = in.readString();
+        deleted = in.readByte() != 0;
+    }
+
+    public long getKey() {
+        return key;
+    }
+
+    public void setKey(long key) {
+        this.key = key;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -40,12 +57,6 @@ public class PoMeeting implements Parcelable {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-    }
-
-    protected PoMeeting(Parcel in) {
-        date = in.readLong();
-        description = in.readString();
-        deleted = in.readByte() != 0;
     }
 
     public static final Creator<PoMeeting> CREATOR = new Creator<PoMeeting>() {
@@ -67,7 +78,8 @@ public class PoMeeting implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(date);
+        dest.writeLong(key);
+        dest.writeString(date);
         dest.writeString(description);
         dest.writeByte((byte) (deleted ? 1 : 0));
     }

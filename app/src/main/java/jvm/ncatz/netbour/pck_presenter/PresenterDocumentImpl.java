@@ -1,5 +1,7 @@
 package jvm.ncatz.netbour.pck_presenter;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_interactor.InteractorDocumentImpl;
@@ -34,6 +36,59 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
     }
 
     @Override
+    public void validateDocument(PoDocument document) {
+        boolean error = false;
+        if (TextUtils.equals("", document.getTitle())) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_TITLE_EMPTY);
+        } else if (document.getTitle().length() < 6) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_TITLE_SHORT);
+        } else if (document.getTitle().length() > 20) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_TITLE_LONG);
+        }
+        if (TextUtils.equals("", document.getLink())) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_LINK_EMPTY);
+        } else if (document.getLink().length() < 15) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_LINK_SHORT);
+        } else if (document.getLink().length() > 255) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_LINK_LONG);
+        }
+        if (TextUtils.equals("", document.getDescription())) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_DESCRIPTION_EMPTY);
+        } else if (document.getDescription().length() < 0) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_DESCRIPTION_SHORT);
+        } else if (document.getDescription().length() > 400) {
+            error = true;
+            viewForm.validationResponse(document, ERROR_DESCRIPTION_LONG);
+        }
+        if (!error) {
+            viewForm.validationResponse(document, SUCCESS);
+        }
+    }
+
+    @Override
+    public void addDocument(PoDocument document, String code) {
+        interactorDocument.addDocument(document, code);
+    }
+
+    @Override
+    public void editDocument(PoDocument document, String code) {
+        interactorDocument.editDocument(document, code);
+    }
+
+    @Override
+    public void deleteDocument(PoDocument item) {
+        interactorDocument.deleteDocument(item);
+    }
+
+    @Override
     public void returnList(List<PoDocument> list) {
         viewList.returnList(list);
     }
@@ -41,5 +96,20 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void addedDocument() {
+        viewForm.addedDocument();
+    }
+
+    @Override
+    public void editedDocument() {
+        viewForm.editedDocument();
+    }
+
+    @Override
+    public void deletedDocument() {
+        viewList.deletedDocument();
     }
 }

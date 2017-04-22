@@ -8,6 +8,7 @@ public class PoUser implements Parcelable {
     public static final int GROUP_PRESIDENT = 2;
     public static final int GROUP_ADMIN = 3;
 
+    private long key;
     private String community;
     private String floor;
     private String door;
@@ -21,7 +22,8 @@ public class PoUser implements Parcelable {
         //
     }
 
-    public PoUser(String community, String floor, String door, String phone, String email, String name, int category, boolean deleted) {
+    public PoUser(long key, String community, String floor, String door, String phone, String email, String name, int category, boolean deleted) {
+        this.key = key;
         this.community = community;
         this.floor = floor;
         this.door = door;
@@ -30,6 +32,14 @@ public class PoUser implements Parcelable {
         this.name = name;
         this.category = category;
         this.deleted = deleted;
+    }
+
+    public long getKey() {
+        return key;
+    }
+
+    public void setKey(long key) {
+        this.key = key;
     }
 
     public String getCommunity() {
@@ -96,7 +106,8 @@ public class PoUser implements Parcelable {
         this.deleted = deleted;
     }
 
-    protected PoUser(Parcel in) {
+    private PoUser(Parcel in) {
+        key = in.readLong();
         community = in.readString();
         floor = in.readString();
         door = in.readString();
@@ -126,6 +137,7 @@ public class PoUser implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(key);
         dest.writeString(community);
         dest.writeString(floor);
         dest.writeString(door);

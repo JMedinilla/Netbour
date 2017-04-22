@@ -1,6 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey_200"
+    android:gravity="center">
 
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/fragFormCommunityLinearFirst"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/fragFormCommunityCodeFloat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="5"
+                android:background="@color/white"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/fragFormCommunityCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/key"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/key"
+                    android:hint="@string/fragFormCommunityCode"
+                    android:inputType="text" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/fragFormCommunityPostalFloat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="5"
+                android:background="@color/white"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/fragFormCommunityPostal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/sign_direction"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/sign_direction"
+                    android:hint="@string/fragFormCommunityPostal"
+                    android:inputType="number" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        </LinearLayout>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormCommunityProvinceFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/white"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormCommunityLinearFirst">
+
+            <EditText
+                android:id="@+id/fragFormCommunityProvince"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/map_marker"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/map_marker"
+                android:hint="@string/fragFormCommunityProvince"
+                android:inputType="text" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormCommunityMunicipalityFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/white"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormCommunityProvinceFloat">
+
+            <EditText
+                android:id="@+id/fragFormCommunityMunicipality"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/map_marker"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/map_marker"
+                android:hint="@string/fragFormCommunityMunicipality"
+                android:inputType="text" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <LinearLayout
+            android:id="@+id/fragFormCommunityLinearSecond"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormCommunityMunicipalityFloat">
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/fragFormCommunityNumberFloat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="5"
+                android:background="@color/white"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/fragFormCommunityNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/numeric"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/numeric"
+                    android:hint="@string/fragFormCommunityNumber"
+                    android:inputType="number" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/fragFormCommunityFlatsFloat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="5"
+                android:background="@color/white"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/fragFormCommunityFlats"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/account_multiple_outline"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/account_multiple_outline"
+                    android:hint="@string/fragFormCommunityFlats"
+                    android:inputType="number" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        </LinearLayout>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormCommunityStreetFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/white"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormCommunityLinearSecond">
+
+            <EditText
+                android:id="@+id/fragFormCommunityStreet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/directions_fork"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/directions_fork"
+                android:hint="@string/fragFormCommunityStreet"
+                android:inputType="text" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/fragFormCommunitySave"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="24dp"
+            android:drawableLeft="@drawable/ic_check_white_24dp"
+            android:drawableStart="@drawable/ic_check_white_24dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/fragFormSave"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormCommunityStreetFloat"
+            fbutton:buttonColor="@color/orange_600"
+            fbutton:cornerRadius="12dp"
+            fbutton:shadowColor="@color/orange_900"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="8dp" />
+    </android.support.constraint.ConstraintLayout>
 </RelativeLayout>

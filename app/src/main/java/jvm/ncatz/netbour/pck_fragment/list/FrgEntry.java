@@ -1,6 +1,7 @@
 package jvm.ncatz.netbour.pck_fragment.list;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,8 +11,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +39,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     private AdpEntry adpEntry;
 
     @BindView(R.id.fragListEntry_list)
-    ListView entryList;
+    SwipeMenuListView entryList;
     @BindView(R.id.fragListEntry_empty)
     TextView entryEmpty;
 
@@ -44,7 +49,10 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     }
 
     public interface ListEntry {
-        //
+
+        void sendEntry(PoEntry item);
+
+        void deletedEntry();
     }
 
     @Override
@@ -74,7 +82,50 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_entry, container, false);
         ButterKnife.bind(this, view);
+        swipeMenuInstance();
         return view;
+    }
+
+    private void swipeMenuInstance() {
+        SwipeMenuCreator menuCreator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
+                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
+                editItem.setBackground(R.color.blue_200);
+                deleteItem.setBackground(R.color.red_200);
+                editItem.setTitle(getString(R.string.swipeMenuEdit));
+                deleteItem.setTitle(getString(R.string.swipeMenuDelete));
+                editItem.setTitleSize(16);
+                deleteItem.setTitleSize(16);
+                editItem.setTitleColor(Color.WHITE);
+                deleteItem.setTitleColor(Color.WHITE);
+                editItem.setIcon(R.drawable.tooltip_edit);
+                deleteItem.setIcon(R.drawable.delete_empty);
+                editItem.setWidth(140);
+                deleteItem.setWidth(140);
+                menu.addMenuItem(editItem);
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        entryList.setMenuCreator(menuCreator);
+        entryList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        entryList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        callback.sendEntry(adpEntry.getItem(position));
+                        entryList.smoothCloseMenu();
+                        break;
+                    case 1:
+                        presenterEntry.deleteEntry(adpEntry.getItem(position));
+                        entryList.smoothCloseMenu();
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -134,6 +185,11 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         entryEmpty.setVisibility(View.VISIBLE);
         List<PoEntry> list = new ArrayList<>();
         updateList(list);
+    }
+
+    @Override
+    public void deletedEntry() {
+        callback.deletedEntry();
     }
 
     private void updateList(List<PoEntry> list) {

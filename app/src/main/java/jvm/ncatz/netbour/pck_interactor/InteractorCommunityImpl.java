@@ -17,6 +17,7 @@ public class InteractorCommunityImpl implements InteractorCommunity {
     private InteractorCommunity.Listener listener;
 
     private DatabaseReference databaseReference;
+    private Query query;
     private ValueEventListener eventListener;
 
     public InteractorCommunityImpl(InteractorCommunity.Listener listener) {
@@ -25,7 +26,7 @@ public class InteractorCommunityImpl implements InteractorCommunity {
 
     @Override
     public void instanceFirebase() {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities");
+        query = FirebaseDatabase.getInstance().getReference().child("communities").orderByChild("deleted").equalTo(false);
         eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -33,9 +34,7 @@ public class InteractorCommunityImpl implements InteractorCommunity {
                     List<PoCommunity> list = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         PoCommunity community = snapshot.getValue(PoCommunity.class);
-                        if (!community.isDeleted()) {
-                            list.add(community);
-                        }
+                        list.add(community);
                     }
                     if (list.size() > 0) {
                         listener.returnList(list);
@@ -56,13 +55,39 @@ public class InteractorCommunityImpl implements InteractorCommunity {
 
     @Override
     public void attachFirebase() {
-        databaseReference.addValueEventListener(eventListener);
+        query.addValueEventListener(eventListener);
     }
 
     @Override
     public void dettachFirebase() {
         if (eventListener != null) {
-            databaseReference.removeEventListener(eventListener);
+            query.removeEventListener(eventListener);
         }
+    }
+
+    @Override
+    public void addCommunity(PoCommunity community) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(community.getCode());
+        databaseReference.setValue(community);
+        listener.addedCommunity();
+    }
+
+    @Override
+    public void editCommunity(PoCommunity community) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(community.getCode());
+        databaseReference.child("flats").setValue(community.getFlats());
+        databaseReference.child("municipality").setValue(community.getMunicipality());
+        databaseReference.child("number").setValue(community.getNumber());
+        databaseReference.child("postal").setValue(community.getPostal());
+        databaseReference.child("province").setValue(community.getProvince());
+        databaseReference.child("street").setValue(community.getStreet());
+        listener.editedCommunity();
+    }
+
+    @Override
+    public void deleteCommunity(PoCommunity item) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(item.getCode());
+        databaseReference.child("deleted").setValue(true);
+        listener.deletedCommunity();
     }
 }
