@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour.pck_fragment.form;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
@@ -48,6 +50,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         }
     }
 
+    private PresenterForm callback;
     private PresenterIncidenceImpl presenterIncidence;
 
     private boolean updateMode;
@@ -93,13 +96,25 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (PresenterForm) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
+
+    @Override
     public void addedIncidence() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override
     public void editedIncidence() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override

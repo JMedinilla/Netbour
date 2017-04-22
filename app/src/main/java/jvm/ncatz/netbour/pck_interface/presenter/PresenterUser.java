@@ -6,18 +6,16 @@ import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public interface PresenterUser {
     int SUCCESS = 0;
-    int ERROR_EMAIL_EMPTY = 10;
-    int ERROR_EMAIL_FORMAT = 11;
-    int ERROR_NAME_EMPTY = 20;
-    int ERROR_NAME_SHORT = 21;
-    int ERROR_NAME_LONG = 22;
-    int ERROR_PHONE_EMPTY = 30;
-    int ERROR_PHONE_SHORT = 31;
-    int ERROR_PHONE_LONG = 32;
-    int ERROR_FLOOR_RMPTY = 40;
-    int ERROR_DOOR_EMPTY = 50;
-    int ERROR_PIN_EMPTY = 60;
-    int ERROR_PIN_SHORT = 61;
+    int ERROR_NAME_EMPTY = 10;
+    int ERROR_NAME_SHORT = 11;
+    int ERROR_NAME_LONG = 12;
+    int ERROR_PHONE_EMPTY = 20;
+    int ERROR_PHONE_SHORT = 21;
+    int ERROR_PHONE_LONG = 22;
+    int ERROR_FLOOR_RMPTY = 30;
+    int ERROR_DOOR_EMPTY = 40;
+    int ERROR_PIN_EMPTY = 50;
+    int ERROR_PIN_SHORT = 51;
 
     void instanceFirebase(String code);
 

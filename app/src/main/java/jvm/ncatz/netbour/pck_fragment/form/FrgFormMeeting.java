@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour.pck_fragment.form;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_presenter.PresenterMeetingImpl;
@@ -47,6 +49,7 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
         }
     }
 
+    private PresenterForm callback;
     private PresenterMeetingImpl presenterMeeting;
 
     private boolean updateMode;
@@ -85,6 +88,18 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (PresenterForm) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
+
     private void openDatePicker() {
         DatePickerBuilder dpb = new DatePickerBuilder()
                 .setFragmentManager(getActivity().getSupportFragmentManager())
@@ -101,12 +116,12 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
 
     @Override
     public void addedMeeting() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override
     public void editedMeeting() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour.pck_fragment.form;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import butterknife.OnClick;
 import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterEntry;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_pojo.PoEntry;
 import jvm.ncatz.netbour.pck_presenter.PresenterEntryImpl;
 
@@ -51,6 +53,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         }
     }
 
+    private PresenterForm callback;
     private PresenterEntryImpl presenterEntry;
 
     private boolean updateMode;
@@ -101,14 +104,27 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         return view;
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (PresenterForm) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
+
     @Override
     public void addedEntry() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override
     public void editedEntry() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override

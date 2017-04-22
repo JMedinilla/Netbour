@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey_200"
     android:gravity="center">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,40 +14,21 @@
         android:padding="16dp">
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormUserEmailFloat"
+            android:id="@+id/fragFormUserNameFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_shape"
+            android:layout_marginTop="0dp"
+            android:background="@color/white"
             android:padding="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/fragFormUserEmail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawableLeft="@drawable/email"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/email"
-                android:hint="@string/fragFormUserEmail"
-                android:inputType="textEmailAddress" />
-        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-
-        <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormUserNameFloat"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_shape"
-            android:padding="2dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormUserEmailFloat">
-
-            <EditText
                 android:id="@+id/fragFormUserName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
                 android:drawableLeft="@drawable/face"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/face"
@@ -57,7 +40,8 @@
             android:id="@+id/fragFormUserPhoneFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_shape"
+            android:layout_marginTop="12dp"
+            android:background="@color/white"
             android:padding="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -67,6 +51,7 @@
                 android:id="@+id/fragFormUserPhone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
                 android:drawableLeft="@drawable/cellphone_android"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/cellphone_android"
@@ -78,6 +63,7 @@
             android:id="@+id/fragFormUserLinear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragFormUserPhoneFloat">
@@ -86,14 +72,17 @@
                 android:id="@+id/fragFormUserFloorFloat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
                 android:layout_weight="5"
-                android:background="@drawable/border_shape"
+                android:background="@color/white"
                 android:padding="2dp">
 
                 <EditText
                     android:id="@+id/fragFormUserFloor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
                     android:drawableLeft="@drawable/home_map_marker"
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/home_map_marker"
@@ -105,14 +94,17 @@
                 android:id="@+id/fragFormUserDoorFloat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
                 android:layout_weight="5"
-                android:background="@drawable/border_shape"
+                android:background="@color/white"
                 android:padding="2dp">
 
                 <EditText
                     android:id="@+id/fragFormUserDoor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
                     android:drawableLeft="@drawable/home_map_marker"
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/home_map_marker"
@@ -125,7 +117,8 @@
             android:id="@+id/fragFormUserPinFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_shape"
+            android:layout_marginTop="12dp"
+            android:background="@color/white"
             android:padding="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -135,6 +128,7 @@
                 android:id="@+id/fragFormUserPin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
                 android:drawableLeft="@drawable/numeric"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/numeric"
@@ -146,7 +140,7 @@
             android:id="@+id/fragFormUserCategoryGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_shape"
+            android:layout_marginTop="12dp"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

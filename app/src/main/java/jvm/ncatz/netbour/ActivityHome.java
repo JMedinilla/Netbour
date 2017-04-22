@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -24,7 +25,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import jvm.ncatz.netbour.pck_fragment.FrgHelp;
 import jvm.ncatz.netbour.pck_fragment.FrgHome;
 import jvm.ncatz.netbour.pck_fragment.FrgProfile;
-import jvm.ncatz.netbour.pck_fragment.FrgQR;
 import jvm.ncatz.netbour.pck_fragment.FrgSettings;
 import jvm.ncatz.netbour.pck_fragment.form.FrgFormCommunity;
 import jvm.ncatz.netbour.pck_fragment.form.FrgFormDocument;
@@ -39,6 +39,7 @@ import jvm.ncatz.netbour.pck_fragment.list.FrgIncidence;
 import jvm.ncatz.netbour.pck_fragment.list.FrgMeeting;
 import jvm.ncatz.netbour.pck_fragment.list.FrgUser;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 import jvm.ncatz.netbour.pck_pojo.PoEntry;
@@ -46,9 +47,9 @@ import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
-public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUser.ListUser, FrgBack,
+public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser, FrgBack,
         FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry,
-        FrgDocument.ListDocument, FrgCommunity.ListCommunity {
+        FrgDocument.ListDocument, FrgCommunity.ListCommunity, PresenterForm {
 
     public static final int FRAGMENT_HOME = 100;
     public static final int FRAGMENT_HELP = 101;
@@ -106,9 +107,11 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     CircleImageView profile_image;
     TextView profile_name;
 
+    private boolean form_opened;
     private int fragment_opened;
     private String actual_code;
     private String actual_name;
+    private boolean doubleBackToExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,10 +119,18 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        form_opened = false;
+        doubleBackToExit = false;
 
         actual_code = "default";
         actual_name = "Yo";
 
+        setNavigationActionBarHeader();
+
+        showHome();
+    }
+
+    private void setNavigationActionBarHeader() {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -232,8 +243,6 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
             profile_image = (CircleImageView) header.findViewById(R.id.header_circle_image);
             profile_name = (TextView) header.findViewById(R.id.header_txtName);
         }
-
-        showHome();
     }
 
     @Override
@@ -248,10 +257,12 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
 
     @Override
     public void backFromForm() {
+        form_opened = false;
         actionButton.setVisibility(View.VISIBLE);
     }
 
     private void openFormCommunity(PoCommunity community) {
+        form_opened = true;
         actionButton.setVisibility(View.INVISIBLE);
 
         Bundle bundle = new Bundle();
@@ -267,6 +278,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     }
 
     private void openFormUser(PoUser user) {
+        form_opened = true;
         actionButton.setVisibility(View.INVISIBLE);
 
         Bundle bundle = new Bundle();
@@ -283,6 +295,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     }
 
     private void openFormMeeting(PoMeeting meeting) {
+        form_opened = true;
         actionButton.setVisibility(View.INVISIBLE);
 
         Bundle bundle = new Bundle();
@@ -299,6 +312,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     }
 
     private void openFormDocument(PoDocument document) {
+        form_opened = true;
         actionButton.setVisibility(View.INVISIBLE);
 
         Bundle bundle = new Bundle();
@@ -315,6 +329,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     }
 
     private void openFormEntry(PoEntry entry) {
+        form_opened = true;
         actionButton.setVisibility(View.INVISIBLE);
 
         Bundle bundle = new Bundle();
@@ -332,6 +347,7 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     }
 
     private void openFormIncidence(PoIncidence incidence) {
+        form_opened = true;
         actionButton.setVisibility(View.INVISIBLE);
 
         Bundle bundle = new Bundle();
@@ -639,5 +655,33 @@ public class ActivityHome extends AppCompatActivity implements FrgQR.IQR, FrgUse
     @Override
     public void deletedIncidence() {
         showSnackbar(getString(R.string.incidence_deleted), DURATION_SHORT);
+    }
+
+    @Override
+    public void closeFormCall() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        } else {
+            if (!form_opened) {
+                if (doubleBackToExit) {
+                    super.onBackPressed();
+                }
+                this.doubleBackToExit = true;
+                showSnackbar("Press BACK again to exit", 1);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExit = false;
+                    }
+                }, 2000);
+            } else {
+                super.onBackPressed();
+            }
+        }
     }
 }

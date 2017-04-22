@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour.pck_fragment.form;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,14 +15,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterUserImpl;
 
 public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
 
-    @BindView(R.id.fragFormUserEmail)
-    EditText fragFormUserEmail;
     @BindView(R.id.fragFormUserName)
     EditText fragFormUserName;
     @BindView(R.id.fragFormUserPhone)
@@ -49,10 +49,11 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 category = PoUser.GROUP_PRESIDENT;
                 break;
             case R.id.fragFormUserSave:
+                String em = fragFormUserName.getText().toString().trim().replace(" ", "").toLowerCase() + "@" + fragFormUserPin.getText().toString() + "." + code;
                 PoUser user = new PoUser(
                         System.currentTimeMillis(), code,
                         fragFormUserFloor.getText().toString(), fragFormUserDoor.getText().toString(),
-                        fragFormUserPhone.getText().toString(), fragFormUserEmail.getText().toString(),
+                        fragFormUserPhone.getText().toString(), em,
                         fragFormUserName.getText().toString(), category, false
                 );
                 presenterUser.validateUser(user, fragFormUserPin.getText().toString(), updateMode);
@@ -60,6 +61,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
         }
     }
 
+    private PresenterForm callback;
     private PresenterUserImpl presenterUser;
 
     private boolean updateMode;
@@ -94,8 +96,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
         View view = inflater.inflate(R.layout.fragment_form_user, container, false);
         ButterKnife.bind(this, view);
         if (updateMode) {
-            fragFormUserEmail.setText(updateItem.getEmail());
-            fragFormUserEmail.setEnabled(false);
             fragFormUserName.setText(updateItem.getName());
             fragFormUserPhone.setText(updateItem.getPhone());
             fragFormUserFloor.setText(updateItem.getFloor());
@@ -114,13 +114,25 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (PresenterForm) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
+
+    @Override
     public void addedUser() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override
     public void editedUser() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override
@@ -137,12 +149,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 } else {
                     presenterUser.addUser(user);
                 }
-                break;
-            case PresenterUser.ERROR_EMAIL_EMPTY:
-                fragFormUserEmail.setError(getString(R.string.ERROR_EMPTY));
-                break;
-            case PresenterUser.ERROR_EMAIL_FORMAT:
-                fragFormUserEmail.setError(getString(R.string.ERROR_FORMAT));
                 break;
             case PresenterUser.ERROR_NAME_EMPTY:
                 fragFormUserName.setError(getString(R.string.ERROR_EMPTY));

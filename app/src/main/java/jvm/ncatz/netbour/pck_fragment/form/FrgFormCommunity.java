@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour.pck_fragment.form;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import butterknife.OnClick;
 import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 import jvm.ncatz.netbour.pck_presenter.PresenterCommunityImpl;
 
@@ -50,6 +52,7 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
         presenterCommunity.validateCommunity(community);
     }
 
+    private PresenterForm callback;
     private PresenterCommunityImpl presenterCommunity;
 
     private boolean updateMode;
@@ -92,13 +95,25 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (PresenterForm) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
+
+    @Override
     public void addedCommunity() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override
     public void editedCommunity() {
-        getActivity().onBackPressed();
+        callback.closeFormCall();
     }
 
     @Override

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey_200"
     android:gravity="center">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,8 +16,10 @@
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
             android:id="@+id/fragFormMeetingDateFloat"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/border_shape"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@color/white"
             android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="@+id/fragFormMeetingPicker"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -26,6 +30,7 @@
                 android:id="@+id/fragFormMeetingDate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
                 android:drawableLeft="@drawable/calendar"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/calendar"
@@ -36,9 +41,9 @@
 
         <ImageButton
             android:id="@+id/fragFormMeetingPicker"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/border_shape"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@color/white"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_calendar_plus_black_48dp"
             app:layout_constraintRight_toRightOf="parent"
@@ -48,7 +53,8 @@
             android:id="@+id/fragFormMeetingDescriptionFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_shape"
+            android:layout_marginTop="12dp"
+            android:background="@color/white"
             android:padding="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -58,6 +64,7 @@
                 android:id="@+id/fragFormMeetingDescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
                 android:drawableLeft="@drawable/format_color_text"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/format_color_text"

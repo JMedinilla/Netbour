@@ -1,7 +1,6 @@
 package jvm.ncatz.netbour.pck_presenter;
 
 import android.text.TextUtils;
-import android.util.Patterns;
 
 import java.util.List;
 
@@ -39,13 +38,6 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     @Override
     public void validateUser(PoUser user, String pin, boolean updateMode) {
         boolean error = false;
-        if (TextUtils.equals("", user.getEmail())) {
-            error = true;
-            viewForm.validationResponse(user, ERROR_EMAIL_EMPTY);
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(user.getEmail()).matches()) {
-            error = true;
-            viewForm.validationResponse(user, ERROR_EMAIL_FORMAT);
-        }
         if (TextUtils.equals("", user.getName())) {
             error = true;
             viewForm.validationResponse(user, ERROR_NAME_EMPTY);
