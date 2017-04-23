@@ -1,4 +1,4 @@
-package jvm.ncatz.netbour.pck_fragment;
+package jvm.ncatz.netbour.pck_fragment.home.list.other;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import jvm.ncatz.netbour.R;
 
-public class FrgHelp extends Fragment {
+public class FrgInfo extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class FrgHelp extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_help, container, false);
+        View view = inflater.inflate(R.layout.fragment_info, container, false);
         return view;
     }
 

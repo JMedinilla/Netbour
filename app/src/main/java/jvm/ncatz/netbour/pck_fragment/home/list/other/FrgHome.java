@@ -1,4 +1,4 @@
-package jvm.ncatz.netbour.pck_fragment;
+package jvm.ncatz.netbour.pck_fragment.home.list.other;
 
 import android.content.Context;
 import android.os.Bundle;

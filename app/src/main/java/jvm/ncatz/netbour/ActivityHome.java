@@ -22,22 +22,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import jvm.ncatz.netbour.pck_fragment.FrgHelp;
-import jvm.ncatz.netbour.pck_fragment.FrgHome;
-import jvm.ncatz.netbour.pck_fragment.FrgProfile;
-import jvm.ncatz.netbour.pck_fragment.FrgSettings;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormCommunity;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormDocument;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormEntry;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormIncidence;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormMeeting;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormUser;
-import jvm.ncatz.netbour.pck_fragment.list.FrgCommunity;
-import jvm.ncatz.netbour.pck_fragment.list.FrgDocument;
-import jvm.ncatz.netbour.pck_fragment.list.FrgEntry;
-import jvm.ncatz.netbour.pck_fragment.list.FrgIncidence;
-import jvm.ncatz.netbour.pck_fragment.list.FrgMeeting;
-import jvm.ncatz.netbour.pck_fragment.list.FrgUser;
+import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgAbout;
+import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgHome;
+import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgProfile;
+import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgSettings;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormCommunity;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormDocument;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormEntry;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormIncidence;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormMeeting;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormUser;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgCommunity;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgDocument;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgEntry;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgIncidence;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgMeeting;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgUser;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
@@ -375,10 +375,10 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         if (fragment_opened != FRAGMENT_HELP) {
             actionButton.setVisibility(View.INVISIBLE);
 
-            FrgHelp frgHelp = new FrgHelp();
+            FrgAbout frgAbout = new FrgAbout();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgHelp, "frgHelp");
+            transaction.replace(R.id.activity_main_frame, frgAbout, "frgAbout");
             transaction.commit();
 
             fragment_opened = FRAGMENT_HELP;

@@ -1,4 +1,4 @@
-package jvm.ncatz.netbour.pck_fragment.list;
+package jvm.ncatz.netbour.pck_fragment.home.list;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -25,34 +25,38 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import jvm.ncatz.netbour.R;
-import jvm.ncatz.netbour.pck_adapter.AdpMeeting;
+import jvm.ncatz.netbour.pck_adapter.AdpCommunity;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
-import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
-import jvm.ncatz.netbour.pck_pojo.PoMeeting;
-import jvm.ncatz.netbour.pck_presenter.PresenterMeetingImpl;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
+import jvm.ncatz.netbour.pck_pojo.PoCommunity;
+import jvm.ncatz.netbour.pck_presenter.PresenterCommunityImpl;
 
-public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
-    private ListMeeting callback;
+public class FrgCommunity extends Fragment implements PresenterCommunity.ViewList {
+    private ListCommunity callback;
     private FrgBack callbackBack;
 
-    private PresenterMeetingImpl presenterMeeting;
-    private AdpMeeting adpMeeting;
+    private PresenterCommunityImpl presenterCommunity;
+    private AdpCommunity adpCommunity;
 
-    @BindView(R.id.fragListMeeting_list)
-    SwipeMenuListView meetingList;
-    @BindView(R.id.fragListMeeting_empty)
-    TextView meetingEmpty;
+    @BindView(R.id.fragListCommunity_list)
+    SwipeMenuListView communityList;
+    @BindView(R.id.fragListCommunity_empty)
+    TextView communityEmpty;
 
-    @OnItemClick(R.id.fragListMeeting_list)
+    @OnItemClick(R.id.fragListCommunity_list)
     public void itemClick(int position) {
-        //
+        PoCommunity com = adpCommunity.getItem(position);
+        if (com != null) {
+            callback.changeCode(com.getCode());
+        }
     }
 
-    public interface ListMeeting {
+    public interface ListCommunity {
+        void changeCode(String code);
 
-        void sendMeeting(PoMeeting item);
+        void sendCommunity(PoCommunity item);
 
-        void deletedMeeting();
+        void deletedCommunity();
     }
 
     @Override
@@ -61,21 +65,17 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
-        List<PoMeeting> list = new ArrayList<>();
-        adpMeeting = new AdpMeeting(getActivity(), list);
-        presenterMeeting = new PresenterMeetingImpl(this, null);
+        List<PoCommunity> list = new ArrayList<>();
+        adpCommunity = new AdpCommunity(getActivity(), list);
+        presenterCommunity = new PresenterCommunityImpl(this, null);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String code = bundle.getString("comcode");
-            presenterMeeting.instanceFirebase(code);
-        }
+        presenterCommunity.instanceFirebase();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_community, container, false);
         ButterKnife.bind(this, view);
         swipeMenuInstance();
         return view;
@@ -103,19 +103,19 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
                 menu.addMenuItem(deleteItem);
             }
         };
-        meetingList.setMenuCreator(menuCreator);
-        meetingList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        meetingList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+        communityList.setMenuCreator(menuCreator);
+        communityList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        communityList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        callback.sendMeeting(adpMeeting.getItem(position));
-                        meetingList.smoothCloseMenu();
+                        callback.sendCommunity(adpCommunity.getItem(position));
+                        communityList.smoothCloseMenu();
                         break;
                     case 1:
-                        presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
-                        meetingList.smoothCloseMenu();
+                        presenterCommunity.deleteCommunity(adpCommunity.getItem(position));
+                        communityList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -126,14 +126,14 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        meetingList.setAdapter(adpMeeting);
-        meetingList.setDivider(null);
+        communityList.setAdapter(adpCommunity);
+        communityList.setDivider(null);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (ListMeeting) context;
+        callback = (ListCommunity) context;
         callbackBack = (FrgBack) context;
     }
 
@@ -148,13 +148,13 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     public void onStart() {
         super.onStart();
         callbackBack.backFromForm();
-        presenterMeeting.attachFirebase();
+        presenterCommunity.attachFirebase();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterMeeting.dettachFirebase();
+        presenterCommunity.dettachFirebase();
     }
 
     @Override
@@ -168,27 +168,27 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     }
 
     @Override
-    public void returnList(List<PoMeeting> list) {
-        meetingList.setVisibility(View.VISIBLE);
-        meetingEmpty.setVisibility(View.GONE);
+    public void returnList(List<PoCommunity> list) {
+        communityList.setVisibility(View.VISIBLE);
+        communityEmpty.setVisibility(View.GONE);
         updateList(list);
     }
 
     @Override
     public void returnListEmpty() {
-        meetingList.setVisibility(View.GONE);
-        meetingEmpty.setVisibility(View.VISIBLE);
-        List<PoMeeting> list = new ArrayList<>();
+        communityList.setVisibility(View.GONE);
+        communityEmpty.setVisibility(View.VISIBLE);
+        List<PoCommunity> list = new ArrayList<>();
         updateList(list);
     }
 
     @Override
-    public void deletedMeeting() {
-        callback.deletedMeeting();
+    public void deletedCommunity() {
+        callback.deletedCommunity();
     }
 
-    private void updateList(List<PoMeeting> list) {
-        adpMeeting.clear();
-        adpMeeting.addAll(list);
+    private void updateList(List<PoCommunity> list) {
+        adpCommunity.clear();
+        adpCommunity.addAll(list);
     }
 }

@@ -1,4 +1,4 @@
-package jvm.ncatz.netbour.pck_fragment.list;
+package jvm.ncatz.netbour.pck_fragment.home.list;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -25,38 +25,34 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import jvm.ncatz.netbour.R;
-import jvm.ncatz.netbour.pck_adapter.AdpCommunity;
+import jvm.ncatz.netbour.pck_adapter.AdpDocument;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
-import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
-import jvm.ncatz.netbour.pck_pojo.PoCommunity;
-import jvm.ncatz.netbour.pck_presenter.PresenterCommunityImpl;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
+import jvm.ncatz.netbour.pck_pojo.PoDocument;
+import jvm.ncatz.netbour.pck_presenter.PresenterDocumentImpl;
 
-public class FrgCommunity extends Fragment implements PresenterCommunity.ViewList {
-    private ListCommunity callback;
+public class FrgDocument extends Fragment implements PresenterDocument.ViewList {
+    private ListDocument callback;
     private FrgBack callbackBack;
 
-    private PresenterCommunityImpl presenterCommunity;
-    private AdpCommunity adpCommunity;
+    private PresenterDocumentImpl presenterDocument;
+    private AdpDocument adpDocument;
 
-    @BindView(R.id.fragListCommunity_list)
-    SwipeMenuListView communityList;
-    @BindView(R.id.fragListCommunity_empty)
-    TextView communityEmpty;
+    @BindView(R.id.fragListDocument_list)
+    SwipeMenuListView documentList;
+    @BindView(R.id.fragListDocument_empty)
+    TextView documentEmpty;
 
-    @OnItemClick(R.id.fragListCommunity_list)
+    @OnItemClick(R.id.fragListDocument_list)
     public void itemClick(int position) {
-        PoCommunity com = adpCommunity.getItem(position);
-        if (com != null) {
-            callback.changeCode(com.getCode());
-        }
+        //
     }
 
-    public interface ListCommunity {
-        void changeCode(String code);
+    public interface ListDocument {
 
-        void sendCommunity(PoCommunity item);
+        void sendDocument(PoDocument item);
 
-        void deletedCommunity();
+        void deletedDocument();
     }
 
     @Override
@@ -65,17 +61,21 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
-        List<PoCommunity> list = new ArrayList<>();
-        adpCommunity = new AdpCommunity(getActivity(), list);
-        presenterCommunity = new PresenterCommunityImpl(this, null);
+        List<PoDocument> list = new ArrayList<>();
+        adpDocument = new AdpDocument(getActivity(), list);
+        presenterDocument = new PresenterDocumentImpl(this, null);
 
-        presenterCommunity.instanceFirebase();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String code = bundle.getString("comcode");
+            presenterDocument.instanceFirebase(code);
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_community, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_document, container, false);
         ButterKnife.bind(this, view);
         swipeMenuInstance();
         return view;
@@ -103,19 +103,19 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
                 menu.addMenuItem(deleteItem);
             }
         };
-        communityList.setMenuCreator(menuCreator);
-        communityList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        communityList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+        documentList.setMenuCreator(menuCreator);
+        documentList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        documentList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        callback.sendCommunity(adpCommunity.getItem(position));
-                        communityList.smoothCloseMenu();
+                        callback.sendDocument(adpDocument.getItem(position));
+                        documentList.smoothCloseMenu();
                         break;
                     case 1:
-                        presenterCommunity.deleteCommunity(adpCommunity.getItem(position));
-                        communityList.smoothCloseMenu();
+                        presenterDocument.deleteDocument(adpDocument.getItem(position));
+                        documentList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -126,14 +126,14 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        communityList.setAdapter(adpCommunity);
-        communityList.setDivider(null);
+        documentList.setAdapter(adpDocument);
+        documentList.setDivider(null);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (ListCommunity) context;
+        callback = (ListDocument) context;
         callbackBack = (FrgBack) context;
     }
 
@@ -148,13 +148,13 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     public void onStart() {
         super.onStart();
         callbackBack.backFromForm();
-        presenterCommunity.attachFirebase();
+        presenterDocument.attachFirebase();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterCommunity.dettachFirebase();
+        presenterDocument.dettachFirebase();
     }
 
     @Override
@@ -168,27 +168,27 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     }
 
     @Override
-    public void returnList(List<PoCommunity> list) {
-        communityList.setVisibility(View.VISIBLE);
-        communityEmpty.setVisibility(View.GONE);
+    public void returnList(List<PoDocument> list) {
+        documentList.setVisibility(View.VISIBLE);
+        documentEmpty.setVisibility(View.GONE);
         updateList(list);
     }
 
     @Override
     public void returnListEmpty() {
-        communityList.setVisibility(View.GONE);
-        communityEmpty.setVisibility(View.VISIBLE);
-        List<PoCommunity> list = new ArrayList<>();
+        documentList.setVisibility(View.GONE);
+        documentEmpty.setVisibility(View.VISIBLE);
+        List<PoDocument> list = new ArrayList<>();
         updateList(list);
     }
 
     @Override
-    public void deletedCommunity() {
-        callback.deletedCommunity();
+    public void deletedDocument() {
+        callback.deletedDocument();
     }
 
-    private void updateList(List<PoCommunity> list) {
-        adpCommunity.clear();
-        adpCommunity.addAll(list);
+    private void updateList(List<PoDocument> list) {
+        adpDocument.clear();
+        adpDocument.addAll(list);
     }
 }
