@@ -113,29 +113,6 @@
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
         </LinearLayout>
 
-        <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormUserPinFloat"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@color/white"
-            android:padding="2dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormUserLinear">
-
-            <EditText
-                android:id="@+id/fragFormUserPin"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/edit_text_holo_light"
-                android:drawableLeft="@drawable/numeric"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/numeric"
-                android:hint="@string/fragFormUserPin"
-                android:inputType="number" />
-        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-
         <RadioGroup
             android:id="@+id/fragFormUserCategoryGroup"
             android:layout_width="0dp"
@@ -144,7 +121,7 @@
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormUserPinFloat">
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserLinear">
 
             <RadioButton
                 android:id="@+id/fragFormUserCategoryFirst"

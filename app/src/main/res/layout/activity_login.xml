@@ -5,7 +5,7 @@
     android:id="@+id/activity_login_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jvm.ncatz.netbour.LoginActivity">
+    tools:context="jvm.ncatz.netbour.ActivityLogin">
 
     <LinearLayout
         android:id="@+id/activity_login_linear"

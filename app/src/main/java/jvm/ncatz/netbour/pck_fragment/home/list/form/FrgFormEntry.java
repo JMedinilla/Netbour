@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RadioButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,22 +24,12 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
     EditText fragFormEntryTitle;
     @BindView(R.id.fragFormEntryDescription)
     EditText fragFormEntryDescription;
-    @BindView(R.id.fragFormEntryCategoryFirst)
-    RadioButton fragFormEntryCategoryFirst;
-    @BindView(R.id.fragFormEntryCategorySecond)
-    RadioButton fragFormEntryCategorySecond;
     @BindView(R.id.fragFormEntrySave)
     FButton fragFormEntrySave;
 
-    @OnClick({R.id.fragFormEntryCategoryFirst, R.id.fragFormEntryCategorySecond, R.id.fragFormEntrySave})
+    @OnClick({R.id.fragFormEntrySave})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.fragFormEntryCategoryFirst:
-                category = PoEntry.CATEGORY_FIRST;
-                break;
-            case R.id.fragFormEntryCategorySecond:
-                category = PoEntry.CATEGORY_SECOND;
-                break;
             case R.id.fragFormEntrySave:
                 long currentTime = System.currentTimeMillis();
                 PoEntry entry = new PoEntry(
@@ -78,6 +67,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         if (bndl != null) {
             code = bndl.getString("comcode");
             name = bndl.getString("myname");
+            category = bndl.getInt("formCategory");
             updateItem = bndl.getParcelable("entryForm");
             if (updateItem != null) {
                 updateMode = true;
@@ -93,13 +83,6 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         if (updateMode) {
             fragFormEntryTitle.setText(updateItem.getTitle());
             fragFormEntryDescription.setText(updateItem.getContent());
-            if (updateItem.getCategory() == PoEntry.CATEGORY_FIRST) {
-                fragFormEntryCategorySecond.setChecked(false);
-                fragFormEntryCategoryFirst.setChecked(true);
-            } else {
-                fragFormEntryCategoryFirst.setChecked(false);
-                fragFormEntryCategorySecond.setChecked(true);
-            }
         }
         return view;
     }

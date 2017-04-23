@@ -29,6 +29,7 @@ import jvm.ncatz.netbour.pck_adapter.AdpDocument;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
+import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterDocumentImpl;
 
 public class FrgDocument extends Fragment implements PresenterDocument.ViewList {
@@ -37,6 +38,8 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
 
     private PresenterDocumentImpl presenterDocument;
     private AdpDocument adpDocument;
+
+    private int userCateogory;
 
     @BindView(R.id.fragListDocument_list)
     SwipeMenuListView documentList;
@@ -68,6 +71,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         Bundle bundle = getArguments();
         if (bundle != null) {
             String code = bundle.getString("comcode");
+            userCateogory = bundle.getInt("userCategory");
             presenterDocument.instanceFirebase(code);
         }
     }
@@ -147,7 +151,9 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     @Override
     public void onStart() {
         super.onStart();
-        callbackBack.backFromForm();
+        if (userCateogory == PoUser.GROUP_ADMIN || userCateogory == PoUser.GROUP_PRESIDENT) {
+            callbackBack.backFromForm();
+        }
         presenterDocument.attachFirebase();
     }
 

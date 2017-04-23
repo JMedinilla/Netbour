@@ -16,13 +16,14 @@ public class PoUser implements Parcelable {
     private String email;
     private String name;
     private int category;
+    private String photo;
     private boolean deleted;
 
     private PoUser() {
         //
     }
 
-    public PoUser(long key, String community, String floor, String door, String phone, String email, String name, int category, boolean deleted) {
+    public PoUser(long key, String community, String floor, String door, String phone, String email, String name, int category, String photo, boolean deleted) {
         this.key = key;
         this.community = community;
         this.floor = floor;
@@ -31,6 +32,7 @@ public class PoUser implements Parcelable {
         this.email = email;
         this.name = name;
         this.category = category;
+        this.photo = photo;
         this.deleted = deleted;
     }
 
@@ -98,6 +100,14 @@ public class PoUser implements Parcelable {
         this.category = category;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
@@ -106,7 +116,7 @@ public class PoUser implements Parcelable {
         this.deleted = deleted;
     }
 
-    private PoUser(Parcel in) {
+    protected PoUser(Parcel in) {
         key = in.readLong();
         community = in.readString();
         floor = in.readString();
@@ -115,6 +125,7 @@ public class PoUser implements Parcelable {
         email = in.readString();
         name = in.readString();
         category = in.readInt();
+        photo = in.readString();
         deleted = in.readByte() != 0;
     }
 
@@ -145,6 +156,7 @@ public class PoUser implements Parcelable {
         dest.writeString(email);
         dest.writeString(name);
         dest.writeInt(category);
+        dest.writeString(photo);
         dest.writeByte((byte) (deleted ? 1 : 0));
     }
 }

@@ -29,6 +29,7 @@ import jvm.ncatz.netbour.pck_adapter.AdpEntry;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterEntry;
 import jvm.ncatz.netbour.pck_pojo.PoEntry;
+import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterEntryImpl;
 
 public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
@@ -37,6 +38,9 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
 
     private PresenterEntryImpl presenterEntry;
     private AdpEntry adpEntry;
+
+    private int userCateogory;
+    private int cat;
 
     @BindView(R.id.fragListEntry_list)
     SwipeMenuListView entryList;
@@ -67,8 +71,9 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            int cat = bundle.getInt("category");
+            cat = bundle.getInt("category");
             String code = bundle.getString("comcode");
+            userCateogory = bundle.getInt("userCategory");
             if (cat == PoEntry.CATEGORY_FIRST) {
                 presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
             } else {
@@ -152,7 +157,13 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     @Override
     public void onStart() {
         super.onStart();
-        callbackBack.backFromForm();
+        if (cat == PoEntry.CATEGORY_SECOND) {
+            callbackBack.backFromForm();
+        } else {
+            if (userCateogory == PoUser.GROUP_ADMIN || userCateogory == PoUser.GROUP_PRESIDENT) {
+                callbackBack.backFromForm();
+            }
+        }
         presenterEntry.attachFirebase();
     }
 
