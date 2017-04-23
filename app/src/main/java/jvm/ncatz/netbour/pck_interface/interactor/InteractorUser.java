@@ -12,8 +12,6 @@ public interface InteractorUser {
 
     void dettachFirebase();
 
-    void addUser(PoUser user);
-
     void editUser(PoUser user);
 
     void deleteUser(PoUser item);
@@ -23,8 +21,6 @@ public interface InteractorUser {
         void returnList(List<PoUser> list);
 
         void returnListEmpty();
-
-        void addedUser();
 
         void editedUser();
 

@@ -126,11 +126,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
     }
 
     @Override
-    public void addedUser() {
-        callback.closeFormCall();
-    }
-
-    @Override
     public void editedUser() {
         callback.closeFormCall();
     }
@@ -146,8 +141,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                     updateItem.setDoor(user.getDoor());
                     updateItem.setCategory(user.getCategory());
                     presenterUser.editUser(updateItem);
-                } else {
-                    presenterUser.addUser(user);
                 }
                 break;
             case PresenterUser.ERROR_NAME_EMPTY:

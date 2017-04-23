@@ -87,7 +87,7 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/home_map_marker"
                     android:hint="@string/fragFormUserFloor"
-                    android:inputType="number" />
+                    android:inputType="text" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -109,7 +109,7 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/home_map_marker"
                     android:hint="@string/fragFormUserDoor"
-                    android:inputType="number" />
+                    android:inputType="text" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
         </LinearLayout>
 

@@ -68,13 +68,6 @@ public class InteractorUserImpl implements InteractorUser {
     }
 
     @Override
-    public void addUser(PoUser user) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(user.getKey()));
-        databaseReference.setValue(user);
-        listener.addedUser();
-    }
-
-    @Override
     public void editUser(PoUser user) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(user.getKey()));
         databaseReference.child("category").setValue(user.getCategory());

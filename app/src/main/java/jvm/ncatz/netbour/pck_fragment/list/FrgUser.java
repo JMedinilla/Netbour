@@ -147,7 +147,6 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     @Override
     public void onStart() {
         super.onStart();
-        callbackBack.backFromForm();
         presenterUser.attachFirebase();
     }
 

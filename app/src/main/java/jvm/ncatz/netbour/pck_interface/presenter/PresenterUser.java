@@ -25,8 +25,6 @@ public interface PresenterUser {
 
     void validateUser(PoUser user, String pin, boolean updateMode);
 
-    void addUser(PoUser user);
-
     void editUser(PoUser user);
 
     void deleteUser(PoUser item);
@@ -41,8 +39,6 @@ public interface PresenterUser {
     }
 
     interface ViewForm {
-
-        void addedUser();
 
         void editedUser();
 

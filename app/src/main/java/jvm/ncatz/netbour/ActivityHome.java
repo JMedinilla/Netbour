@@ -98,9 +98,6 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             case FRAGMENT_LIST_MEETING:
                 openFormMeeting(null);
                 break;
-            case FRAGMENT_LIST_USER:
-                openFormUser(null);
-                break;
         }
     }
 
@@ -433,8 +430,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     private void showUsers() {
         if (fragment_opened != FRAGMENT_LIST_USER) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+            actionButton.setVisibility(View.INVISIBLE);
 
             Bundle bundle = new Bundle();
             bundle.putString("comcode", actual_code);

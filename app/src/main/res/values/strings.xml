@@ -76,4 +76,5 @@
     <string name="ERROR_LONG_20">Too long (max 20)</string>
     <string name="ERROR_LONG_255">Too long (max 255)</string>
     <string name="ERROR_LONG_400">Too long (max 400)</string>
+    <string name="addedError">This user can not be signed in</string>
 </resources>
