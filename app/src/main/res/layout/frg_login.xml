@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_200"
     android:gravity="center">
 
+    <ImageView
+        android:id="@+id/fragFormLoginImage"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/face" />
+
+    <TextView
+        android:id="@+id/fragFormLoginWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragFormLoginImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/fragFormLoginWelcome"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fragFormLoginConstraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/fragFormLoginWelcome"
+        android:layout_marginTop="8dp"
         android:padding="16dp">
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormEntryTitleFloat"
+            android:id="@+id/fragFormLoginEmailFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
             android:background="@color/white"
             android:padding="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -23,19 +48,19 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/fragFormEntryTitle"
+                android:id="@+id/fragFormLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/edit_text_holo_light"
-                android:drawableLeft="@drawable/format_title"
+                android:drawableLeft="@drawable/email"
                 android:drawablePadding="10dp"
-                android:drawableStart="@drawable/format_title"
-                android:hint="@string/fragFormEntryTitle"
+                android:drawableStart="@drawable/email"
+                android:hint="@string/fragFormUserEmail"
                 android:inputType="text" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormEntryDescriptionFloat"
+            android:id="@+id/fragFormLoginPinFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -43,27 +68,22 @@
             android:padding="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormEntryTitleFloat">
+            app:layout_constraintTop_toBottomOf="@+id/fragFormLoginEmailFloat">
 
             <EditText
-                android:id="@+id/fragFormEntryDescription"
+                android:id="@+id/fragFormLoginPin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/edit_text_holo_light"
-                android:drawableLeft="@drawable/format_color_text"
+                android:drawableLeft="@drawable/numeric"
                 android:drawablePadding="10dp"
-                android:drawableStart="@drawable/format_color_text"
-                android:gravity="top|start"
-                android:hint="@string/fragFormEntryDescription"
-                android:inputType="textMultiLine"
-                android:lines="6"
-                android:maxLines="6"
-                android:minLines="6"
-                android:scrollbars="vertical" />
+                android:drawableStart="@drawable/numeric"
+                android:hint="@string/fragFormUserPin"
+                android:inputType="textPassword" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <info.hoang8f.widget.FButton
-            android:id="@+id/fragFormEntrySave"
+            android:id="@+id/fragFormLoginSave"
             android:layout_width="120dp"
             android:layout_height="60dp"
             android:layout_marginLeft="0dp"
@@ -75,17 +95,31 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingStart="10dp"
-            android:text="@string/fragFormSave"
+            android:text="@string/fragFormLogin"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormEntryDescriptionFloat"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormLoginPinFloat"
             fbutton:buttonColor="@color/orange_600"
             fbutton:cornerRadius="12dp"
             fbutton:shadowColor="@color/orange_900"
             fbutton:shadowEnabled="true"
             fbutton:shadowHeight="8dp" />
     </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/fragFormLoginRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragFormLoginConstraint"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:padding="8dp"
+        android:text="@string/fragFormLoginRegister"
+        android:textColor="@color/grey_500"
+        android:textSize="18sp"
+        android:textStyle="italic" />
 </RelativeLayout>

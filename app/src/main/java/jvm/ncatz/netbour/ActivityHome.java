@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -14,30 +15,40 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import jvm.ncatz.netbour.pck_fragment.FrgHelp;
-import jvm.ncatz.netbour.pck_fragment.FrgHome;
-import jvm.ncatz.netbour.pck_fragment.FrgProfile;
-import jvm.ncatz.netbour.pck_fragment.FrgSettings;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormCommunity;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormDocument;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormEntry;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormIncidence;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormMeeting;
-import jvm.ncatz.netbour.pck_fragment.form.FrgFormUser;
-import jvm.ncatz.netbour.pck_fragment.list.FrgCommunity;
-import jvm.ncatz.netbour.pck_fragment.list.FrgDocument;
-import jvm.ncatz.netbour.pck_fragment.list.FrgEntry;
-import jvm.ncatz.netbour.pck_fragment.list.FrgIncidence;
-import jvm.ncatz.netbour.pck_fragment.list.FrgMeeting;
-import jvm.ncatz.netbour.pck_fragment.list.FrgUser;
+import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgAbout;
+import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgHome;
+import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgProfile;
+import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgSettings;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormCommunity;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormDocument;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormEntry;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormIncidence;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormMeeting;
+import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormUser;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgCommunity;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgDocument;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgEntry;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgIncidence;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgMeeting;
+import jvm.ncatz.netbour.pck_fragment.home.list.FrgUser;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
@@ -89,17 +100,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 openFormDocument(null);
                 break;
             case FRAGMENT_LIST_ENTRYF:
+                openFormEntry(null, PoEntry.CATEGORY_FIRST);
+                break;
             case FRAGMENT_LIST_ENTRYS:
-                openFormEntry(null);
+                openFormEntry(null, PoEntry.CATEGORY_SECOND);
                 break;
             case FRAGMENT_LIST_INCIDENCE:
                 openFormIncidence(null);
                 break;
             case FRAGMENT_LIST_MEETING:
                 openFormMeeting(null);
-                break;
-            case FRAGMENT_LIST_USER:
-                openFormUser(null);
                 break;
         }
     }
@@ -111,6 +121,8 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     private int fragment_opened;
     private String actual_code;
     private String actual_name;
+    private String actual_photo;
+    private int actual_category;
     private boolean doubleBackToExit;
 
     @Override
@@ -121,13 +133,60 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         setSupportActionBar(toolbar);
         form_opened = false;
         doubleBackToExit = false;
-
-        actual_code = "default";
-        actual_name = "Yo";
+        actual_code = "";
+        actual_name = "";
+        actual_photo = "";
+        actual_category = 0;
 
         setNavigationActionBarHeader();
+        getCurrentUser();
 
         showHome();
+    }
+
+    private void getCurrentUser() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            PoUser us = snapshot.getValue(PoUser.class);
+                            if (!us.isDeleted()) {
+                                if (us.getEmail().equals(user.getEmail())) {
+                                    actual_code = us.getCommunity();
+                                    actual_name = us.getName();
+                                    actual_photo = us.getPhoto();
+                                    actual_category = us.getCategory();
+
+                                    if (!"".equals(actual_photo)) {
+                                        Glide.with(ActivityHome.this).load(actual_photo).into(profile_image);
+                                    } else {
+                                        profile_image.setImageResource(R.drawable.default_image);
+                                    }
+                                    profile_name.setText(actual_name);
+
+                                    if (actual_category != PoUser.GROUP_ADMIN) {
+                                        Menu menu = navigationView.getMenu();
+                                        menu.findItem(R.id.groupOptions_Communities).setVisible(false);
+
+                                    }
+                                }
+                            } else {
+                                closeSesion();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //
+                }
+            });
+        }
     }
 
     private void setNavigationActionBarHeader() {
@@ -328,7 +387,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         transaction.commit();
     }
 
-    private void openFormEntry(PoEntry entry) {
+    private void openFormEntry(PoEntry entry, int category) {
         form_opened = true;
         actionButton.setVisibility(View.INVISIBLE);
 
@@ -336,6 +395,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         bundle.putParcelable("entryForm", entry);
         bundle.putString("comcode", actual_code);
         bundle.putString("myname", actual_name);
+        bundle.putInt("formCategory", category);
 
         FrgFormEntry frgFormEntry = new FrgFormEntry();
         frgFormEntry.setArguments(bundle);
@@ -378,10 +438,10 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         if (fragment_opened != FRAGMENT_HELP) {
             actionButton.setVisibility(View.INVISIBLE);
 
-            FrgHelp frgHelp = new FrgHelp();
+            FrgAbout frgAbout = new FrgAbout();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgHelp, "frgHelp");
+            transaction.replace(R.id.activity_main_frame, frgAbout, "frgAbout");
             transaction.commit();
 
             fragment_opened = FRAGMENT_HELP;
@@ -433,8 +493,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     private void showUsers() {
         if (fragment_opened != FRAGMENT_LIST_USER) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+            actionButton.setVisibility(View.INVISIBLE);
 
             Bundle bundle = new Bundle();
             bundle.putString("comcode", actual_code);
@@ -471,11 +530,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     private void showDocuments() {
         if (fragment_opened != FRAGMENT_LIST_DOCUMENT) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+            if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
+                actionButton.setVisibility(View.VISIBLE);
+                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+            } else {
+                actionButton.setVisibility(View.INVISIBLE);
+            }
 
             Bundle bundle = new Bundle();
             bundle.putString("comcode", actual_code);
+            bundle.putInt("userCategory", actual_category);
 
             FrgDocument frgDocument = new FrgDocument();
             frgDocument.setArguments(bundle);
@@ -490,12 +554,17 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     private void showEntryFirst() {
         if (fragment_opened != FRAGMENT_LIST_ENTRYF) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+            if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
+                actionButton.setVisibility(View.VISIBLE);
+                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+            } else {
+                actionButton.setVisibility(View.INVISIBLE);
+            }
 
             Bundle bundle = new Bundle();
             bundle.putInt("category", PoEntry.CATEGORY_FIRST);
             bundle.putString("comcode", actual_code);
+            bundle.putInt("userCategory", actual_category);
 
             FrgEntry frgEntry = new FrgEntry();
             frgEntry.setArguments(bundle);
@@ -516,6 +585,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             Bundle bundle = new Bundle();
             bundle.putInt("category", PoEntry.CATEGORY_SECOND);
             bundle.putString("comcode", actual_code);
+            bundle.putInt("userCategory", actual_category);
 
             FrgEntry frgEntry = new FrgEntry();
             frgEntry.setArguments(bundle);
@@ -548,7 +618,10 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     private void closeSesion() {
-        actionButton.setVisibility(View.INVISIBLE);
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, ActivityLogin.class);
+        startActivity(intent);
+        finish();
     }
 
     private void showHome() {
@@ -619,7 +692,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     @Override
     public void sendEntry(PoEntry item) {
-        openFormEntry(item);
+        openFormEntry(item, item.getCategory());
     }
 
     @Override
@@ -672,7 +745,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                     super.onBackPressed();
                 }
                 this.doubleBackToExit = true;
-                showSnackbar("Press BACK again to exit", 1);
+                showSnackbar(getString(R.string.pressBack), 1);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

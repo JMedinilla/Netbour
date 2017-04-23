@@ -52,7 +52,7 @@
     <string name="fragFormEntryCategorySecond">Community board</string>
     <string name="fragFormIncidenceTitle">Title</string>
     <string name="fragFormIncidenceDescription">Description</string>
-    <string name="fragFormUserPin">Pin</string>
+    <string name="fragFormUserPin">Password</string>
     <string name="fragFormUserDoor">Door</string>
     <string name="fragFormUserFloor">Floor</string>
     <string name="fragFormUserPhone">Phone</string>
@@ -76,4 +76,15 @@
     <string name="ERROR_LONG_20">Too long (max 20)</string>
     <string name="ERROR_LONG_255">Too long (max 255)</string>
     <string name="ERROR_LONG_400">Too long (max 400)</string>
+    <string name="addedError">This user can not be signed in</string>
+    <string name="fragFormRegister">Register</string>
+    <string name="fragFormLogin">Login</string>
+    <string name="fragFormLoginWelcome">Welcome to Netbour!</string>
+    <string name="fragFormLoginRegister">No account yet? Create one</string>
+    <string name="fragFormUserCode">Community code</string>
+    <string name="pressBack">Press BACK again to exit</string>
+    <string name="wrongUser">Authentication failed</string>
+    <string name="deletedUser">This user was deleted, contact the admin for more information</string>
+    <string name="invalidUser">Invalid user</string>
+    <string name="loginFieldEmpty">Email or password is empty!</string>
 </resources>

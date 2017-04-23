@@ -1,4 +1,4 @@
-package jvm.ncatz.netbour.pck_fragment.form;
+package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -30,8 +30,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
     EditText fragFormUserFloor;
     @BindView(R.id.fragFormUserDoor)
     EditText fragFormUserDoor;
-    @BindView(R.id.fragFormUserPin)
-    EditText fragFormUserPin;
     @BindView(R.id.fragFormUserCategoryFirst)
     RadioButton fragFormUserCategoryFirst;
     @BindView(R.id.fragFormUserCategorySecond)
@@ -49,14 +47,13 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 category = PoUser.GROUP_PRESIDENT;
                 break;
             case R.id.fragFormUserSave:
-                String em = fragFormUserName.getText().toString().trim().replace(" ", "").toLowerCase() + "@" + fragFormUserPin.getText().toString() + "." + code;
                 PoUser user = new PoUser(
                         System.currentTimeMillis(), code,
                         fragFormUserFloor.getText().toString(), fragFormUserDoor.getText().toString(),
-                        fragFormUserPhone.getText().toString(), em,
-                        fragFormUserName.getText().toString(), category, false
+                        fragFormUserPhone.getText().toString(), "",
+                        fragFormUserName.getText().toString(), category, "", false
                 );
-                presenterUser.validateUser(user, fragFormUserPin.getText().toString(), updateMode);
+                presenterUser.validateUser(user, "", updateMode);
                 break;
         }
     }
@@ -100,8 +97,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             fragFormUserPhone.setText(updateItem.getPhone());
             fragFormUserFloor.setText(updateItem.getFloor());
             fragFormUserDoor.setText(updateItem.getDoor());
-            fragFormUserPin.setText("****");
-            fragFormUserPin.setEnabled(false);
             if (updateItem.getCategory() == PoUser.GROUP_NEIGHBOUR) {
                 fragFormUserCategorySecond.setChecked(false);
                 fragFormUserCategoryFirst.setChecked(true);
@@ -126,11 +121,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
     }
 
     @Override
-    public void addedUser() {
-        callback.closeFormCall();
-    }
-
-    @Override
     public void editedUser() {
         callback.closeFormCall();
     }
@@ -146,8 +136,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                     updateItem.setDoor(user.getDoor());
                     updateItem.setCategory(user.getCategory());
                     presenterUser.editUser(updateItem);
-                } else {
-                    presenterUser.addUser(user);
                 }
                 break;
             case PresenterUser.ERROR_NAME_EMPTY:
@@ -173,12 +161,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 break;
             case PresenterUser.ERROR_DOOR_EMPTY:
                 fragFormUserDoor.setError(getString(R.string.ERROR_EMPTY));
-                break;
-            case PresenterUser.ERROR_PIN_EMPTY:
-                fragFormUserPin.setError(getString(R.string.ERROR_EMPTY));
-                break;
-            case PresenterUser.ERROR_PIN_SHORT:
-                fragFormUserPin.setError(getString(R.string.ERROR_SHORT_6));
                 break;
         }
     }

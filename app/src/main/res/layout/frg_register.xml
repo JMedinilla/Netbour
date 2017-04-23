@@ -14,7 +14,7 @@
         android:padding="16dp">
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormUserNameFloat"
+            android:id="@+id/fragFormRegisterCodeFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
@@ -25,7 +25,53 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/fragFormUserName"
+                android:id="@+id/fragFormRegisterCode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/home_modern"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/home_modern"
+                android:hint="@string/fragFormUserCode"
+                android:inputType="text" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormRegisterEmailFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@color/white"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormRegisterCodeFloat">
+
+            <EditText
+                android:id="@+id/fragFormRegisterEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/email"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/email"
+                android:hint="@string/fragFormUserEmail"
+                android:inputType="text" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormRegisterNameFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@color/white"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormRegisterEmailFloat">
+
+            <EditText
+                android:id="@+id/fragFormRegisterName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/edit_text_holo_light"
@@ -37,18 +83,18 @@
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
-            android:id="@+id/fragFormUserPhoneFloat"
+            android:id="@+id/fragFormRegisterPhoneFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:background="@color/white"
             android:padding="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormUserNameFloat">
+            app:layout_constraintTop_toBottomOf="@+id/fragFormRegisterNameFloat">
 
             <EditText
-                android:id="@+id/fragFormUserPhone"
+                android:id="@+id/fragFormRegisterPhone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/edit_text_holo_light"
@@ -60,16 +106,16 @@
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <LinearLayout
-            android:id="@+id/fragFormUserLinear"
+            android:id="@+id/fragFormRegisterLinear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormUserPhoneFloat">
+            app:layout_constraintTop_toBottomOf="@+id/fragFormRegisterPhoneFloat">
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
-                android:id="@+id/fragFormUserFloorFloat"
+                android:id="@+id/fragFormRegisterFloorFloat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
@@ -79,7 +125,7 @@
                 android:padding="2dp">
 
                 <EditText
-                    android:id="@+id/fragFormUserFloor"
+                    android:id="@+id/fragFormRegisterFloor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/edit_text_holo_light"
@@ -91,7 +137,7 @@
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
-                android:id="@+id/fragFormUserDoorFloat"
+                android:id="@+id/fragFormRegisterDoorFloat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
@@ -101,7 +147,7 @@
                 android:padding="2dp">
 
                 <EditText
-                    android:id="@+id/fragFormUserDoor"
+                    android:id="@+id/fragFormRegisterDoor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/edit_text_holo_light"
@@ -113,36 +159,31 @@
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
         </LinearLayout>
 
-        <RadioGroup
-            android:id="@+id/fragFormUserCategoryGroup"
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormRegisterPinFloat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:background="@color/white"
+            android:padding="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormUserLinear">
+            app:layout_constraintTop_toBottomOf="@+id/fragFormRegisterLinear">
 
-            <RadioButton
-                android:id="@+id/fragFormUserCategoryFirst"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/fragFormUserCategoryFirst"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/fragFormUserCategorySecond"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/fragFormUserCategorySecond"
-                android:textSize="16sp" />
-        </RadioGroup>
+            <EditText
+                android:id="@+id/fragFormRegisterPin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/numeric"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/numeric"
+                android:hint="@string/fragFormUserPin"
+                android:inputType="textPassword" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <info.hoang8f.widget.FButton
-            android:id="@+id/fragFormUserSave"
+            android:id="@+id/fragFormRegisterSave"
             android:layout_width="120dp"
             android:layout_height="60dp"
             android:layout_marginLeft="0dp"
@@ -154,13 +195,13 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingStart="10dp"
-            android:text="@string/fragFormSave"
+            android:text="@string/fragFormRegister"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragFormUserCategoryGroup"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormRegisterPinFloat"
             fbutton:buttonColor="@color/orange_600"
             fbutton:cornerRadius="12dp"
             fbutton:shadowColor="@color/orange_900"

@@ -1,4 +1,4 @@
-package jvm.ncatz.netbour.pck_fragment.form;
+package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
 import android.net.Uri;

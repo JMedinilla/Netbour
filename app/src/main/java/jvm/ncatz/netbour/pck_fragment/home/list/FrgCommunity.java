@@ -1,4 +1,4 @@
-package jvm.ncatz.netbour.pck_fragment.list;
+package jvm.ncatz.netbour.pck_fragment.home.list;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -81,11 +81,6 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     }
 
     @Override
-    public void addUser(PoUser user) {
-        interactorUser.addUser(user);
-    }
-
-    @Override
     public void editUser(PoUser user) {
         interactorUser.editUser(user);
     }
@@ -103,11 +98,6 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
-    }
-
-    @Override
-    public void addedUser() {
-        viewForm.addedUser();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package jvm.ncatz.netbour.pck_fragment.list;
+package jvm.ncatz.netbour.pck_fragment.home.list;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -25,34 +25,37 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import jvm.ncatz.netbour.R;
-import jvm.ncatz.netbour.pck_adapter.AdpEntry;
+import jvm.ncatz.netbour.pck_adapter.AdpDocument;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
-import jvm.ncatz.netbour.pck_interface.presenter.PresenterEntry;
-import jvm.ncatz.netbour.pck_pojo.PoEntry;
-import jvm.ncatz.netbour.pck_presenter.PresenterEntryImpl;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
+import jvm.ncatz.netbour.pck_pojo.PoDocument;
+import jvm.ncatz.netbour.pck_pojo.PoUser;
+import jvm.ncatz.netbour.pck_presenter.PresenterDocumentImpl;
 
-public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
-    private ListEntry callback;
+public class FrgDocument extends Fragment implements PresenterDocument.ViewList {
+    private ListDocument callback;
     private FrgBack callbackBack;
 
-    private PresenterEntryImpl presenterEntry;
-    private AdpEntry adpEntry;
+    private PresenterDocumentImpl presenterDocument;
+    private AdpDocument adpDocument;
 
-    @BindView(R.id.fragListEntry_list)
-    SwipeMenuListView entryList;
-    @BindView(R.id.fragListEntry_empty)
-    TextView entryEmpty;
+    private int userCateogory;
 
-    @OnItemClick(R.id.fragListEntry_list)
+    @BindView(R.id.fragListDocument_list)
+    SwipeMenuListView documentList;
+    @BindView(R.id.fragListDocument_empty)
+    TextView documentEmpty;
+
+    @OnItemClick(R.id.fragListDocument_list)
     public void itemClick(int position) {
         //
     }
 
-    public interface ListEntry {
+    public interface ListDocument {
 
-        void sendEntry(PoEntry item);
+        void sendDocument(PoDocument item);
 
-        void deletedEntry();
+        void deletedDocument();
     }
 
     @Override
@@ -61,26 +64,22 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
-        List<PoEntry> list = new ArrayList<>();
-        adpEntry = new AdpEntry(getActivity(), list);
-        presenterEntry = new PresenterEntryImpl(this, null);
+        List<PoDocument> list = new ArrayList<>();
+        adpDocument = new AdpDocument(getActivity(), list);
+        presenterDocument = new PresenterDocumentImpl(this, null);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            int cat = bundle.getInt("category");
             String code = bundle.getString("comcode");
-            if (cat == PoEntry.CATEGORY_FIRST) {
-                presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
-            } else {
-                presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_SECOND);
-            }
+            userCateogory = bundle.getInt("userCategory");
+            presenterDocument.instanceFirebase(code);
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_entry, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_document, container, false);
         ButterKnife.bind(this, view);
         swipeMenuInstance();
         return view;
@@ -108,19 +107,19 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
                 menu.addMenuItem(deleteItem);
             }
         };
-        entryList.setMenuCreator(menuCreator);
-        entryList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        entryList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+        documentList.setMenuCreator(menuCreator);
+        documentList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        documentList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        callback.sendEntry(adpEntry.getItem(position));
-                        entryList.smoothCloseMenu();
+                        callback.sendDocument(adpDocument.getItem(position));
+                        documentList.smoothCloseMenu();
                         break;
                     case 1:
-                        presenterEntry.deleteEntry(adpEntry.getItem(position));
-                        entryList.smoothCloseMenu();
+                        presenterDocument.deleteDocument(adpDocument.getItem(position));
+                        documentList.smoothCloseMenu();
                         break;
                 }
                 return false;
@@ -131,14 +130,14 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        entryList.setAdapter(adpEntry);
-        entryList.setDivider(null);
+        documentList.setAdapter(adpDocument);
+        documentList.setDivider(null);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (ListEntry) context;
+        callback = (ListDocument) context;
         callbackBack = (FrgBack) context;
     }
 
@@ -152,14 +151,16 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     @Override
     public void onStart() {
         super.onStart();
-        callbackBack.backFromForm();
-        presenterEntry.attachFirebase();
+        if (userCateogory == PoUser.GROUP_ADMIN || userCateogory == PoUser.GROUP_PRESIDENT) {
+            callbackBack.backFromForm();
+        }
+        presenterDocument.attachFirebase();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterEntry.dettachFirebase();
+        presenterDocument.dettachFirebase();
     }
 
     @Override
@@ -173,27 +174,27 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     }
 
     @Override
-    public void returnList(List<PoEntry> list) {
-        entryList.setVisibility(View.VISIBLE);
-        entryEmpty.setVisibility(View.GONE);
+    public void returnList(List<PoDocument> list) {
+        documentList.setVisibility(View.VISIBLE);
+        documentEmpty.setVisibility(View.GONE);
         updateList(list);
     }
 
     @Override
     public void returnListEmpty() {
-        entryList.setVisibility(View.GONE);
-        entryEmpty.setVisibility(View.VISIBLE);
-        List<PoEntry> list = new ArrayList<>();
+        documentList.setVisibility(View.GONE);
+        documentEmpty.setVisibility(View.VISIBLE);
+        List<PoDocument> list = new ArrayList<>();
         updateList(list);
     }
 
     @Override
-    public void deletedEntry() {
-        callback.deletedEntry();
+    public void deletedDocument() {
+        callback.deletedDocument();
     }
 
-    private void updateList(List<PoEntry> list) {
-        adpEntry.clear();
-        adpEntry.addAll(list);
+    private void updateList(List<PoDocument> list) {
+        adpDocument.clear();
+        adpDocument.addAll(list);
     }
 }
