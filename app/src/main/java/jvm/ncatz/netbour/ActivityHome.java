@@ -66,7 +66,6 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     public static final int FRAGMENT_HELP = 101;
     public static final int FRAGMENT_PROFILE = 102;
     public static final int FRAGMENT_SETTINGS = 103;
-    public static final int FRAGMENT_ABOUT = 104;
     public static final int FRAGMENT_LIST_COMMUNITY = 110;
     public static final int FRAGMENT_LIST_DOCUMENT = 111;
     public static final int FRAGMENT_LIST_ENTRYF = 112;
@@ -271,9 +270,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                         transaction = true;
                         break;
                     case R.id.groupOthers_About:
-                        clearFragmentStack();
                         showAbout();
-                        transaction = true;
                         break;
                     case R.id.groupClose_Close:
                         clearFragmentStack();
@@ -425,13 +422,8 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     private void showAbout() {
-        if (fragment_opened != FRAGMENT_ABOUT) {
-            actionButton.setVisibility(View.INVISIBLE);
-
-            //
-
-            fragment_opened = FRAGMENT_ABOUT;
-        }
+        Intent intent = new Intent(this, ActivityAbout.class);
+        startActivity(intent);
     }
 
     private void showHelp() {
