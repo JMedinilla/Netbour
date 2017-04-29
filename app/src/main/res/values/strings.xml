@@ -141,4 +141,7 @@
     <string name="confirm_number">Number:</string>
     <string name="confirm_flats">Flats:</string>
     <string name="confirm_street">Street:</string>
+    <string name="category_administrator">Administrator</string>
+    <string name="category_neighbour">Neighbour</string>
+    <string name="category_president">President</string>
 </resources>

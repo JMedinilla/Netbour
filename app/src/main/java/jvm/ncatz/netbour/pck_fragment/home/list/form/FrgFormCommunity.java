@@ -2,9 +2,11 @@ package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -200,6 +202,49 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
         flatsAfter.setText(String.valueOf(community.getFlats()));
         streetBefore.setText(original.getStreet());
         streetAfter.setText(community.getStreet());
+
+        if (original.getPostal().equals(community.getPostal())) {
+            postalBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            postalAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            postalBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            postalAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getProvince().equals(community.getProvince())) {
+            provinceBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            provinceAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            provinceBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            provinceAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getMunicipality().equals(community.getMunicipality())) {
+            municipalityBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            municipalityAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            municipalityBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            municipalityAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getNumber().equals(community.getNumber())) {
+            numberBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            numberAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            numberBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            numberAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getFlats() == community.getFlats()) {
+            flatsBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            flatsAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            flatsBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            flatsAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getStreet().equals(community.getStreet())) {
+            streetBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            streetAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            streetBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            streetAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.dialog_title_edit);

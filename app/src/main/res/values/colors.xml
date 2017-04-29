@@ -3,4 +3,8 @@
     <color name="colorPrimary">@color/blue_700</color>
     <color name="colorPrimaryDark">@color/blue_500</color>
     <color name="colorAccent">@color/orange_400</color>
+    <color name="colorEditBefore">@color/red_200</color>
+    <color name="colorEditAfter">@color/green_700</color>
+    <color name="colorEditNone">@color/grey_400</color>
+    <color name="colorEditTitle">@color/grey_900</color>
 </resources>

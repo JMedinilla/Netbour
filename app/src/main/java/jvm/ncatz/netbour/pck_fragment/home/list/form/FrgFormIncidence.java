@@ -2,9 +2,11 @@ package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,6 +178,21 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         titleAfter.setText(incidence.getTitle());
         descriptionBefore.setText(original.getDescription());
         descriptionAfter.setText(incidence.getDescription());
+
+        if (original.getTitle().equals(incidence.getTitle())) {
+            titleBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            titleAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            titleBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            titleAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getDescription().equals(incidence.getDescription())) {
+            descriptionBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            descriptionAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            descriptionBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            descriptionAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.dialog_title_edit);

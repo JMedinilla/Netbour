@@ -2,9 +2,11 @@ package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -197,8 +199,64 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
         floorAfter.setText(user.getFloor());
         doorBefore.setText(original.getDoor());
         doorAfter.setText(user.getDoor());
-        categoryBefore.setText(original.getCategory());
-        categoryAfter.setText(user.getCategory());
+        switch (original.getCategory()) {
+            case PoUser.GROUP_ADMIN:
+                categoryBefore.setText(R.string.category_administrator);
+                break;
+            case PoUser.GROUP_NEIGHBOUR:
+                categoryBefore.setText(R.string.category_neighbour);
+                break;
+            case PoUser.GROUP_PRESIDENT:
+                categoryBefore.setText(R.string.category_president);
+                break;
+        }
+        switch (user.getCategory()) {
+            case PoUser.GROUP_ADMIN:
+                categoryAfter.setText(R.string.category_administrator);
+                break;
+            case PoUser.GROUP_NEIGHBOUR:
+                categoryAfter.setText(R.string.category_neighbour);
+                break;
+            case PoUser.GROUP_PRESIDENT:
+                categoryAfter.setText(R.string.category_president);
+                break;
+        }
+
+        if (original.getName().equals(user.getName())) {
+            nameBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            nameAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            nameBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            nameAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getPhone().equals(user.getPhone())) {
+            phoneBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            phoneAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            phoneBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            phoneAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getFloor().equals(user.getFloor())) {
+            floorBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            floorAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            floorBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            floorAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getDoor().equals(user.getDoor())) {
+            doorBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            doorAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            doorBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            doorAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
+        if (original.getCategory() == user.getCategory()) {
+            categoryBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+            categoryAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
+        } else {
+            categoryBefore.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            categoryAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.dialog_title_edit);

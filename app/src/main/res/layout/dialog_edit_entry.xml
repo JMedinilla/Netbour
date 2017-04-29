@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="25dp">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/editEntryConfirm"
@@ -15,7 +13,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/confirm_data"
-        android:textColor="@color/grey_700"
+        android:textColor="@color/colorEditTitle"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -25,95 +23,94 @@
         android:id="@+id/editEntryStaticTitleBefore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="16dp"
         android:text="@string/confirm_title"
-        android:textColor="@color/red_300"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/colorEditTitle"
+        app:layout_constraintRight_toLeftOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/editEntryConfirm" />
-
-    <TextView
-        android:id="@+id/editEntryStaticTitleAfter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/confirm_title"
-        android:textColor="@color/green_600"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEntryTitleBefore" />
 
     <TextView
         android:id="@+id/editEntryStaticDescriptionBefore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="16dp"
         android:text="@string/confirm_description"
-        android:textColor="@color/red_300"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/colorEditTitle"
+        app:layout_constraintRight_toLeftOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/editEntryTitleAfter" />
 
     <TextView
-        android:id="@+id/editEntryStaticDescriptionAfter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/confirm_description"
-        android:textColor="@color/green_600"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEntryDescriptionBefore" />
-
-    <TextView
         android:id="@+id/editEntryTitleBefore"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
-        android:textColor="@color/red_300"
+        android:textColor="@color/colorEditBefore"
         app:layout_constraintLeft_toRightOf="@+id/editEntryStaticTitleBefore"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editEntryStaticTitleBefore"
         tools:text="Entry title" />
 
     <TextView
         android:id="@+id/editEntryTitleAfter"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
-        android:textColor="@color/green_600"
-        app:layout_constraintLeft_toRightOf="@+id/editEntryStaticTitleAfter"
-        app:layout_constraintTop_toTopOf="@+id/editEntryStaticTitleAfter"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/colorEditAfter"
+        app:layout_constraintLeft_toLeftOf="@+id/editEntryTitleBefore"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEntryTitleBefore"
         tools:text="Entry title" />
 
     <TextView
         android:id="@+id/editEntryDescriptionBefore"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
-        android:textColor="@color/red_300"
+        android:textColor="@color/colorEditBefore"
         app:layout_constraintLeft_toRightOf="@+id/editEntryStaticDescriptionBefore"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editEntryStaticDescriptionBefore"
         tools:text="Entry description" />
 
     <TextView
         android:id="@+id/editEntryDescriptionAfter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/colorEditAfter"
+        app:layout_constraintLeft_toLeftOf="@+id/editEntryDescriptionBefore"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEntryDescriptionBefore"
+        tools:text="Entry description" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
-        android:textColor="@color/green_600"
-        app:layout_constraintLeft_toRightOf="@+id/editEntryStaticDescriptionAfter"
-        app:layout_constraintTop_toTopOf="@+id/editEntryStaticDescriptionAfter"
-        tools:text="Entry description" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="82dp" />
 </android.support.constraint.ConstraintLayout>
