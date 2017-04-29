@@ -118,20 +118,7 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
                         break;
                     case 1:
                         if (community != null) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle(R.string.dialog_title_delete);
-                            builder.setMessage(getString(R.string.dialog_message_delete)
-                                    + " " + community.getCode()
-                                    + getString(R.string.dialog_message_delete_two));
-                            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    deleteResponse(position);
-                                }
-                            });
-                            builder.setNegativeButton(android.R.string.no, null);
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+                            showDeleteDialog(community, position);
                         }
                         break;
                 }
@@ -143,6 +130,23 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     private void deleteResponse(int position) {
         presenterCommunity.deleteCommunity(adpCommunity.getItem(position));
         communityList.smoothCloseMenu();
+    }
+
+    private void showDeleteDialog(PoCommunity community, final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title_delete);
+        builder.setMessage(getString(R.string.dialog_message_delete)
+                + " " + community.getCode()
+                + getString(R.string.dialog_message_delete_two));
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteResponse(position);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

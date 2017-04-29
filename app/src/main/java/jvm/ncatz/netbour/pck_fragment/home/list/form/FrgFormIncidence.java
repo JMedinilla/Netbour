@@ -2,7 +2,6 @@ package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -55,8 +55,9 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     private PresenterForm callback;
     private PresenterIncidenceImpl presenterIncidence;
 
-    private boolean updateMode;
+    private boolean uptitleMode;
     private PoIncidence updateItem;
+    private PoIncidence original;
     private String code;
     private String name;
     private String email;
@@ -65,7 +66,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        updateMode = false;
+        uptitleMode = false;
         updateItem = null;
         code = "";
         name = "";
@@ -80,7 +81,8 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
             email = bndl.getString("actualEmail");
             updateItem = bndl.getParcelable("incidenceForm");
             if (updateItem != null) {
-                updateMode = true;
+                uptitleMode = true;
+                original = updateItem;
             }
         }
     }
@@ -90,7 +92,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_form_incidence, container, false);
         ButterKnife.bind(this, view);
-        if (updateMode) {
+        if (uptitleMode) {
             fragFormIncidenceTitle.setText(updateItem.getTitle());
             fragFormIncidenceDescription.setText(updateItem.getDescription());
             Glide.with(this).load(updateItem.getPhoto()).into(fragFormIncidenceImage);
@@ -121,28 +123,11 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     }
 
     @Override
-    public void validationResponse(final PoIncidence incidence, int error) {
+    public void validationResponse(PoIncidence incidence, int error) {
         switch (error) {
             case PresenterIncidence.SUCCESS:
-                if (updateMode) {
-                    String msg = getString(R.string.dialog_message_edit_confirm);
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_title) + " " + incidence.getTitle();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_description) + " " + incidence.getDescription();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.dialog_title_edit);
-                    builder.setMessage(msg);
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            editResponse(incidence);
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                if (uptitleMode) {
+                    showEditDialog(incidence);
                 } else {
                     presenterIncidence.addIncidence(incidence, code);
                 }
@@ -176,5 +161,33 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         updateItem.setTitle(incidence.getTitle());
         updateItem.setDescription(incidence.getDescription());
         presenterIncidence.editIncidence(updateItem, code);
+    }
+
+    private void showEditDialog(final PoIncidence incidence) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_edit_incidence, null);
+
+        TextView titleBefore = ButterKnife.findById(view, R.id.editIncidenceTitleBefore);
+        TextView titleAfter = ButterKnife.findById(view, R.id.editIncidenceTitleAfter);
+        TextView descriptionBefore = ButterKnife.findById(view, R.id.editIncidenceDescriptionBefore);
+        TextView descriptionAfter = ButterKnife.findById(view, R.id.editIncidenceDescriptionAfter);
+
+        titleBefore.setText(original.getTitle());
+        titleAfter.setText(incidence.getTitle());
+        descriptionBefore.setText(original.getDescription());
+        descriptionAfter.setText(incidence.getDescription());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title_edit);
+        builder.setView(view);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editResponse(incidence);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

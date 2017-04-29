@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +47,7 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
 
     private boolean updateMode;
     private PoDocument updateItem;
+    private PoDocument original;
     private String code;
     private String email;
 
@@ -67,6 +69,7 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
             updateItem = bndl.getParcelable("documentForm");
             if (updateItem != null) {
                 updateMode = true;
+                original = updateItem;
             }
         }
     }
@@ -107,30 +110,11 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
     }
 
     @Override
-    public void validationResponse(final PoDocument document, int error) {
+    public void validationResponse(PoDocument document, int error) {
         switch (error) {
             case PresenterDocument.SUCCESS:
                 if (updateMode) {
-                    String msg = getString(R.string.dialog_message_edit_confirm);
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_title) + " " + document.getTitle();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_link) + " " + document.getLink();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_description) + " " + document.getDescription();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.dialog_title_edit);
-                    builder.setMessage(msg);
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            editResponse(document);
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    showEditDialog(document);
                 } else {
                     presenterDocument.addDocument(document, code);
                 }
@@ -170,5 +154,37 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
         updateItem.setLink(document.getLink());
         updateItem.setDescription(document.getDescription());
         presenterDocument.editDocument(updateItem, code);
+    }
+
+    private void showEditDialog(final PoDocument document) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_edit_document, null);
+
+        TextView titleBefore = ButterKnife.findById(view, R.id.editDocumentTitleBefore);
+        TextView titleAfter = ButterKnife.findById(view, R.id.editDocumentTitleAfter);
+        TextView linkBefore = ButterKnife.findById(view, R.id.editDocumentLinkBefore);
+        TextView linkAfter = ButterKnife.findById(view, R.id.editDocumentLinkAfter);
+        TextView descriptionBefore = ButterKnife.findById(view, R.id.editDocumentDescriptionBefore);
+        TextView descriptionAfter = ButterKnife.findById(view, R.id.editDocumentDescriptionAfter);
+
+        titleBefore.setText(original.getTitle());
+        titleAfter.setText(document.getTitle());
+        linkBefore.setText(original.getLink());
+        linkAfter.setText(document.getLink());
+        descriptionBefore.setText(original.getDescription());
+        descriptionAfter.setText(document.getDescription());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title_edit);
+        builder.setView(view);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editResponse(document);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
+
+    <TextView
+        android:id="@+id/editEntryConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/confirm_data"
+        android:textColor="@color/grey_700"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/editEntryStaticTitleBefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/confirm_title"
+        android:textColor="@color/red_300"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEntryConfirm" />
+
+    <TextView
+        android:id="@+id/editEntryStaticTitleAfter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/confirm_title"
+        android:textColor="@color/green_600"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEntryTitleBefore" />
+
+    <TextView
+        android:id="@+id/editEntryStaticDescriptionBefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/confirm_description"
+        android:textColor="@color/red_300"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEntryTitleAfter" />
+
+    <TextView
+        android:id="@+id/editEntryStaticDescriptionAfter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/confirm_description"
+        android:textColor="@color/green_600"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEntryDescriptionBefore" />
+
+    <TextView
+        android:id="@+id/editEntryTitleBefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:textColor="@color/red_300"
+        app:layout_constraintLeft_toRightOf="@+id/editEntryStaticTitleBefore"
+        app:layout_constraintTop_toTopOf="@+id/editEntryStaticTitleBefore"
+        tools:text="Entry title" />
+
+    <TextView
+        android:id="@+id/editEntryTitleAfter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:textColor="@color/green_600"
+        app:layout_constraintLeft_toRightOf="@+id/editEntryStaticTitleAfter"
+        app:layout_constraintTop_toTopOf="@+id/editEntryStaticTitleAfter"
+        tools:text="Entry title" />
+
+    <TextView
+        android:id="@+id/editEntryDescriptionBefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:textColor="@color/red_300"
+        app:layout_constraintLeft_toRightOf="@+id/editEntryStaticDescriptionBefore"
+        app:layout_constraintTop_toTopOf="@+id/editEntryStaticDescriptionBefore"
+        tools:text="Entry description" />
+
+    <TextView
+        android:id="@+id/editEntryDescriptionAfter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:textColor="@color/green_600"
+        app:layout_constraintLeft_toRightOf="@+id/editEntryStaticDescriptionAfter"
+        app:layout_constraintTop_toTopOf="@+id/editEntryStaticDescriptionAfter"
+        tools:text="Entry description" />
+</android.support.constraint.ConstraintLayout>

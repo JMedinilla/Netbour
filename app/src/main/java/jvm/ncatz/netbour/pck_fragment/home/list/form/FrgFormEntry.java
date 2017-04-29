@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +50,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
 
     private boolean updateMode;
     private PoEntry updateItem;
+    private PoEntry original;
     private String code;
     private String name;
     private String email;
@@ -76,6 +78,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
             updateItem = bndl.getParcelable("entryForm");
             if (updateItem != null) {
                 updateMode = true;
+                original = updateItem;
             }
         }
     }
@@ -116,28 +119,11 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
     }
 
     @Override
-    public void validationResponse(final PoEntry entry, int error) {
+    public void validationResponse(PoEntry entry, int error) {
         switch (error) {
             case PresenterEntry.SUCCESS:
                 if (updateMode) {
-                    String msg = getString(R.string.dialog_message_edit_confirm);
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_title) + " " + entry.getTitle();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_description) + " " + entry.getContent();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.dialog_title_edit);
-                    builder.setMessage(msg);
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            editResponse(entry);
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    showEditDialog(entry);
                 } else {
                     presenterEntry.addEntry(entry, code);
                 }
@@ -168,5 +154,33 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         updateItem.setContent(entry.getContent());
         updateItem.setCategory(entry.getCategory());
         presenterEntry.editEntry(updateItem, code);
+    }
+
+    private void showEditDialog(final PoEntry entry) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_edit_entry, null);
+
+        TextView titleBefore = ButterKnife.findById(view, R.id.editEntryTitleBefore);
+        TextView titleAfter = ButterKnife.findById(view, R.id.editEntryTitleAfter);
+        TextView descriptionBefore = ButterKnife.findById(view, R.id.editEntryDescriptionBefore);
+        TextView descriptionAfter = ButterKnife.findById(view, R.id.editEntryDescriptionAfter);
+
+        titleBefore.setText(original.getTitle());
+        titleAfter.setText(entry.getTitle());
+        descriptionBefore.setText(original.getContent());
+        descriptionAfter.setText(entry.getContent());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title_edit);
+        builder.setView(view);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editResponse(entry);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

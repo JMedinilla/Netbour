@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +66,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
 
     private boolean updateMode;
     private PoUser updateItem;
+    private PoUser original;
     private String code;
     private int category;
 
@@ -85,6 +87,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             updateItem = bndl.getParcelable("userForm");
             if (updateItem != null) {
                 updateMode = true;
+                original = updateItem;
             }
         }
     }
@@ -128,38 +131,11 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
     }
 
     @Override
-    public void validationResponse(final PoUser user, int error) {
+    public void validationResponse(PoUser user, int error) {
         switch (error) {
             case PresenterUser.SUCCESS:
                 if (updateMode) {
-                    String msg = getString(R.string.dialog_message_edit_confirm);
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_name) + " " + user.getName();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_phone) + " " + user.getPhone();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_floor) + " " + user.getFloor();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_door) + " " + user.getDoor();
-                    msg += "\n\n";
-                    if (user.getCategory() == PoUser.GROUP_PRESIDENT) {
-                        msg += getString(R.string.dialog_message_edit_category) + " " + getString(R.string.dialog_message_edit_president);
-                    } else {
-                        msg += getString(R.string.dialog_message_edit_category) + " " + getString(R.string.dialog_message_edit_neighbour);
-                    }
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.dialog_title_edit);
-                    builder.setMessage(msg);
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            editResponse(user);
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    showEditDialog(user);
                 }
                 break;
             case PresenterUser.ERROR_NAME_EMPTY:
@@ -196,5 +172,45 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
         updateItem.setDoor(user.getDoor());
         updateItem.setCategory(user.getCategory());
         presenterUser.editUser(updateItem);
+    }
+
+    private void showEditDialog(final PoUser user) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_edit_user, null);
+
+        TextView nameBefore = ButterKnife.findById(view, R.id.editUserNameBefore);
+        TextView nameAfter = ButterKnife.findById(view, R.id.editUserNameAfter);
+        TextView phoneBefore = ButterKnife.findById(view, R.id.editUserPhoneBefore);
+        TextView phoneAfter = ButterKnife.findById(view, R.id.editUserPhoneAfter);
+        TextView floorBefore = ButterKnife.findById(view, R.id.editUserFloorBefore);
+        TextView floorAfter = ButterKnife.findById(view, R.id.editUserFloorAfter);
+        TextView doorBefore = ButterKnife.findById(view, R.id.editUserDoorBefore);
+        TextView doorAfter = ButterKnife.findById(view, R.id.editUserDoorAfter);
+        TextView categoryBefore = ButterKnife.findById(view, R.id.editUserCategoryBefore);
+        TextView categoryAfter = ButterKnife.findById(view, R.id.editUserCategoryAfter);
+
+        nameBefore.setText(original.getName());
+        nameAfter.setText(user.getName());
+        phoneBefore.setText(original.getPhone());
+        phoneAfter.setText(user.getPhone());
+        floorBefore.setText(original.getFloor());
+        floorAfter.setText(user.getFloor());
+        doorBefore.setText(original.getDoor());
+        doorAfter.setText(user.getDoor());
+        categoryBefore.setText(original.getCategory());
+        categoryAfter.setText(user.getCategory());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title_edit);
+        builder.setView(view);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editResponse(user);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
 import com.codetroopers.betterpickers.datepicker.DatePickerDialogFragment;
@@ -56,6 +57,7 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
 
     private boolean updateMode;
     private PoMeeting updateItem;
+    private PoMeeting original;
     private String code;
     private String email;
 
@@ -77,6 +79,7 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
             updateItem = bndl.getParcelable("meetingForm");
             if (updateItem != null) {
                 updateMode = true;
+                original = updateItem;
             }
         }
     }
@@ -130,28 +133,11 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
     }
 
     @Override
-    public void validationResponse(final PoMeeting meeting, int error) {
+    public void validationResponse(PoMeeting meeting, int error) {
         switch (error) {
             case PresenterMeeting.SUCCESS:
                 if (updateMode) {
-                    String msg = getString(R.string.dialog_message_edit_confirm);
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_date) + " " + meeting.getDate();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_description) + " " + meeting.getDescription();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.dialog_title_edit);
-                    builder.setMessage(msg);
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            editResponse(meeting);
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    showEditDialog(meeting);
                 } else {
                     presenterMeeting.addMeeting(meeting, code);
                 }
@@ -175,5 +161,33 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
         updateItem.setDate(meeting.getDate());
         updateItem.setDescription(meeting.getDescription());
         presenterMeeting.editMeeting(updateItem, code);
+    }
+
+    private void showEditDialog(final PoMeeting meeting) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_edit_meeting, null);
+
+        TextView dateBefore = ButterKnife.findById(view, R.id.editMeetingDateBefore);
+        TextView dateAfter = ButterKnife.findById(view, R.id.editMeetingDateAfter);
+        TextView descriptionBefore = ButterKnife.findById(view, R.id.editMeetingDescriptionBefore);
+        TextView descriptionAfter = ButterKnife.findById(view, R.id.editMeetingDescriptionAfter);
+
+        dateBefore.setText(original.getDate());
+        dateAfter.setText(meeting.getDate());
+        descriptionBefore.setText(original.getDescription());
+        descriptionAfter.setText(meeting.getDescription());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title_edit);
+        builder.setView(view);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editResponse(meeting);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

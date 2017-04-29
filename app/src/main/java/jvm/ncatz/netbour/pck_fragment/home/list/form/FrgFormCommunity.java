@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +60,7 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
 
     private boolean updateMode;
     private PoCommunity updateItem;
+    private PoCommunity original;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
             updateItem = bndl.getParcelable("communityForm");
             if (updateItem != null) {
                 updateMode = true;
+                original = updateItem;
             }
         }
     }
@@ -119,36 +122,11 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
     }
 
     @Override
-    public void validationResponse(final PoCommunity community, int error) {
+    public void validationResponse(PoCommunity community, int error) {
         switch (error) {
             case PresenterCommunity.SUCCESS:
                 if (updateMode) {
-                    String msg = getString(R.string.dialog_message_edit_confirm);
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_postal) + " " + community.getPostal();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_province) + " " + community.getProvince();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_municipality) + " " + community.getMunicipality();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_number) + " " + community.getNumber();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_flats) + " " + community.getFlats();
-                    msg += "\n\n";
-                    msg += getString(R.string.dialog_message_edit_street) + " " + community.getStreet();
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(R.string.dialog_title_edit);
-                    builder.setMessage(msg);
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            editResponse(community);
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    showEditDialog(community);
                 } else {
                     presenterCommunity.addCommunity(community);
                 }
@@ -191,5 +169,49 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
 
     private void editResponse(PoCommunity community) {
         presenterCommunity.editCommunity(community);
+    }
+
+    private void showEditDialog(final PoCommunity community) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_edit_community, null);
+
+        TextView postalBefore = ButterKnife.findById(view, R.id.editCommunityPostalBefore);
+        TextView postalAfter = ButterKnife.findById(view, R.id.editCommunityPostalAfter);
+        TextView provinceBefore = ButterKnife.findById(view, R.id.editCommunityProvinceBefore);
+        TextView provinceAfter = ButterKnife.findById(view, R.id.editCommunityProvinceAfter);
+        TextView municipalityBefore = ButterKnife.findById(view, R.id.editCommunityMunicipalityBefore);
+        TextView municipalityAfter = ButterKnife.findById(view, R.id.editCommunityMunicipalityAfter);
+        TextView numberBefore = ButterKnife.findById(view, R.id.editCommunityNumberBefore);
+        TextView numberAfter = ButterKnife.findById(view, R.id.editCommunityNumberAfter);
+        TextView flatsBefore = ButterKnife.findById(view, R.id.editCommunityFlatsBefore);
+        TextView flatsAfter = ButterKnife.findById(view, R.id.editCommunityFlatsAfter);
+        TextView streetBefore = ButterKnife.findById(view, R.id.editCommunityStreetBefore);
+        TextView streetAfter = ButterKnife.findById(view, R.id.editCommunityStreetAfter);
+
+        postalBefore.setText(original.getPostal());
+        postalAfter.setText(community.getPostal());
+        provinceBefore.setText(original.getProvince());
+        provinceAfter.setText(community.getProvince());
+        municipalityBefore.setText(original.getMunicipality());
+        municipalityAfter.setText(community.getMunicipality());
+        numberBefore.setText(original.getNumber());
+        numberAfter.setText(community.getNumber());
+        flatsBefore.setText(String.valueOf(original.getFlats()));
+        flatsAfter.setText(String.valueOf(community.getFlats()));
+        streetBefore.setText(original.getStreet());
+        streetAfter.setText(community.getStreet());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title_edit);
+        builder.setView(view);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editResponse(community);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

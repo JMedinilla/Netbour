@@ -28,14 +28,12 @@ import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpUser;
-import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterUserImpl;
 
 public class FrgUser extends Fragment implements PresenterUser.ViewList {
     private ListUser callback;
-    private FrgBack callbackBack;
 
     private PresenterUserImpl presenterUser;
     private AdpUser adpUser;
@@ -118,20 +116,7 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
                         break;
                     case 1:
                         if (user != null) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle(R.string.dialog_title_delete);
-                            builder.setMessage(getString(R.string.dialog_message_delete)
-                                    + " " + user.getName() + "(" + user.getEmail() + ")"
-                                    + getString(R.string.dialog_message_delete_two));
-                            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    deleteResponse(position);
-                                }
-                            });
-                            builder.setNegativeButton(android.R.string.no, null);
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+                            showDeleteDialog(user, position);
                         }
                         break;
                 }
@@ -145,6 +130,23 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         userList.smoothCloseMenu();
     }
 
+    private void showDeleteDialog(PoUser user, final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title_delete);
+        builder.setMessage(getString(R.string.dialog_message_delete)
+                + " " + user.getName() + "(" + user.getEmail() + ")"
+                + getString(R.string.dialog_message_delete_two));
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteResponse(position);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -156,14 +158,12 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     public void onAttach(Context context) {
         super.onAttach(context);
         callback = (ListUser) context;
-        callbackBack = (FrgBack) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         callback = null;
-        callbackBack = null;
     }
 
     @Override
