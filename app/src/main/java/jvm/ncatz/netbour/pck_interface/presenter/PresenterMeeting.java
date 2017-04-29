@@ -31,7 +31,7 @@ public interface PresenterMeeting {
 
         void returnListEmpty();
 
-        void deletedMeeting();
+        void deletedMeeting(PoMeeting item);
     }
 
     interface ViewForm {

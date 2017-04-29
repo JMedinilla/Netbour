@@ -58,7 +58,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
 
         void sendEntry(PoEntry item);
 
-        void deletedEntry();
+        void deletedEntry(PoEntry item);
     }
 
     @Override
@@ -221,8 +221,8 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     }
 
     @Override
-    public void deletedEntry() {
-        callback.deletedEntry();
+    public void deletedEntry(PoEntry item) {
+        callback.deletedEntry(item);
     }
 
     private void updateList(List<PoEntry> list) {

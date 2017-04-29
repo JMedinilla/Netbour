@@ -58,7 +58,7 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
 
         void sendCommunity(PoCommunity item);
 
-        void deletedCommunity();
+        void deletedCommunity(PoCommunity item);
     }
 
     @Override
@@ -205,8 +205,8 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     }
 
     @Override
-    public void deletedCommunity() {
-        callback.deletedCommunity();
+    public void deletedCommunity(PoCommunity item) {
+        callback.deletedCommunity(item);
     }
 
     private void updateList(List<PoCommunity> list) {

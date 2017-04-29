@@ -24,6 +24,6 @@ public interface InteractorUser {
 
         void editedUser();
 
-        void deletedUser();
+        void deletedUser(PoUser item);
     }
 }

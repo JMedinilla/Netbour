@@ -57,7 +57,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
 
         void sendDocument(PoDocument item);
 
-        void deletedDocument();
+        void deletedDocument(PoDocument item);
     }
 
     @Override
@@ -211,8 +211,8 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     }
 
     @Override
-    public void deletedDocument() {
-        callback.deletedDocument();
+    public void deletedDocument(PoDocument item) {
+        callback.deletedDocument(item);
     }
 
     private void updateList(List<PoDocument> list) {

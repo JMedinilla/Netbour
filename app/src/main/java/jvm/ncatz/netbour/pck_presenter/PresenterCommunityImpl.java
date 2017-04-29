@@ -120,7 +120,7 @@ public class PresenterCommunityImpl implements PresenterCommunity, InteractorCom
     }
 
     @Override
-    public void deletedCommunity() {
-        viewList.deletedCommunity();
+    public void deletedCommunity(PoCommunity item) {
+        viewList.deletedCommunity(item);
     }
 }

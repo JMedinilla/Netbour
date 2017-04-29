@@ -35,7 +35,7 @@ public interface PresenterUser {
 
         void returnListEmpty();
 
-        void deletedUser();
+        void deletedUser(PoUser item);
     }
 
     interface ViewForm {

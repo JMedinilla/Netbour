@@ -93,7 +93,7 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
     }
 
     @Override
-    public void deletedMeeting() {
-        viewList.deletedMeeting();
+    public void deletedMeeting(PoMeeting item) {
+        viewList.deletedMeeting(item);
     }
 }

@@ -21,15 +21,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,16 +48,18 @@ import jvm.ncatz.netbour.pck_fragment.home.list.FrgMeeting;
 import jvm.ncatz.netbour.pck_fragment.home.list.FrgUser;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
+import jvm.ncatz.netbour.pck_interface.presenter.PresenterHome;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 import jvm.ncatz.netbour.pck_pojo.PoEntry;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
+import jvm.ncatz.netbour.pck_presenter.PresenterHomeImpl;
 
 public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser, FrgBack,
         FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry,
-        FrgDocument.ListDocument, FrgCommunity.ListCommunity, PresenterForm {
+        FrgDocument.ListDocument, FrgCommunity.ListCommunity, PresenterForm, PresenterHome.Activity {
 
     public static final int FRAGMENT_HOME = 100;
     public static final int FRAGMENT_HELP = 101;
@@ -127,6 +124,8 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     private int actual_category;
     private boolean doubleBackToExit;
 
+    private PresenterHomeImpl presenterHome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,56 +141,11 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         actual_category = 0;
 
         setNavigationActionBarHeader();
-        getCurrentUser();
+
+        presenterHome = new PresenterHomeImpl(this);
+        presenterHome.getCurrentUser();
 
         showHome();
-    }
-
-    private void getCurrentUser() {
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
-            reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            PoUser us = snapshot.getValue(PoUser.class);
-                            if (!us.isDeleted()) {
-                                if (us.getEmail().equals(user.getEmail())) {
-                                    actual_code = us.getCommunity();
-                                    actual_name = us.getName();
-                                    actual_photo = us.getPhoto();
-                                    actual_email = us.getEmail();
-                                    actual_category = us.getCategory();
-
-                                    if (!"".equals(actual_photo)) {
-                                        Glide.with(ActivityHome.this).load(actual_photo).into(profile_image);
-                                    } else {
-                                        profile_image.setImageResource(R.drawable.default_image);
-                                    }
-                                    profile_name.setText(actual_name);
-
-                                    if (actual_category != PoUser.GROUP_ADMIN) {
-                                        Menu menu = navigationView.getMenu();
-                                        menu.findItem(R.id.groupOptions_Communities).setVisible(false);
-                                    } else {
-                                        showCommunities();
-                                    }
-                                }
-                            } else {
-                                closeSesion();
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    //
-                }
-            });
-        }
     }
 
     private void setNavigationActionBarHeader() {
@@ -670,7 +624,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     private void showSnackbar(String message, int duration) {
-        Snackbar snackbar;
+        Snackbar snackbar = null;
         switch (duration) {
             case DURATION_SHORT:
                 snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT);
@@ -678,11 +632,10 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             case DURATION_LONG:
                 snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
                 break;
-            default:
-                snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_INDEFINITE);
-                break;
         }
-        snackbar.show();
+        if (snackbar != null) {
+            snackbar.show();
+        }
     }
 
     private void changeActionTitle(CharSequence title) {
@@ -701,8 +654,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
-    public void deletedCommunity() {
-        showSnackbar(getString(R.string.community_deleted), DURATION_SHORT);
+    public void deletedCommunity(final PoCommunity item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.community_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertCommunity(item);
+            }
+        });
+        snackbar.show();
     }
 
     @Override
@@ -711,8 +672,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
-    public void deletedUser() {
-        showSnackbar(getString(R.string.user_deleted), DURATION_SHORT);
+    public void deletedUser(final PoUser item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.user_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertUser(item);
+            }
+        });
+        snackbar.show();
     }
 
     @Override
@@ -721,8 +690,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
-    public void deletedEntry() {
-        showSnackbar(getString(R.string.entry_deleted), DURATION_SHORT);
+    public void deletedEntry(final PoEntry item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.entry_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertEntry(item, actual_code);
+            }
+        });
+        snackbar.show();
     }
 
     @Override
@@ -731,8 +708,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
-    public void deletedMeeting() {
-        showSnackbar(getString(R.string.meeting_deleted), DURATION_SHORT);
+    public void deletedMeeting(final PoMeeting item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.meeting_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertMeeting(item, actual_code);
+            }
+        });
+        snackbar.show();
     }
 
     @Override
@@ -741,8 +726,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
-    public void deletedDocument() {
-        showSnackbar(getString(R.string.document_deleted), DURATION_SHORT);
+    public void deletedDocument(final PoDocument item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.document_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertDocument(item, actual_code);
+            }
+        });
+        snackbar.show();
     }
 
     @Override
@@ -751,8 +744,55 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
-    public void deletedIncidence() {
-        showSnackbar(getString(R.string.incidence_deleted), DURATION_SHORT);
+    public void deletedIncidence(final PoIncidence item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.incidence_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertIncidence(item, actual_code);
+            }
+        });
+        snackbar.show();
+    }
+
+    @Override
+    public void reInsertResponse() {
+        showSnackbar(getString(R.string.string_reinsert), 1);
+    }
+
+    @Override
+    public void getCurrentUserResponseClose() {
+        closeSesion();
+    }
+
+    @Override
+    public void getCurrentUserResponseUser(String community, String name, String photo, String email, int category) {
+        actual_code = community;
+        actual_name = name;
+        actual_photo = photo;
+        actual_email = email;
+        actual_category = category;
+
+        if (!"".equals(actual_photo)) {
+            Glide.with(ActivityHome.this).load(actual_photo).into(profile_image);
+        } else {
+            profile_image.setImageResource(R.drawable.default_image);
+        }
+        profile_name.setText(actual_name);
+
+        if (actual_category != PoUser.GROUP_ADMIN) {
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.groupOptions_Communities).setVisible(false);
+        } else {
+            showCommunities();
+        }
+    }
+
+    @Override
+    public void getCurrentUserResponseFailure() {
+        Toast.makeText(this, R.string.user_response_failure, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override

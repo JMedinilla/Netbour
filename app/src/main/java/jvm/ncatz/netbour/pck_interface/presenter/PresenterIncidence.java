@@ -34,7 +34,7 @@ public interface PresenterIncidence {
 
         void returnListEmpty();
 
-        void deletedIncidence();
+        void deletedIncidence(PoIncidence item);
     }
 
     interface ViewForm {

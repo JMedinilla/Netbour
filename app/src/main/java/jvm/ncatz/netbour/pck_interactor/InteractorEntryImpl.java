@@ -91,6 +91,6 @@ public class InteractorEntryImpl implements InteractorEntry {
     public void deleteEntry(PoEntry item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("entries").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(true);
-        listener.deletedEntry();
+        listener.deletedEntry(item);
     }
 }

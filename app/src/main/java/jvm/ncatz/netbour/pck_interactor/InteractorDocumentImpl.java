@@ -90,6 +90,6 @@ public class InteractorDocumentImpl implements InteractorDocument {
     public void deleteDocument(PoDocument item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("documents").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(true);
-        listener.deletedDocument();
+        listener.deletedDocument(item);
     }
 }

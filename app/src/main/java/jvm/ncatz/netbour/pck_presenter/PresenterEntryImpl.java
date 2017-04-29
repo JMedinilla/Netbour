@@ -99,7 +99,7 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
     }
 
     @Override
-    public void deletedEntry() {
-        viewList.deletedEntry();
+    public void deletedEntry(PoEntry item) {
+        viewList.deletedEntry(item);
     }
 }

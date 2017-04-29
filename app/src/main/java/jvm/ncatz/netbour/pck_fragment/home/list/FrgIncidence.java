@@ -54,7 +54,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
 
         void sendIncidence(PoIncidence item);
 
-        void deletedIncidence();
+        void deletedIncidence(PoIncidence item);
     }
 
     @Override
@@ -205,8 +205,8 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     }
 
     @Override
-    public void deletedIncidence() {
-        callback.deletedIncidence();
+    public void deletedIncidence(PoIncidence item) {
+        callback.deletedIncidence(item);
     }
 
     private void updateList(List<PoIncidence> list) {

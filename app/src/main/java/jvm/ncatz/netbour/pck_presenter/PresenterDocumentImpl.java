@@ -109,7 +109,7 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
     }
 
     @Override
-    public void deletedDocument() {
-        viewList.deletedDocument();
+    public void deletedDocument(PoDocument item) {
+        viewList.deletedDocument(item);
     }
 }

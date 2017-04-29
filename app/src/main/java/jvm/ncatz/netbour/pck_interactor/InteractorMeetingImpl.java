@@ -89,6 +89,6 @@ public class InteractorMeetingImpl implements InteractorMeeting {
     public void deleteMeeting(PoMeeting item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("meetings").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(true);
-        listener.deletedMeeting();
+        listener.deletedMeeting(item);
     }
 }

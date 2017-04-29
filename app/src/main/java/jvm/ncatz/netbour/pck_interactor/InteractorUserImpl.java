@@ -82,6 +82,6 @@ public class InteractorUserImpl implements InteractorUser {
     public void deleteUser(PoUser item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(true);
-        listener.deletedUser();
+        listener.deletedUser(item);
     }
 }

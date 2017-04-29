@@ -38,7 +38,7 @@ public interface PresenterCommunity {
 
         void returnListEmpty();
 
-        void deletedCommunity();
+        void deletedCommunity(PoCommunity item);
     }
 
     interface ViewForm {

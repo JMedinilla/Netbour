@@ -28,6 +28,6 @@ public interface InteractorMeeting {
 
         void editedMeeting();
 
-        void deletedMeeting();
+        void deletedMeeting(PoMeeting item);
     }
 }

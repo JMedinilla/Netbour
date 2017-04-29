@@ -99,7 +99,7 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     }
 
     @Override
-    public void deletedIncidence() {
-        viewList.deletedIncidence();
+    public void deletedIncidence(PoIncidence item) {
+        viewList.deletedIncidence(item);
     }
 }

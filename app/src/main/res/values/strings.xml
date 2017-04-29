@@ -140,4 +140,7 @@
     <string name="dialog_message_edit_neighbour">Neighbour</string>
     <string name="dialog_title_email">Fake email</string>
     <string name="dialog_message_email">If you do not have any email addres, you can use a fake one, but you will not be able to restore the password</string>
+    <string name="snack_undo">Undo</string>
+    <string name="string_reinsert">Element inserted again on the database</string>
+    <string name="user_response_failure">User could not be retrieved</string>
 </resources>

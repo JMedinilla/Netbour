@@ -28,6 +28,6 @@ public interface InteractorDocument {
 
         void editedDocument();
 
-        void deletedDocument();
+        void deletedDocument(PoDocument item);
     }
 }

@@ -90,6 +90,6 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
     public void deleteIncidence(PoIncidence item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("incidences").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(true);
-        listener.deletedIncidence();
+        listener.deletedIncidence(item);
     }
 }

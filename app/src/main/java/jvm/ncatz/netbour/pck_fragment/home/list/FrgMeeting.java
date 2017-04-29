@@ -54,7 +54,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
 
         void sendMeeting(PoMeeting item);
 
-        void deletedMeeting();
+        void deletedMeeting(PoMeeting item);
     }
 
     @Override
@@ -205,8 +205,8 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     }
 
     @Override
-    public void deletedMeeting() {
-        callback.deletedMeeting();
+    public void deletedMeeting(PoMeeting item) {
+        callback.deletedMeeting(item);
     }
 
     private void updateList(List<PoMeeting> list) {

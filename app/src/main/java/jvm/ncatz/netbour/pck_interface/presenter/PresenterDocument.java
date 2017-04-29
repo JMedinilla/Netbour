@@ -36,7 +36,7 @@ public interface PresenterDocument {
 
         void returnListEmpty();
 
-        void deletedDocument();
+        void deletedDocument(PoDocument item);
     }
 
     interface ViewForm {

@@ -88,6 +88,6 @@ public class InteractorCommunityImpl implements InteractorCommunity {
     public void deleteCommunity(PoCommunity item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(item.getCode());
         databaseReference.child("deleted").setValue(true);
-        listener.deletedCommunity();
+        listener.deletedCommunity(item);
     }
 }

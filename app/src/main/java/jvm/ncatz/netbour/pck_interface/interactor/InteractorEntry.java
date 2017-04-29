@@ -28,6 +28,6 @@ public interface InteractorEntry {
 
         void editedEntry();
 
-        void deletedEntry();
+        void deletedEntry(PoEntry item);
     }
 }

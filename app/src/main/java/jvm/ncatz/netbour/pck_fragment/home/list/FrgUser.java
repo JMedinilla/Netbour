@@ -54,7 +54,7 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
 
         void sendUser(PoUser item);
 
-        void deletedUser();
+        void deletedUser(PoUser item);
     }
 
     @Override
@@ -204,8 +204,8 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     }
 
     @Override
-    public void deletedUser() {
-        callback.deletedUser();
+    public void deletedUser(PoUser item) {
+        callback.deletedUser(item);
     }
 
     private void updateList(List<PoUser> list) {

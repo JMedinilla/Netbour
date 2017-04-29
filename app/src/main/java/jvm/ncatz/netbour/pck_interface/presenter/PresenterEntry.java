@@ -33,7 +33,7 @@ public interface PresenterEntry {
 
         void returnListEmpty();
 
-        void deletedEntry();
+        void deletedEntry(PoEntry item);
     }
 
     interface ViewForm {

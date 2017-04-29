@@ -28,6 +28,6 @@ public interface InteractorIncidence {
 
         void editedIncidence();
 
-        void deletedIncidence();
+        void deletedIncidence(PoIncidence item);
     }
 }

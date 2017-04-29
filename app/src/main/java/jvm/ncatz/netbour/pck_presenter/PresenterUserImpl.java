@@ -106,7 +106,7 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     }
 
     @Override
-    public void deletedUser() {
-        viewList.deletedUser();
+    public void deletedUser(PoUser item) {
+        viewList.deletedUser(item);
     }
 }

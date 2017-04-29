@@ -28,6 +28,6 @@ public interface InteractorCommunity {
 
         void editedCommunity();
 
-        void deletedCommunity();
+        void deletedCommunity(PoCommunity item);
     }
 }
