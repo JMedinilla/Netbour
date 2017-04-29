@@ -10,19 +10,21 @@ public class PoIncidence implements Parcelable {
     private long date;
     private String photo;
     private String authorName;
+    private String authorEmail;
     private boolean deleted;
 
     public PoIncidence() {
         //
     }
 
-    public PoIncidence(long key, String title, String description, long date, String photo, String authorName, boolean deleted) {
+    public PoIncidence(long key, String title, String description, long date, String photo, String authorName, String authorEmail, boolean deleted) {
         this.key = key;
         this.title = title;
         this.description = description;
         this.date = date;
         this.photo = photo;
         this.authorName = authorName;
+        this.authorEmail = authorEmail;
         this.deleted = deleted;
     }
 
@@ -74,6 +76,14 @@ public class PoIncidence implements Parcelable {
         this.authorName = authorName;
     }
 
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
@@ -82,14 +92,32 @@ public class PoIncidence implements Parcelable {
         this.deleted = deleted;
     }
 
-    private PoIncidence(Parcel in) {
+    protected PoIncidence(Parcel in) {
         key = in.readLong();
         title = in.readString();
         description = in.readString();
         date = in.readLong();
         photo = in.readString();
         authorName = in.readString();
+        authorEmail = in.readString();
         deleted = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(key);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeLong(date);
+        dest.writeString(photo);
+        dest.writeString(authorName);
+        dest.writeString(authorEmail);
+        dest.writeByte((byte) (deleted ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PoIncidence> CREATOR = new Creator<PoIncidence>() {
@@ -103,20 +131,4 @@ public class PoIncidence implements Parcelable {
             return new PoIncidence[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(key);
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeLong(date);
-        dest.writeString(photo);
-        dest.writeString(authorName);
-        dest.writeByte((byte) (deleted ? 1 : 0));
-    }
 }

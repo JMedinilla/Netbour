@@ -1,10 +1,12 @@
 package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +45,9 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 PoIncidence incidence = new PoIncidence(
                         currentTime,
                         fragFormIncidenceTitle.getText().toString(), fragFormIncidenceDescription.getText().toString(),
-                        currentTime, "", name, false
+                        currentTime, "", name, email, false
                 );
-                presenterIncidence.validateIncidence(incidence, selectedImage);
+                presenterIncidence.validateIncidence(incidence);
                 break;
         }
     }
@@ -57,7 +59,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     private PoIncidence updateItem;
     private String code;
     private String name;
-    private Uri selectedImage;
+    private String email;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         updateItem = null;
         code = "";
         name = "";
-        selectedImage = null;
+        email = "";
 
         presenterIncidence = new PresenterIncidenceImpl(null, this);
 
@@ -75,6 +77,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         if (bndl != null) {
             code = bndl.getString("comcode");
             name = bndl.getString("myname");
+            email = bndl.getString("actualEmail");
             updateItem = bndl.getParcelable("incidenceForm");
             if (updateItem != null) {
                 updateMode = true;
@@ -118,14 +121,28 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     }
 
     @Override
-    public void validationResponse(PoIncidence incidence, int error) {
+    public void validationResponse(final PoIncidence incidence, int error) {
         switch (error) {
             case PresenterIncidence.SUCCESS:
                 if (updateMode) {
-                    updateItem.setPhoto(incidence.getPhoto());
-                    updateItem.setTitle(incidence.getTitle());
-                    updateItem.setDescription(incidence.getDescription());
-                    presenterIncidence.editIncidence(updateItem, code);
+                    String msg = getString(R.string.dialog_message_edit_confirm);
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_title) + " " + incidence.getTitle();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_description) + " " + incidence.getDescription();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.dialog_title_edit);
+                    builder.setMessage(msg);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            editResponse(incidence);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
                     presenterIncidence.addIncidence(incidence, code);
                 }
@@ -152,5 +169,12 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 //
                 break;
         }
+    }
+
+    private void editResponse(PoIncidence incidence) {
+        updateItem.setPhoto(incidence.getPhoto());
+        updateItem.setTitle(incidence.getTitle());
+        updateItem.setDescription(incidence.getDescription());
+        presenterIncidence.editIncidence(updateItem, code);
     }
 }

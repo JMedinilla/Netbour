@@ -1,7 +1,5 @@
 package jvm.ncatz.netbour.pck_interface.presenter;
 
-import android.net.Uri;
-
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
@@ -22,7 +20,7 @@ public interface PresenterIncidence {
 
     void dettachFirebase();
 
-    void validateIncidence(PoIncidence incidence, Uri selectedImage);
+    void validateIncidence(PoIncidence incidence);
 
     void addIncidence(PoIncidence incidence, String code);
 

@@ -1,9 +1,11 @@
 package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                 PoEntry entry = new PoEntry(
                         currentTime,
                         fragFormEntryTitle.getText().toString(), fragFormEntryDescription.getText().toString(),
-                        currentTime, category, name, false
+                        currentTime, category, name, email, false
                 );
                 presenterEntry.validateEntry(entry);
                 break;
@@ -49,6 +51,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
     private PoEntry updateItem;
     private String code;
     private String name;
+    private String email;
     private int category;
 
     @Override
@@ -59,6 +62,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         updateItem = null;
         code = "";
         name = "";
+        email = "";
         category = PoEntry.CATEGORY_SECOND;
 
         presenterEntry = new PresenterEntryImpl(null, this);
@@ -67,6 +71,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         if (bndl != null) {
             code = bndl.getString("comcode");
             name = bndl.getString("myname");
+            email = bndl.getString("actualEmail");
             category = bndl.getInt("formCategory");
             updateItem = bndl.getParcelable("entryForm");
             if (updateItem != null) {
@@ -111,14 +116,28 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
     }
 
     @Override
-    public void validationResponse(PoEntry entry, int error) {
+    public void validationResponse(final PoEntry entry, int error) {
         switch (error) {
             case PresenterEntry.SUCCESS:
                 if (updateMode) {
-                    updateItem.setTitle(entry.getTitle());
-                    updateItem.setContent(entry.getContent());
-                    updateItem.setCategory(entry.getCategory());
-                    presenterEntry.editEntry(updateItem, code);
+                    String msg = getString(R.string.dialog_message_edit_confirm);
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_title) + " " + entry.getTitle();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_description) + " " + entry.getContent();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.dialog_title_edit);
+                    builder.setMessage(msg);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            editResponse(entry);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
                     presenterEntry.addEntry(entry, code);
                 }
@@ -142,5 +161,12 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                 fragFormEntryDescription.setError(getString(R.string.ERROR_LONG_400));
                 break;
         }
+    }
+
+    private void editResponse(PoEntry entry) {
+        updateItem.setTitle(entry.getTitle());
+        updateItem.setContent(entry.getContent());
+        updateItem.setCategory(entry.getCategory());
+        presenterEntry.editEntry(updateItem, code);
     }
 }

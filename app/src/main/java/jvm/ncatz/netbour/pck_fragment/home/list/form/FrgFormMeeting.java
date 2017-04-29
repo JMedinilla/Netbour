@@ -1,9 +1,11 @@
 package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +44,7 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
             case R.id.fragFormMeetingSave:
                 PoMeeting meeting = new PoMeeting(
                         System.currentTimeMillis(), fragFormMeetingDate.getText().toString(),
-                        fragFormMeetingDescription.getText().toString(), false
+                        fragFormMeetingDescription.getText().toString(), email, false
                 );
                 presenterMeeting.validateMeeting(meeting);
                 break;
@@ -55,6 +57,7 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
     private boolean updateMode;
     private PoMeeting updateItem;
     private String code;
+    private String email;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,12 +66,14 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
         updateMode = false;
         updateItem = null;
         code = "";
+        email = "";
 
         presenterMeeting = new PresenterMeetingImpl(null, this);
 
         Bundle bndl = getArguments();
         if (bndl != null) {
             code = bndl.getString("comcode");
+            email = bndl.getString("actualEmail");
             updateItem = bndl.getParcelable("meetingForm");
             if (updateItem != null) {
                 updateMode = true;
@@ -125,13 +130,28 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
     }
 
     @Override
-    public void validationResponse(PoMeeting meeting, int error) {
+    public void validationResponse(final PoMeeting meeting, int error) {
         switch (error) {
             case PresenterMeeting.SUCCESS:
                 if (updateMode) {
-                    updateItem.setDate(meeting.getDate());
-                    updateItem.setDescription(meeting.getDescription());
-                    presenterMeeting.editMeeting(updateItem, code);
+                    String msg = getString(R.string.dialog_message_edit_confirm);
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_date) + " " + meeting.getDate();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_description) + " " + meeting.getDescription();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.dialog_title_edit);
+                    builder.setMessage(msg);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            editResponse(meeting);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
                     presenterMeeting.addMeeting(meeting, code);
                 }
@@ -149,5 +169,11 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
                 fragFormMeetingDescription.setError(getString(R.string.ERROR_LONG_400));
                 break;
         }
+    }
+
+    private void editResponse(PoMeeting meeting) {
+        updateItem.setDate(meeting.getDate());
+        updateItem.setDescription(meeting.getDescription());
+        presenterMeeting.editMeeting(updateItem, code);
     }
 }

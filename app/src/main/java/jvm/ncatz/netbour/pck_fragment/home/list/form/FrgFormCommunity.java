@@ -1,9 +1,11 @@
 package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,11 +119,36 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
     }
 
     @Override
-    public void validationResponse(PoCommunity community, int error) {
+    public void validationResponse(final PoCommunity community, int error) {
         switch (error) {
             case PresenterCommunity.SUCCESS:
                 if (updateMode) {
-                    presenterCommunity.editCommunity(community);
+                    String msg = getString(R.string.dialog_message_edit_confirm);
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_postal) + " " + community.getPostal();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_province) + " " + community.getProvince();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_municipality) + " " + community.getMunicipality();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_number) + " " + community.getNumber();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_flats) + " " + community.getFlats();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_street) + " " + community.getStreet();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.dialog_title_edit);
+                    builder.setMessage(msg);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            editResponse(community);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
                     presenterCommunity.addCommunity(community);
                 }
@@ -130,10 +157,10 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
                 fragFormCommunityCode.setError(getString(R.string.ERROR_EMPTY));
                 break;
             case PresenterCommunity.ERROR_CODE_SHORT:
-                fragFormCommunityCode.setError(getString(R.string.ERROR_SHORT_4));
+                fragFormCommunityCode.setError(getString(R.string.ERROR_SHORT_6));
                 break;
             case PresenterCommunity.ERROR_CODE_LONG:
-                fragFormCommunityCode.setError(getString(R.string.ERROR_LONG_8));
+                fragFormCommunityCode.setError(getString(R.string.ERROR_LONG_24));
                 break;
             case PresenterCommunity.ERROR_POSTAL_EMPTY:
                 fragFormCommunityPostal.setError(getString(R.string.ERROR_EMPTY));
@@ -160,5 +187,9 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
                 fragFormCommunityStreet.setError(getString(R.string.ERROR_EMPTY));
                 break;
         }
+    }
+
+    private void editResponse(PoCommunity community) {
+        presenterCommunity.editCommunity(community);
     }
 }

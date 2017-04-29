@@ -7,24 +7,19 @@ public class PoMeeting implements Parcelable {
     private long key;
     private String date;
     private String description;
+    private String authorEmail;
     private boolean deleted;
 
     public PoMeeting() {
         //
     }
 
-    public PoMeeting(long key, String date, String description, boolean deleted) {
+    public PoMeeting(long key, String date, String description, String authorEmail, boolean deleted) {
         this.key = key;
         this.date = date;
         this.description = description;
+        this.authorEmail = authorEmail;
         this.deleted = deleted;
-    }
-
-    private PoMeeting(Parcel in) {
-        key = in.readLong();
-        date = in.readString();
-        description = in.readString();
-        deleted = in.readByte() != 0;
     }
 
     public long getKey() {
@@ -51,12 +46,42 @@ public class PoMeeting implements Parcelable {
         this.description = description;
     }
 
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    protected PoMeeting(Parcel in) {
+        key = in.readLong();
+        date = in.readString();
+        description = in.readString();
+        authorEmail = in.readString();
+        deleted = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(key);
+        dest.writeString(date);
+        dest.writeString(description);
+        dest.writeString(authorEmail);
+        dest.writeByte((byte) (deleted ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PoMeeting> CREATOR = new Creator<PoMeeting>() {
@@ -70,17 +95,4 @@ public class PoMeeting implements Parcelable {
             return new PoMeeting[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(key);
-        dest.writeString(date);
-        dest.writeString(description);
-        dest.writeByte((byte) (deleted ? 1 : 0));
-    }
 }

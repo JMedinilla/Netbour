@@ -1,6 +1,5 @@
 package jvm.ncatz.netbour.pck_presenter;
 
-import android.net.Uri;
 import android.text.TextUtils;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     }
 
     @Override
-    public void validateIncidence(PoIncidence incidence, Uri selectedImage) {
+    public void validateIncidence(PoIncidence incidence) {
         boolean error = false;
         if (TextUtils.equals("", incidence.getTitle())) {
             error = true;
@@ -58,10 +57,6 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
         } else if (incidence.getDescription().length() > 400) {
             error = true;
             viewForm.validationResponse(incidence, ERROR_DESCRIPTION_LONG);
-        }
-        if (selectedImage == null) {
-            error = true;
-            viewForm.validationResponse(incidence, ERROR_URI_EMPTY);
         }
         if (!error) {
             viewForm.validationResponse(incidence, SUCCESS);

@@ -13,19 +13,21 @@ public class PoEntry implements Parcelable {
     private long date;
     private int category;
     private String authorName;
+    private String authorEmail;
     private boolean deleted;
 
     public PoEntry() {
         //
     }
 
-    public PoEntry(long key, String title, String content, long date, int category, String authorName, boolean deleted) {
+    public PoEntry(long key, String title, String content, long date, int category, String authorName, String authorEmail, boolean deleted) {
         this.key = key;
         this.title = title;
         this.content = content;
         this.date = date;
         this.category = category;
         this.authorName = authorName;
+        this.authorEmail = authorEmail;
         this.deleted = deleted;
     }
 
@@ -77,6 +79,14 @@ public class PoEntry implements Parcelable {
         this.authorName = authorName;
     }
 
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
@@ -85,14 +95,32 @@ public class PoEntry implements Parcelable {
         this.deleted = deleted;
     }
 
-    private PoEntry(Parcel in) {
+    protected PoEntry(Parcel in) {
         key = in.readLong();
         title = in.readString();
         content = in.readString();
         date = in.readLong();
         category = in.readInt();
         authorName = in.readString();
+        authorEmail = in.readString();
         deleted = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(key);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeLong(date);
+        dest.writeInt(category);
+        dest.writeString(authorName);
+        dest.writeString(authorEmail);
+        dest.writeByte((byte) (deleted ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PoEntry> CREATOR = new Creator<PoEntry>() {
@@ -106,20 +134,4 @@ public class PoEntry implements Parcelable {
             return new PoEntry[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(key);
-        dest.writeString(title);
-        dest.writeString(content);
-        dest.writeLong(date);
-        dest.writeInt(category);
-        dest.writeString(authorName);
-        dest.writeByte((byte) (deleted ? 1 : 0));
-    }
 }

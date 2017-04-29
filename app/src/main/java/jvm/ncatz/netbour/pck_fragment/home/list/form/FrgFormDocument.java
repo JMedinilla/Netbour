@@ -1,9 +1,11 @@
 package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,7 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
     @OnClick(R.id.fragFormDocumentSave)
     public void onViewClicked() {
         PoDocument document = new PoDocument(
-                System.currentTimeMillis(),
+                System.currentTimeMillis(), email,
                 fragFormDocumentTitle.getText().toString(), fragFormDocumentDescription.getText().toString(),
                 fragFormDocumentLink.getText().toString(), false
         );
@@ -45,6 +47,7 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
     private boolean updateMode;
     private PoDocument updateItem;
     private String code;
+    private String email;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,12 +56,14 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
         updateMode = false;
         updateItem = null;
         code = "";
+        email = "";
 
         presenterDocument = new PresenterDocumentImpl(null, this);
 
         Bundle bndl = getArguments();
         if (bndl != null) {
             code = bndl.getString("comcode");
+            email = bndl.getString("actualEmail");
             updateItem = bndl.getParcelable("documentForm");
             if (updateItem != null) {
                 updateMode = true;
@@ -102,14 +107,30 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
     }
 
     @Override
-    public void validationResponse(PoDocument document, int error) {
+    public void validationResponse(final PoDocument document, int error) {
         switch (error) {
             case PresenterDocument.SUCCESS:
                 if (updateMode) {
-                    updateItem.setTitle(document.getTitle());
-                    updateItem.setLink(document.getLink());
-                    updateItem.setDescription(document.getDescription());
-                    presenterDocument.editDocument(updateItem, code);
+                    String msg = getString(R.string.dialog_message_edit_confirm);
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_title) + " " + document.getTitle();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_link) + " " + document.getLink();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_description) + " " + document.getDescription();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.dialog_title_edit);
+                    builder.setMessage(msg);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            editResponse(document);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
                     presenterDocument.addDocument(document, code);
                 }
@@ -142,5 +163,12 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
                 fragFormDocumentDescription.setError(getString(R.string.ERROR_LONG_400));
                 break;
         }
+    }
+
+    private void editResponse(PoDocument document) {
+        updateItem.setTitle(document.getTitle());
+        updateItem.setLink(document.getLink());
+        updateItem.setDescription(document.getDescription());
+        presenterDocument.editDocument(updateItem, code);
     }
 }

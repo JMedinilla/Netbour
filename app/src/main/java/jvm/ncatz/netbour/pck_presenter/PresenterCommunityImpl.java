@@ -41,10 +41,10 @@ public class PresenterCommunityImpl implements PresenterCommunity, InteractorCom
         if (TextUtils.equals("", community.getCode())) {
             error = true;
             viewForm.validationResponse(community, ERROR_CODE_EMPTY);
-        } else if (community.getCode().length() < 4) {
+        } else if (community.getCode().length() < 6) {
             error = true;
             viewForm.validationResponse(community, ERROR_CODE_SHORT);
-        } else if (community.getCode().length() > 8) {
+        } else if (community.getCode().length() > 24) {
             error = true;
             viewForm.validationResponse(community, ERROR_CODE_LONG);
         }

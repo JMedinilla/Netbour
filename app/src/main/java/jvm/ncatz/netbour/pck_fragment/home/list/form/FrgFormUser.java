@@ -1,9 +1,11 @@
 package jvm.ncatz.netbour.pck_fragment.home.list.form;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,16 +128,38 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
     }
 
     @Override
-    public void validationResponse(PoUser user, int error) {
+    public void validationResponse(final PoUser user, int error) {
         switch (error) {
             case PresenterUser.SUCCESS:
                 if (updateMode) {
-                    updateItem.setName(user.getName());
-                    updateItem.setPhone(user.getPhone());
-                    updateItem.setFloor(user.getFloor());
-                    updateItem.setDoor(user.getDoor());
-                    updateItem.setCategory(user.getCategory());
-                    presenterUser.editUser(updateItem);
+                    String msg = getString(R.string.dialog_message_edit_confirm);
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_name) + " " + user.getName();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_phone) + " " + user.getPhone();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_floor) + " " + user.getFloor();
+                    msg += "\n\n";
+                    msg += getString(R.string.dialog_message_edit_door) + " " + user.getDoor();
+                    msg += "\n\n";
+                    if (user.getCategory() == PoUser.GROUP_PRESIDENT) {
+                        msg += getString(R.string.dialog_message_edit_category) + " " + getString(R.string.dialog_message_edit_president);
+                    } else {
+                        msg += getString(R.string.dialog_message_edit_category) + " " + getString(R.string.dialog_message_edit_neighbour);
+                    }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.dialog_title_edit);
+                    builder.setMessage(msg);
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            editResponse(user);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
                 break;
             case PresenterUser.ERROR_NAME_EMPTY:
@@ -163,5 +187,14 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 fragFormUserDoor.setError(getString(R.string.ERROR_EMPTY));
                 break;
         }
+    }
+
+    private void editResponse(PoUser user) {
+        updateItem.setName(user.getName());
+        updateItem.setPhone(user.getPhone());
+        updateItem.setFloor(user.getFloor());
+        updateItem.setDoor(user.getDoor());
+        updateItem.setCategory(user.getCategory());
+        presenterUser.editUser(updateItem);
     }
 }

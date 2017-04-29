@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -121,6 +123,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     private String actual_code;
     private String actual_name;
     private String actual_photo;
+    private String actual_email;
     private int actual_category;
     private boolean doubleBackToExit;
 
@@ -135,6 +138,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         actual_code = "";
         actual_name = "";
         actual_photo = "";
+        actual_email = "";
         actual_category = 0;
 
         setNavigationActionBarHeader();
@@ -158,6 +162,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                                     actual_code = us.getCommunity();
                                     actual_name = us.getName();
                                     actual_photo = us.getPhoto();
+                                    actual_email = us.getEmail();
                                     actual_category = us.getCategory();
 
                                     if (!"".equals(actual_photo)) {
@@ -170,7 +175,8 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                                     if (actual_category != PoUser.GROUP_ADMIN) {
                                         Menu menu = navigationView.getMenu();
                                         menu.findItem(R.id.groupOptions_Communities).setVisible(false);
-
+                                    } else {
+                                        showCommunities();
                                     }
                                 }
                             } else {
@@ -298,6 +304,14 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         if (header != null) {
             profile_image = (CircleImageView) header.findViewById(R.id.header_circle_image);
             profile_name = (TextView) header.findViewById(R.id.header_txtName);
+
+            profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showProfile();
+                    drawerLayout.closeDrawers();
+                }
+            });
         }
     }
 
@@ -357,6 +371,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         Bundle bundle = new Bundle();
         bundle.putParcelable("meetingForm", meeting);
         bundle.putString("comcode", actual_code);
+        bundle.putString("actualEmail", actual_email);
 
         FrgFormMeeting frgFormMeeting = new FrgFormMeeting();
         frgFormMeeting.setArguments(bundle);
@@ -374,6 +389,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         Bundle bundle = new Bundle();
         bundle.putParcelable("documentForm", document);
         bundle.putString("comcode", actual_code);
+        bundle.putString("actualEmail", actual_email);
 
         FrgFormDocument frgFormDocument = new FrgFormDocument();
         frgFormDocument.setArguments(bundle);
@@ -393,6 +409,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         bundle.putString("comcode", actual_code);
         bundle.putString("myname", actual_name);
         bundle.putInt("formCategory", category);
+        bundle.putString("actualEmail", actual_email);
 
         FrgFormEntry frgFormEntry = new FrgFormEntry();
         frgFormEntry.setArguments(bundle);
@@ -411,6 +428,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         bundle.putParcelable("incidenceForm", incidence);
         bundle.putString("comcode", actual_code);
         bundle.putString("myname", actual_name);
+        bundle.putString("actualEmail", actual_email);
 
         FrgFormIncidence frgFormIncidence = new FrgFormIncidence();
         frgFormIncidence.setArguments(bundle);
@@ -610,6 +628,21 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     private void closeSesion() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_title_close);
+        builder.setMessage(R.string.dialog_message_close);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                closeSesionResponse();
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void closeSesionResponse() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, ActivityLogin.class);
         startActivity(intent);

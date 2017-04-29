@@ -1,10 +1,12 @@
 package jvm.ncatz.netbour.pck_fragment.home.list;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -107,20 +109,40 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         meetingList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         meetingList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
+                PoMeeting meeting = adpMeeting.getItem(position);
                 switch (index) {
                     case 0:
-                        callback.sendMeeting(adpMeeting.getItem(position));
+                        callback.sendMeeting(meeting);
                         meetingList.smoothCloseMenu();
                         break;
                     case 1:
-                        presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
-                        meetingList.smoothCloseMenu();
+                        if (meeting != null) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle(R.string.dialog_title_delete);
+                            builder.setMessage(getString(R.string.dialog_message_delete)
+                                    + " " + meeting.getDate()
+                                    + getString(R.string.dialog_message_delete_two));
+                            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteResponse(position);
+                                }
+                            });
+                            builder.setNegativeButton(android.R.string.no, null);
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
                         break;
                 }
                 return false;
             }
         });
+    }
+
+    private void deleteResponse(int position) {
+        presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
+        meetingList.smoothCloseMenu();
     }
 
     @Override
