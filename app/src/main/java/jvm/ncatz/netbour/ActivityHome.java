@@ -758,7 +758,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     @Override
     public void reInsertResponse() {
-        showSnackbar(getString(R.string.string_reinsert), 1);
+        showSnackbar(getString(R.string.string_reinsert), DURATION_SHORT);
     }
 
     @Override
@@ -801,6 +801,11 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
+    public void nothingChanged() {
+        showSnackbar(getString(R.string.no_edit_changes), DURATION_SHORT);
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
@@ -810,7 +815,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                     super.onBackPressed();
                 }
                 this.doubleBackToExit = true;
-                showSnackbar(getString(R.string.pressBack), 1);
+                showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

@@ -179,7 +179,9 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         descriptionBefore.setText(original.getDescription());
         descriptionAfter.setText(incidence.getDescription());
 
+        int equals = 0;
         if (original.getTitle().equals(incidence.getTitle())) {
+            equals++;
             titleBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             titleAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -187,6 +189,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
             titleAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getDescription().equals(incidence.getDescription())) {
+            equals++;
             descriptionBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             descriptionAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -194,17 +197,21 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
             descriptionAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_title_edit);
-        builder.setView(view);
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                editResponse(incidence);
-            }
-        });
-        builder.setNegativeButton(android.R.string.no, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if (equals != 2) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.dialog_title_edit);
+            builder.setView(view);
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    editResponse(incidence);
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            callback.nothingChanged();
+        }
     }
 }

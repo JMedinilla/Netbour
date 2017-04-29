@@ -222,7 +222,9 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 break;
         }
 
+        int equals = 0;
         if (original.getName().equals(user.getName())) {
+            equals++;
             nameBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             nameAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -230,6 +232,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             nameAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getPhone().equals(user.getPhone())) {
+            equals++;
             phoneBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             phoneAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -237,6 +240,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             phoneAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getFloor().equals(user.getFloor())) {
+            equals++;
             floorBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             floorAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -244,6 +248,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             floorAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getDoor().equals(user.getDoor())) {
+            equals++;
             doorBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             doorAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -251,6 +256,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             doorAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getCategory() == user.getCategory()) {
+            equals++;
             categoryBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             categoryAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -258,17 +264,21 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             categoryAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_title_edit);
-        builder.setView(view);
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                editResponse(user);
-            }
-        });
-        builder.setNegativeButton(android.R.string.no, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if (equals != 5) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.dialog_title_edit);
+            builder.setView(view);
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    editResponse(user);
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            callback.nothingChanged();
+        }
     }
 }

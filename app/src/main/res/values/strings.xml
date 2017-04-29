@@ -144,4 +144,5 @@
     <string name="category_administrator">Administrator</string>
     <string name="category_neighbour">Neighbour</string>
     <string name="category_president">President</string>
+    <string name="no_edit_changes">No changes were made</string>
 </resources>

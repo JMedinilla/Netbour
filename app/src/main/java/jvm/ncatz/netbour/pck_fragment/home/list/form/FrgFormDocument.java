@@ -176,7 +176,9 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
         descriptionBefore.setText(original.getDescription());
         descriptionAfter.setText(document.getDescription());
 
+        int equals = 0;
         if (original.getTitle().equals(document.getTitle())) {
+            equals++;
             titleBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             titleAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -184,6 +186,7 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
             titleAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getLink().equals(document.getLink())) {
+            equals++;
             linkBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             linkAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -191,6 +194,7 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
             linkAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getDescription().equals(document.getDescription())) {
+            equals++;
             descriptionBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             descriptionAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -198,17 +202,21 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
             descriptionAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_title_edit);
-        builder.setView(view);
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                editResponse(document);
-            }
-        });
-        builder.setNegativeButton(android.R.string.no, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if (equals != 3) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.dialog_title_edit);
+            builder.setView(view);
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    editResponse(document);
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            callback.nothingChanged();
+        }
     }
 }

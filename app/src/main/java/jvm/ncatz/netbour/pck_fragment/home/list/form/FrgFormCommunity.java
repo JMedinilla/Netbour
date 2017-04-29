@@ -203,7 +203,9 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
         streetBefore.setText(original.getStreet());
         streetAfter.setText(community.getStreet());
 
+        int equals = 0;
         if (original.getPostal().equals(community.getPostal())) {
+            equals++;
             postalBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             postalAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -211,6 +213,7 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
             postalAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getProvince().equals(community.getProvince())) {
+            equals++;
             provinceBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             provinceAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -218,6 +221,7 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
             provinceAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getMunicipality().equals(community.getMunicipality())) {
+            equals++;
             municipalityBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             municipalityAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -225,6 +229,7 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
             municipalityAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getNumber().equals(community.getNumber())) {
+            equals++;
             numberBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             numberAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -232,6 +237,7 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
             numberAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getFlats() == community.getFlats()) {
+            equals++;
             flatsBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             flatsAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -239,6 +245,7 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
             flatsAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
         if (original.getStreet().equals(community.getStreet())) {
+            equals++;
             streetBefore.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
             streetAfter.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorEditNone));
         } else {
@@ -246,17 +253,21 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
             streetAfter.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_title_edit);
-        builder.setView(view);
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                editResponse(community);
-            }
-        });
-        builder.setNegativeButton(android.R.string.no, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if (equals != 6) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.dialog_title_edit);
+            builder.setView(view);
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    editResponse(community);
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            callback.nothingChanged();
+        }
     }
 }
