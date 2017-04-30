@@ -14,16 +14,49 @@ import jvm.ncatz.netbour.pck_interface.interactor.InteractorMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 
 public class InteractorMeetingImpl implements InteractorMeeting {
-    private InteractorMeeting.Listener listener;
 
     private DatabaseReference databaseReference;
+    private InteractorMeeting.Listener listener;
     private Query query;
-    private ValueEventListener eventListener;
-
     private String communityCode;
+    private ValueEventListener eventListener;
 
     public InteractorMeetingImpl(InteractorMeeting.Listener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void addMeeting(PoMeeting meeting, String code) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("meetings").child(String.valueOf(meeting.getKey()));
+        databaseReference.setValue(meeting);
+        listener.addedMeeting();
+    }
+
+    @Override
+    public void attachFirebase() {
+        query.addValueEventListener(eventListener);
+    }
+
+    @Override
+    public void deleteMeeting(PoMeeting item) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("meetings").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(true);
+        listener.deletedMeeting(item);
+    }
+
+    @Override
+    public void dettachFirebase() {
+        if (eventListener != null) {
+            query.removeEventListener(eventListener);
+        }
+    }
+
+    @Override
+    public void editMeeting(PoMeeting meeting, String code) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("meetings").child(String.valueOf(meeting.getKey()));
+        databaseReference.child("date").setValue(meeting.getDate());
+        databaseReference.child("description").setValue(meeting.getDescription());
+        listener.editedMeeting();
     }
 
     @Override
@@ -56,39 +89,5 @@ public class InteractorMeetingImpl implements InteractorMeeting {
                 listener.returnListEmpty();
             }
         };
-    }
-
-    @Override
-    public void attachFirebase() {
-        query.addValueEventListener(eventListener);
-    }
-
-    @Override
-    public void dettachFirebase() {
-        if (eventListener != null) {
-            query.removeEventListener(eventListener);
-        }
-    }
-
-    @Override
-    public void addMeeting(PoMeeting meeting, String code) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("meetings").child(String.valueOf(meeting.getKey()));
-        databaseReference.setValue(meeting);
-        listener.addedMeeting();
-    }
-
-    @Override
-    public void editMeeting(PoMeeting meeting, String code) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("meetings").child(String.valueOf(meeting.getKey()));
-        databaseReference.child("date").setValue(meeting.getDate());
-        databaseReference.child("description").setValue(meeting.getDescription());
-        listener.editedMeeting();
-    }
-
-    @Override
-    public void deleteMeeting(PoMeeting item) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("meetings").child(String.valueOf(item.getKey()));
-        databaseReference.child("deleted").setValue(true);
-        listener.deletedMeeting(item);
     }
 }

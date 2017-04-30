@@ -25,6 +25,7 @@ import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 
 public class AdpIncidence extends ArrayAdapter<PoIncidence> {
+
     private Context context;
 
     static class ViewHolder {
@@ -47,6 +48,12 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
     public AdpIncidence(@NonNull Context context, List<PoIncidence> list) {
         super(context, R.layout.adapter_incidence, list);
         this.context = context;
+    }
+
+    @Nullable
+    @Override
+    public PoIncidence getItem(int position) {
+        return super.getItem(position);
     }
 
     @NonNull
@@ -88,11 +95,5 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             }).into(holder.adapterIncidenceImgPhoto);
         }
         return convertView;
-    }
-
-    @Nullable
-    @Override
-    public PoIncidence getItem(int position) {
-        return super.getItem(position);
     }
 }

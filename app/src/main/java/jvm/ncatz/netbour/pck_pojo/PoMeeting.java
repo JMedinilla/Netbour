@@ -4,21 +4,30 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoMeeting implements Parcelable {
+
+    private boolean deleted;
     private long key;
+    private String authorEmail;
     private String date;
     private String description;
-    private String authorEmail;
-    private boolean deleted;
 
     public PoMeeting() {
         //
     }
 
-    public PoMeeting(long key, String date, String description, String authorEmail, boolean deleted) {
+    public PoMeeting(boolean deleted, long key, String authorEmail, String date, String description) {
+        this.deleted = deleted;
         this.key = key;
+        this.authorEmail = authorEmail;
         this.date = date;
         this.description = description;
-        this.authorEmail = authorEmail;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -28,6 +37,14 @@ public class PoMeeting implements Parcelable {
 
     public void setKey(long key) {
         this.key = key;
+    }
+
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
     }
 
     public String getDate() {
@@ -46,37 +63,57 @@ public class PoMeeting implements Parcelable {
         this.description = description;
     }
 
-    public String getAuthorEmail() {
-        return authorEmail;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PoMeeting)) return false;
+
+        PoMeeting meeting = (PoMeeting) o;
+
+        return isDeleted() == meeting.isDeleted()
+                && getKey() == meeting.getKey()
+                && getAuthorEmail().equals(meeting.getAuthorEmail())
+                && getDate().equals(meeting.getDate())
+                && getDescription().equals(meeting.getDescription());
+
     }
 
-    public void setAuthorEmail(String authorEmail) {
-        this.authorEmail = authorEmail;
+    @Override
+    public int hashCode() {
+        int result = (isDeleted() ? 1 : 0);
+        result = 31 * result + (int) (getKey() ^ (getKey() >>> 32));
+        result = 31 * result + getAuthorEmail().hashCode();
+        result = 31 * result + getDate().hashCode();
+        result = 31 * result + getDescription().hashCode();
+        return result;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    @Override
+    public String toString() {
+        return "PoMeeting{" +
+                "deleted=" + deleted +
+                ", key=" + key +
+                ", authorEmail='" + authorEmail + '\'' +
+                ", date='" + date + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 
     protected PoMeeting(Parcel in) {
+        deleted = in.readByte() != 0;
         key = in.readLong();
+        authorEmail = in.readString();
         date = in.readString();
         description = in.readString();
-        authorEmail = in.readString();
-        deleted = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (deleted ? 1 : 0));
         dest.writeLong(key);
+        dest.writeString(authorEmail);
         dest.writeString(date);
         dest.writeString(description);
-        dest.writeString(authorEmail);
-        dest.writeByte((byte) (deleted ? 1 : 0));
     }
 
     @Override

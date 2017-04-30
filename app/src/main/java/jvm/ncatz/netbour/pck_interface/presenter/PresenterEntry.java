@@ -5,6 +5,7 @@ import java.util.List;
 import jvm.ncatz.netbour.pck_pojo.PoEntry;
 
 public interface PresenterEntry {
+
     int SUCCESS = 0;
     int ERROR_TITLE_EMPTY = 10;
     int ERROR_TITLE_SHORT = 11;
@@ -13,27 +14,27 @@ public interface PresenterEntry {
     int ERROR_DESCRIPTION_SHORT = 21;
     int ERROR_DESCRIPTION_LONG = 22;
 
-    void instanceFirebase(String code, int category);
+    void addEntry(PoEntry entry, String code);
 
     void attachFirebase();
 
+    void deleteEntry(PoEntry item);
+
     void dettachFirebase();
-
-    void validateEntry(PoEntry entry);
-
-    void addEntry(PoEntry entry, String code);
 
     void editEntry(PoEntry entry, String code);
 
-    void deleteEntry(PoEntry item);
+    void instanceFirebase(String code, int category);
+
+    void validateEntry(PoEntry entry);
 
     interface ViewList {
+
+        void deletedEntry(PoEntry item);
 
         void returnList(List<PoEntry> list);
 
         void returnListEmpty();
-
-        void deletedEntry(PoEntry item);
     }
 
     interface ViewForm {

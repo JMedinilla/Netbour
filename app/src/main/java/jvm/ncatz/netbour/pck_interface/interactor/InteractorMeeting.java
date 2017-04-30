@@ -6,28 +6,28 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 
 public interface InteractorMeeting {
 
-    void instanceFirebase(String code);
+    void addMeeting(PoMeeting meeting, String code);
 
     void attachFirebase();
 
-    void dettachFirebase();
+    void deleteMeeting(PoMeeting item);
 
-    void addMeeting(PoMeeting meeting, String code);
+    void dettachFirebase();
 
     void editMeeting(PoMeeting meeting, String code);
 
-    void deleteMeeting(PoMeeting item);
+    void instanceFirebase(String code);
 
     interface Listener {
+
+        void addedMeeting();
+
+        void deletedMeeting(PoMeeting item);
+
+        void editedMeeting();
 
         void returnList(List<PoMeeting> list);
 
         void returnListEmpty();
-
-        void addedMeeting();
-
-        void editedMeeting();
-
-        void deletedMeeting(PoMeeting item);
     }
 }

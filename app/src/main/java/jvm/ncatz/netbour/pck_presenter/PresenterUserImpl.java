@@ -10,19 +10,15 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener {
-    private ViewList viewList;
-    private ViewForm viewForm;
+
     private InteractorUserImpl interactorUser;
+    private ViewForm viewForm;
+    private ViewList viewList;
 
-    public PresenterUserImpl(ViewList viewList, ViewForm viewForm) {
-        this.viewList = viewList;
-        this.viewForm = viewForm;
+    public PresenterUserImpl(ViewForm viewForm, ViewList viewList) {
         interactorUser = new InteractorUserImpl(this);
-    }
-
-    @Override
-    public void instanceFirebase(String code) {
-        interactorUser.instanceFirebase(code);
+        this.viewForm = viewForm;
+        this.viewList = viewList;
     }
 
     @Override
@@ -31,8 +27,43 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
     }
 
     @Override
+    public void deleteUser(PoUser item) {
+        interactorUser.deleteUser(item);
+    }
+
+    @Override
+    public void deletedUser(PoUser item) {
+        viewList.deletedUser(item);
+    }
+
+    @Override
     public void dettachFirebase() {
         interactorUser.dettachFirebase();
+    }
+
+    @Override
+    public void editUser(PoUser user) {
+        interactorUser.editUser(user);
+    }
+
+    @Override
+    public void editedUser() {
+        viewForm.editedUser();
+    }
+
+    @Override
+    public void instanceFirebase(String code) {
+        interactorUser.instanceFirebase(code);
+    }
+
+    @Override
+    public void returnList(List<PoUser> list) {
+        viewList.returnList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        viewList.returnListEmpty();
     }
 
     @Override
@@ -78,35 +109,5 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
         if (!error) {
             viewForm.validationResponse(user, SUCCESS);
         }
-    }
-
-    @Override
-    public void editUser(PoUser user) {
-        interactorUser.editUser(user);
-    }
-
-    @Override
-    public void deleteUser(PoUser item) {
-        interactorUser.deleteUser(item);
-    }
-
-    @Override
-    public void returnList(List<PoUser> list) {
-        viewList.returnList(list);
-    }
-
-    @Override
-    public void returnListEmpty() {
-        viewList.returnListEmpty();
-    }
-
-    @Override
-    public void editedUser() {
-        viewForm.editedUser();
-    }
-
-    @Override
-    public void deletedUser(PoUser item) {
-        viewList.deletedUser(item);
     }
 }

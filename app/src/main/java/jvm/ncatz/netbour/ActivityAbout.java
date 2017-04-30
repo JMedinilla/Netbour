@@ -22,12 +22,19 @@ import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic
 import de.cketti.mailto.EmailIntentBuilder;
 
 public class ActivityAbout extends MaterialAboutActivity {
+
     private int cont;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
         cont = 0;
+    }
+
+    @Nullable
+    @Override
+    protected CharSequence getActivityTitle() {
+        return getString(R.string.groupOthers_About);
     }
 
     @NonNull
@@ -178,21 +185,12 @@ public class ActivityAbout extends MaterialAboutActivity {
         return builderList.build();
     }
 
-    @Nullable
-    @Override
-    protected CharSequence getActivityTitle() {
-        return getString(R.string.groupOthers_About);
-    }
-
     private void openUrl(String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
     }
 
     private void sendEmail(String subj) {
-        EmailIntentBuilder.from(this)
-                .to("javimedinilla@gmail.com")
-                .subject(subj)
-                .start();
+        EmailIntentBuilder.from(this).to("javimedinilla@gmail.com").subject(subj).start();
     }
 }

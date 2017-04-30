@@ -5,6 +5,7 @@ import java.util.List;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 
 public interface PresenterDocument {
+
     int SUCCESS = 0;
     int ERROR_TITLE_EMPTY = 10;
     int ERROR_TITLE_SHORT = 11;
@@ -16,27 +17,27 @@ public interface PresenterDocument {
     int ERROR_DESCRIPTION_SHORT = 31;
     int ERROR_DESCRIPTION_LONG = 32;
 
-    void instanceFirebase(String code);
+    void addDocument(PoDocument document, String code);
 
     void attachFirebase();
 
+    void deleteDocument(PoDocument item);
+
     void dettachFirebase();
-
-    void validateDocument(PoDocument document);
-
-    void addDocument(PoDocument document, String code);
 
     void editDocument(PoDocument document, String code);
 
-    void deleteDocument(PoDocument item);
+    void instanceFirebase(String code);
+
+    void validateDocument(PoDocument document);
 
     interface ViewList {
+
+        void deletedDocument(PoDocument item);
 
         void returnList(List<PoDocument> list);
 
         void returnListEmpty();
-
-        void deletedDocument(PoDocument item);
     }
 
     interface ViewForm {

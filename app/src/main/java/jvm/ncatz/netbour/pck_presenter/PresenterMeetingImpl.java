@@ -10,19 +10,25 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 
 public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting.Listener {
-    private ViewList viewList;
-    private ViewForm viewForm;
-    private InteractorMeetingImpl interactorMeeting;
 
-    public PresenterMeetingImpl(ViewList viewList, ViewForm viewForm) {
-        this.viewList = viewList;
-        this.viewForm = viewForm;
+    private InteractorMeetingImpl interactorMeeting;
+    private ViewForm viewForm;
+    private ViewList viewList;
+
+    public PresenterMeetingImpl(ViewForm viewForm, ViewList viewList) {
         interactorMeeting = new InteractorMeetingImpl(this);
+        this.viewForm = viewForm;
+        this.viewList = viewList;
     }
 
     @Override
-    public void instanceFirebase(String code) {
-        interactorMeeting.instanceFirebase(code);
+    public void addMeeting(PoMeeting meeting, String code) {
+        interactorMeeting.addMeeting(meeting, code);
+    }
+
+    @Override
+    public void addedMeeting() {
+        viewForm.addedMeeting();
     }
 
     @Override
@@ -31,8 +37,43 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
     }
 
     @Override
+    public void deleteMeeting(PoMeeting item) {
+        interactorMeeting.deleteMeeting(item);
+    }
+
+    @Override
+    public void deletedMeeting(PoMeeting item) {
+        viewList.deletedMeeting(item);
+    }
+
+    @Override
     public void dettachFirebase() {
         interactorMeeting.dettachFirebase();
+    }
+
+    @Override
+    public void editMeeting(PoMeeting meeting, String code) {
+        interactorMeeting.editMeeting(meeting, code);
+    }
+
+    @Override
+    public void editedMeeting() {
+        viewForm.editedMeeting();
+    }
+
+    @Override
+    public void instanceFirebase(String code) {
+        interactorMeeting.instanceFirebase(code);
+    }
+
+    @Override
+    public void returnList(List<PoMeeting> list) {
+        viewList.returnList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        viewList.returnListEmpty();
     }
 
     @Override
@@ -55,45 +96,5 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
         if (!error) {
             viewForm.validationResponse(meeting, SUCCESS);
         }
-    }
-
-    @Override
-    public void addMeeting(PoMeeting meeting, String code) {
-        interactorMeeting.addMeeting(meeting, code);
-    }
-
-    @Override
-    public void editMeeting(PoMeeting meeting, String code) {
-        interactorMeeting.editMeeting(meeting, code);
-    }
-
-    @Override
-    public void deleteMeeting(PoMeeting item) {
-        interactorMeeting.deleteMeeting(item);
-    }
-
-    @Override
-    public void returnList(List<PoMeeting> list) {
-        viewList.returnList(list);
-    }
-
-    @Override
-    public void returnListEmpty() {
-        viewList.returnListEmpty();
-    }
-
-    @Override
-    public void addedMeeting() {
-        viewForm.addedMeeting();
-    }
-
-    @Override
-    public void editedMeeting() {
-        viewForm.editedMeeting();
-    }
-
-    @Override
-    public void deletedMeeting(PoMeeting item) {
-        viewList.deletedMeeting(item);
     }
 }

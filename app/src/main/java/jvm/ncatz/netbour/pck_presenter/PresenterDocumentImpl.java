@@ -10,19 +10,25 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 
 public class PresenterDocumentImpl implements PresenterDocument, InteractorDocument.Listener {
-    private ViewList viewList;
-    private ViewForm viewForm;
-    private InteractorDocumentImpl interactorDocument;
 
-    public PresenterDocumentImpl(ViewList viewList, ViewForm viewForm) {
-        this.viewList = viewList;
-        this.viewForm = viewForm;
+    private InteractorDocumentImpl interactorDocument;
+    private ViewForm viewForm;
+    private ViewList viewList;
+
+    public PresenterDocumentImpl(ViewForm viewForm, ViewList viewList) {
         interactorDocument = new InteractorDocumentImpl(this);
+        this.viewForm = viewForm;
+        this.viewList = viewList;
     }
 
     @Override
-    public void instanceFirebase(String code) {
-        interactorDocument.instanceFirebase(code);
+    public void addDocument(PoDocument document, String code) {
+        interactorDocument.addDocument(document, code);
+    }
+
+    @Override
+    public void addedDocument() {
+        viewForm.addedDocument();
     }
 
     @Override
@@ -31,8 +37,43 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
     }
 
     @Override
+    public void deleteDocument(PoDocument item) {
+        interactorDocument.deleteDocument(item);
+    }
+
+    @Override
+    public void deletedDocument(PoDocument item) {
+        viewList.deletedDocument(item);
+    }
+
+    @Override
     public void dettachFirebase() {
         interactorDocument.dettachFirebase();
+    }
+
+    @Override
+    public void editDocument(PoDocument document, String code) {
+        interactorDocument.editDocument(document, code);
+    }
+
+    @Override
+    public void editedDocument() {
+        viewForm.editedDocument();
+    }
+
+    @Override
+    public void instanceFirebase(String code) {
+        interactorDocument.instanceFirebase(code);
+    }
+
+    @Override
+    public void returnList(List<PoDocument> list) {
+        viewList.returnList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        viewList.returnListEmpty();
     }
 
     @Override
@@ -71,45 +112,5 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
         if (!error) {
             viewForm.validationResponse(document, SUCCESS);
         }
-    }
-
-    @Override
-    public void addDocument(PoDocument document, String code) {
-        interactorDocument.addDocument(document, code);
-    }
-
-    @Override
-    public void editDocument(PoDocument document, String code) {
-        interactorDocument.editDocument(document, code);
-    }
-
-    @Override
-    public void deleteDocument(PoDocument item) {
-        interactorDocument.deleteDocument(item);
-    }
-
-    @Override
-    public void returnList(List<PoDocument> list) {
-        viewList.returnList(list);
-    }
-
-    @Override
-    public void returnListEmpty() {
-        viewList.returnListEmpty();
-    }
-
-    @Override
-    public void addedDocument() {
-        viewForm.addedDocument();
-    }
-
-    @Override
-    public void editedDocument() {
-        viewForm.editedDocument();
-    }
-
-    @Override
-    public void deletedDocument(PoDocument item) {
-        viewList.deletedDocument(item);
     }
 }

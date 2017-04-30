@@ -17,6 +17,7 @@ import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 
 public class AdpCommunity extends ArrayAdapter<PoCommunity> {
+
     private Context context;
 
     static class ViewHolder {
@@ -43,6 +44,12 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
         this.context = context;
     }
 
+    @Nullable
+    @Override
+    public PoCommunity getItem(int position) {
+        return super.getItem(position);
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -64,11 +71,5 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
             holder.adapterCommunityFlats.setText(String.valueOf(community.getFlats()));
         }
         return convertView;
-    }
-
-    @Nullable
-    @Override
-    public PoCommunity getItem(int position) {
-        return super.getItem(position);
     }
 }

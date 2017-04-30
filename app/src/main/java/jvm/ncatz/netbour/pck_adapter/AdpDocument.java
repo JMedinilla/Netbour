@@ -17,6 +17,7 @@ import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoDocument;
 
 public class AdpDocument extends ArrayAdapter<PoDocument> {
+
     private Context context;
 
     static class ViewHolder {
@@ -33,6 +34,12 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
     public AdpDocument(@NonNull Context context, List<PoDocument> list) {
         super(context, R.layout.adapter_document, list);
         this.context = context;
+    }
+
+    @Nullable
+    @Override
+    public PoDocument getItem(int position) {
+        return super.getItem(position);
     }
 
     @NonNull
@@ -52,11 +59,5 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
             holder.adapterDocumentTxtDescription.setText(document.getDescription());
         }
         return convertView;
-    }
-
-    @Nullable
-    @Override
-    public PoDocument getItem(int position) {
-        return super.getItem(position);
     }
 }

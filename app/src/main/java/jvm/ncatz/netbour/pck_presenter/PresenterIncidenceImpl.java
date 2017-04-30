@@ -10,19 +10,40 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 
 public class PresenterIncidenceImpl implements PresenterIncidence, InteractorIncidence.Listener {
-    private ViewList viewList;
-    private ViewForm viewForm;
-    private InteractorIncidenceImpl interactorIncidence;
 
-    public PresenterIncidenceImpl(ViewList viewList, ViewForm viewForm) {
-        this.viewList = viewList;
-        this.viewForm = viewForm;
+    private InteractorIncidenceImpl interactorIncidence;
+    private ViewForm viewForm;
+    private ViewList viewList;
+
+    public PresenterIncidenceImpl(ViewForm viewForm, ViewList viewList) {
         interactorIncidence = new InteractorIncidenceImpl(this);
+        this.viewForm = viewForm;
+        this.viewList = viewList;
     }
 
     @Override
-    public void instanceFirebase(String code) {
-        interactorIncidence.instanceFirebase(code);
+    public void addIncidence(PoIncidence incidence, String code) {
+        interactorIncidence.addIncidence(incidence, code);
+    }
+
+    @Override
+    public void addedIncidence() {
+        viewForm.addedIncidence();
+    }
+
+    @Override
+    public void deleteIncidence(PoIncidence item) {
+        interactorIncidence.deleteIncidence(item);
+    }
+
+    @Override
+    public void deletedIncidence(PoIncidence item) {
+        viewList.deletedIncidence(item);
+    }
+
+    @Override
+    public void dettachFirebase() {
+        interactorIncidence.dettachFirebase();
     }
 
     @Override
@@ -31,8 +52,28 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     }
 
     @Override
-    public void dettachFirebase() {
-        interactorIncidence.dettachFirebase();
+    public void editIncidence(PoIncidence incidence, String code) {
+        interactorIncidence.editIncidence(incidence, code);
+    }
+
+    @Override
+    public void editedIncidence() {
+        viewForm.editedIncidence();
+    }
+
+    @Override
+    public void instanceFirebase(String code) {
+        interactorIncidence.instanceFirebase(code);
+    }
+
+    @Override
+    public void returnList(List<PoIncidence> list) {
+        viewList.returnList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        viewList.returnListEmpty();
     }
 
     @Override
@@ -61,45 +102,5 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
         if (!error) {
             viewForm.validationResponse(incidence, SUCCESS);
         }
-    }
-
-    @Override
-    public void addIncidence(PoIncidence incidence, String code) {
-        interactorIncidence.addIncidence(incidence, code);
-    }
-
-    @Override
-    public void editIncidence(PoIncidence incidence, String code) {
-        interactorIncidence.editIncidence(incidence, code);
-    }
-
-    @Override
-    public void deleteIncidence(PoIncidence item) {
-        interactorIncidence.deleteIncidence(item);
-    }
-
-    @Override
-    public void returnList(List<PoIncidence> list) {
-        viewList.returnList(list);
-    }
-
-    @Override
-    public void returnListEmpty() {
-        viewList.returnListEmpty();
-    }
-
-    @Override
-    public void addedIncidence() {
-        viewForm.addedIncidence();
-    }
-
-    @Override
-    public void editedIncidence() {
-        viewForm.editedIncidence();
-    }
-
-    @Override
-    public void deletedIncidence(PoIncidence item) {
-        viewList.deletedIncidence(item);
     }
 }

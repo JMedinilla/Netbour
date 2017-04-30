@@ -48,11 +48,11 @@ public class FrgRegister extends Fragment {
     public void onViewClicked() {
         long currentTime = System.currentTimeMillis();
         PoUser user = new PoUser(
-                currentTime,
-                fragFormRegisterCode.getText().toString(), fragFormRegisterFloor.getText().toString(),
-                fragFormRegisterDoor.getText().toString(), fragFormRegisterPhone.getText().toString(),
-                fragFormRegisterEmail.getText().toString(), fragFormRegisterName.getText().toString(),
-                PoUser.GROUP_NEIGHBOUR, "", false
+                false, PoUser.GROUP_NEIGHBOUR,
+                currentTime, fragFormRegisterCode.getText().toString(),
+                fragFormRegisterDoor.getText().toString(), fragFormRegisterEmail.getText().toString(),
+                fragFormRegisterFloor.getText().toString(), fragFormRegisterName.getText().toString(),
+                fragFormRegisterPhone.getText().toString(), ""
         );
         validateUser(user, fragFormRegisterPin.getText().toString());
     }
@@ -60,7 +60,14 @@ public class FrgRegister extends Fragment {
     private IFrgRegister callback;
 
     public interface IFrgRegister {
+
         void userCreated(boolean successful, PoUser us);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (IFrgRegister) context;
     }
 
     @Override
@@ -78,9 +85,9 @@ public class FrgRegister extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        callback = (IFrgRegister) context;
+    public void onResume() {
+        super.onResume();
+        showEmailDialog();
     }
 
     @Override
@@ -89,10 +96,14 @@ public class FrgRegister extends Fragment {
         callback = null;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        showEmailDialog();
+    private void createUser(final PoUser user, String pass) {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(user.getEmail(), pass)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        callback.userCreated(task.isSuccessful(), user);
+                    }
+                });
     }
 
     private void showEmailDialog() {
@@ -157,15 +168,5 @@ public class FrgRegister extends Fragment {
         if (!error) {
             createUser(user, pass);
         }
-    }
-
-    private void createUser(final PoUser user, String pass) {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(user.getEmail(), pass)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        callback.userCreated(task.isSuccessful(), user);
-                    }
-                });
     }
 }

@@ -17,6 +17,7 @@ import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 
 public class AdpMeeting extends ArrayAdapter<PoMeeting> {
+
     private Context context;
 
     static class ViewHolder {
@@ -33,6 +34,12 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
     public AdpMeeting(@NonNull Context context, List<PoMeeting> list) {
         super(context, R.layout.adapter_meeting, list);
         this.context = context;
+    }
+
+    @Nullable
+    @Override
+    public PoMeeting getItem(int position) {
+        return super.getItem(position);
     }
 
     @NonNull
@@ -52,11 +59,5 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
             holder.adapterMeetingTxtDescription.setText(meeting.getDescription());
         }
         return convertView;
-    }
-
-    @Nullable
-    @Override
-    public PoMeeting getItem(int position) {
-        return super.getItem(position);
     }
 }

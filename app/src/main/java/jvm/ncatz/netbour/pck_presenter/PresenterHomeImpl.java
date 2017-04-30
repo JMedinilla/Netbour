@@ -17,58 +17,11 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public class PresenterHomeImpl implements PresenterHome {
+
     private PresenterHome.Activity activity;
 
     public PresenterHomeImpl(PresenterHome.Activity activity) {
         this.activity = activity;
-    }
-
-    @Override
-    public void reInsertCommunity(PoCommunity item) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference().child("communities").child(item.getCode());
-        databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
-    }
-
-    @Override
-    public void reInsertUser(PoUser item) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference().child("users").child(String.valueOf(item.getKey()));
-        databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
-    }
-
-    @Override
-    public void reInsertEntry(PoEntry item, String actual_code) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference().child("communities").child(actual_code).child("entries").child(String.valueOf(item.getKey()));
-        databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
-    }
-
-    @Override
-    public void reInsertMeeting(PoMeeting item, String actual_code) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference().child("communities").child(actual_code).child("meetings").child(String.valueOf(item.getKey()));
-        databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
-    }
-
-    @Override
-    public void reInsertDocument(PoDocument item, String actual_code) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference().child("communities").child(actual_code).child("documents").child(String.valueOf(item.getKey()));
-        databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
-    }
-
-    @Override
-    public void reInsertIncidence(PoIncidence item, String actual_code) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference().child("communities").child(actual_code).child("incidences").child(String.valueOf(item.getKey()));
-        databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
     }
 
     @Override
@@ -99,5 +52,53 @@ public class PresenterHomeImpl implements PresenterHome {
                 }
             });
         }
+    }
+
+    @Override
+    public void reInsertCommunity(PoCommunity item) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                .getReference().child("communities").child(item.getCode());
+        databaseReference.child("deleted").setValue(false);
+        activity.reInsertResponse();
+    }
+
+    @Override
+    public void reInsertDocument(PoDocument item, String actual_code) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                .getReference().child("communities").child(actual_code).child("documents").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(false);
+        activity.reInsertResponse();
+    }
+
+    @Override
+    public void reInsertEntry(PoEntry item, String actual_code) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                .getReference().child("communities").child(actual_code).child("entries").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(false);
+        activity.reInsertResponse();
+    }
+
+    @Override
+    public void reInsertIncidence(PoIncidence item, String actual_code) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                .getReference().child("communities").child(actual_code).child("incidences").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(false);
+        activity.reInsertResponse();
+    }
+
+    @Override
+    public void reInsertMeeting(PoMeeting item, String actual_code) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                .getReference().child("communities").child(actual_code).child("meetings").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(false);
+        activity.reInsertResponse();
+    }
+
+    @Override
+    public void reInsertUser(PoUser item) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                .getReference().child("users").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(false);
+        activity.reInsertResponse();
     }
 }

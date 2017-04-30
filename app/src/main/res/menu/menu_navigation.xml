@@ -44,9 +44,9 @@
             android:icon="@drawable/settings"
             android:title="@string/groupOthers_Settings" />
         <item
-            android:id="@+id/groupOthers_Help"
-            android:icon="@drawable/help"
-            android:title="@string/groupOthers_Help" />
+            android:id="@+id/groupOthers_Information"
+            android:icon="@drawable/information"
+            android:title="@string/groupOthers_Information" />
         <item
             android:id="@+id/groupOthers_About"
             android:icon="@drawable/android"

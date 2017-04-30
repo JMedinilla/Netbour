@@ -30,23 +30,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgAbout;
-import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgHome;
-import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgProfile;
-import jvm.ncatz.netbour.pck_fragment.home.list.other.FrgSettings;
-import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormCommunity;
-import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormDocument;
-import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormEntry;
-import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormIncidence;
-import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormMeeting;
-import jvm.ncatz.netbour.pck_fragment.home.list.form.FrgFormUser;
-import jvm.ncatz.netbour.pck_fragment.home.list.FrgCommunity;
-import jvm.ncatz.netbour.pck_fragment.home.list.FrgDocument;
-import jvm.ncatz.netbour.pck_fragment.home.list.FrgEntry;
-import jvm.ncatz.netbour.pck_fragment.home.list.FrgIncidence;
-import jvm.ncatz.netbour.pck_fragment.home.list.FrgMeeting;
-import jvm.ncatz.netbour.pck_fragment.home.list.FrgUser;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgHome;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgInfo;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgProfile;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormCommunity;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormDocument;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormEntry;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormIncidence;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormMeeting;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormUser;
+import jvm.ncatz.netbour.pck_fragment.home.all.FrgCommunity;
+import jvm.ncatz.netbour.pck_fragment.home.all.FrgDocument;
+import jvm.ncatz.netbour.pck_fragment.home.all.FrgEntry;
+import jvm.ncatz.netbour.pck_fragment.home.all.FrgIncidence;
+import jvm.ncatz.netbour.pck_fragment.home.all.FrgMeeting;
+import jvm.ncatz.netbour.pck_fragment.home.all.FrgUser;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
+import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterHome;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
@@ -57,14 +57,13 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterHomeImpl;
 
-public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser, FrgBack,
+public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser, FrgBack, FrgLists,
         FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry,
         FrgDocument.ListDocument, FrgCommunity.ListCommunity, PresenterForm, PresenterHome.Activity {
 
     public static final int FRAGMENT_HOME = 100;
-    public static final int FRAGMENT_HELP = 101;
+    public static final int FRAGMENT_INFORMATION = 101;
     public static final int FRAGMENT_PROFILE = 102;
-    public static final int FRAGMENT_SETTINGS = 103;
     public static final int FRAGMENT_LIST_COMMUNITY = 110;
     public static final int FRAGMENT_LIST_DOCUMENT = 111;
     public static final int FRAGMENT_LIST_ENTRYF = 112;
@@ -72,6 +71,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     public static final int FRAGMENT_LIST_INCIDENCE = 114;
     public static final int FRAGMENT_LIST_MEETING = 115;
     public static final int FRAGMENT_LIST_USER = 116;
+
     public static final int DURATION_SHORT = 1;
     public static final int DURATION_LONG = 2;
 
@@ -87,6 +87,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     TextView toolbarText;
     @BindView(R.id.activity_main_action)
     FloatingActionButton actionButton;
+
+    CircleImageView profile_image;
+    TextView profile_name;
 
     @OnClick(R.id.activity_main_action)
     public void actionClick(View view) {
@@ -112,19 +115,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         }
     }
 
-    CircleImageView profile_image;
-    TextView profile_name;
+    private PresenterHomeImpl presenterHome;
 
+    private boolean doubleBackToExit;
     private boolean form_opened;
+    private int actual_category;
     private int fragment_opened;
     private String actual_code;
+    private String actual_email;
     private String actual_name;
     private String actual_photo;
-    private String actual_email;
-    private int actual_category;
-    private boolean doubleBackToExit;
-
-    private PresenterHomeImpl presenterHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,20 +132,369 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        form_opened = false;
+
         doubleBackToExit = false;
+        form_opened = false;
+        actual_category = 0;
         actual_code = "";
+        actual_email = "";
         actual_name = "";
         actual_photo = "";
-        actual_email = "";
-        actual_category = 0;
-
-        setNavigationActionBarHeader();
 
         presenterHome = new PresenterHomeImpl(this);
         presenterHome.getCurrentUser();
 
+        setNavigationActionBarHeader();
+
         showHome();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void backFromForm() {
+        form_opened = false;
+        actionButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void changeCode(String code) {
+        actual_code = code;
+        showSnackbar(getString(R.string.changed_code) + " " + actual_code, DURATION_LONG);
+    }
+
+    @Override
+    public void closeFormCall() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public void deletedCommunity(final PoCommunity item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.community_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertCommunity(item);
+            }
+        });
+        snackbar.show();
+    }
+
+    @Override
+    public void deletedDocument(final PoDocument item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.document_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertDocument(item, actual_code);
+            }
+        });
+        snackbar.show();
+    }
+
+    @Override
+    public void deletedEntry(final PoEntry item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.entry_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertEntry(item, actual_code);
+            }
+        });
+        snackbar.show();
+    }
+
+    @Override
+    public void deletedIncidence(final PoIncidence item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.incidence_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertIncidence(item, actual_code);
+            }
+        });
+        snackbar.show();
+    }
+
+    @Override
+    public void deletedMeeting(final PoMeeting item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.meeting_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertMeeting(item, actual_code);
+            }
+        });
+        snackbar.show();
+    }
+
+    @Override
+    public void deletedUser(final PoUser item) {
+        Snackbar snackbar;
+        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.user_deleted), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterHome.reInsertUser(item);
+            }
+        });
+        snackbar.show();
+    }
+
+    @Override
+    public void getCurrentUserResponseClose() {
+        closeSesion();
+    }
+
+    @Override
+    public void getCurrentUserResponseFailure() {
+        Toast.makeText(this, R.string.user_response_failure, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void getCurrentUserResponseUser(String community, String name, String photo, String email, int category) {
+        actual_code = community;
+        actual_name = name;
+        actual_photo = photo;
+        actual_email = email;
+        actual_category = category;
+
+        if (!"".equals(actual_photo)) {
+            Glide.with(ActivityHome.this).load(actual_photo).into(profile_image);
+        } else {
+            profile_image.setImageResource(R.drawable.default_image);
+        }
+        profile_name.setText(actual_name);
+
+        if (actual_category != PoUser.GROUP_ADMIN) {
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.groupOptions_Communities).setVisible(false);
+        } else {
+            showCommunities();
+        }
+    }
+
+    @Override
+    public void nothingChanged() {
+        showSnackbar(getString(R.string.no_edit_changes), DURATION_SHORT);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        } else {
+            if (!form_opened) {
+                if (doubleBackToExit) {
+                    super.onBackPressed();
+                }
+                this.doubleBackToExit = true;
+                showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExit = false;
+                    }
+                }, 2000);
+            } else {
+                super.onBackPressed();
+            }
+        }
+    }
+
+    @Override
+    public void reInsertResponse() {
+        showSnackbar(getString(R.string.string_reinsert), DURATION_SHORT);
+    }
+
+    @Override
+    public void sendCommunity(PoCommunity item) {
+        openFormCommunity(item);
+    }
+
+    @Override
+    public void sendDocument(PoDocument item) {
+        openFormDocument(item);
+    }
+
+    @Override
+    public void sendEntry(PoEntry item) {
+        openFormEntry(item, item.getCategory());
+    }
+
+    @Override
+    public void sendIncidence(PoIncidence item) {
+        openFormIncidence(item);
+    }
+
+    @Override
+    public void sendMeeting(PoMeeting item) {
+        openFormMeeting(item);
+    }
+
+    @Override
+    public void sendSnack(String msg) {
+        showSnackbar(msg, DURATION_LONG);
+    }
+
+    @Override
+    public void sendUser(PoUser item) {
+        openFormUser(item);
+    }
+
+    private void changeActionTitle(CharSequence title) {
+        toolbarText.setText(title);
+    }
+
+    private void clearFragmentStack() {
+        FragmentManager manager = getSupportFragmentManager();
+        for (int i = 0; i < manager.getBackStackEntryCount(); i++) {
+            manager.popBackStack();
+        }
+    }
+
+    private void closeSesionResponse() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, ActivityLogin.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void closeSesion() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_title_close);
+        builder.setMessage(R.string.dialog_message_close);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                closeSesionResponse();
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void openFormCommunity(PoCommunity community) {
+        form_opened = true;
+        actionButton.setVisibility(View.INVISIBLE);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("communityForm", community);
+
+        FrgFormCommunity frgFormCommunity = new FrgFormCommunity();
+        frgFormCommunity.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_main_frame, frgFormCommunity, "frgFormCommunity");
+        transaction.addToBackStack("frgFormCommunity");
+        transaction.commit();
+    }
+
+    private void openFormDocument(PoDocument document) {
+        form_opened = true;
+        actionButton.setVisibility(View.INVISIBLE);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("documentForm", document);
+        bundle.putString("comcode", actual_code);
+        bundle.putString("actualEmail", actual_email);
+
+        FrgFormDocument frgFormDocument = new FrgFormDocument();
+        frgFormDocument.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_main_frame, frgFormDocument, "frgFormDocument");
+        transaction.addToBackStack("frgFormDocument");
+        transaction.commit();
+    }
+
+    private void openFormEntry(PoEntry entry, int category) {
+        form_opened = true;
+        actionButton.setVisibility(View.INVISIBLE);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("entryForm", entry);
+        bundle.putString("comcode", actual_code);
+        bundle.putString("myname", actual_name);
+        bundle.putInt("formCategory", category);
+        bundle.putString("actualEmail", actual_email);
+
+        FrgFormEntry frgFormEntry = new FrgFormEntry();
+        frgFormEntry.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_main_frame, frgFormEntry, "frgFormEntry");
+        transaction.addToBackStack("frgFormEntry");
+        transaction.commit();
+    }
+
+    private void openFormIncidence(PoIncidence incidence) {
+        form_opened = true;
+        actionButton.setVisibility(View.INVISIBLE);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("incidenceForm", incidence);
+        bundle.putString("comcode", actual_code);
+        bundle.putString("myname", actual_name);
+        bundle.putString("actualEmail", actual_email);
+
+        FrgFormIncidence frgFormIncidence = new FrgFormIncidence();
+        frgFormIncidence.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_main_frame, frgFormIncidence, "frgFormIncidence");
+        transaction.addToBackStack("frgFormIncidence");
+        transaction.commit();
+    }
+
+    private void openFormMeeting(PoMeeting meeting) {
+        form_opened = true;
+        actionButton.setVisibility(View.INVISIBLE);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("meetingForm", meeting);
+        bundle.putString("comcode", actual_code);
+        bundle.putString("actualEmail", actual_email);
+
+        FrgFormMeeting frgFormMeeting = new FrgFormMeeting();
+        frgFormMeeting.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_main_frame, frgFormMeeting, "frgFormMeeting");
+        transaction.addToBackStack("frgFormMeeting");
+        transaction.commit();
+    }
+
+    private void openFormUser(PoUser user) {
+        form_opened = true;
+        actionButton.setVisibility(View.INVISIBLE);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("userForm", user);
+        bundle.putString("comcode", actual_code);
+
+        FrgFormUser frgFormUser = new FrgFormUser();
+        frgFormUser.setArguments(bundle);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_main_frame, frgFormUser, "frgFormUser");
+        transaction.addToBackStack("frgFormUser");
+        transaction.commit();
     }
 
     private void setNavigationActionBarHeader() {
@@ -224,9 +573,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                         showSettings();
                         transaction = true;
                         break;
-                    case R.id.groupOthers_Help:
+                    case R.id.groupOthers_Information:
                         clearFragmentStack();
-                        showHelp();
+                        showInformation();
                         transaction = true;
                         break;
                     case R.id.groupOthers_About:
@@ -269,175 +618,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void backFromForm() {
-        form_opened = false;
-        actionButton.setVisibility(View.VISIBLE);
-    }
-
-    private void openFormCommunity(PoCommunity community) {
-        form_opened = true;
-        actionButton.setVisibility(View.INVISIBLE);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("communityForm", community);
-
-        FrgFormCommunity frgFormCommunity = new FrgFormCommunity();
-        frgFormCommunity.setArguments(bundle);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgFormCommunity, "frgFormCommunity");
-        transaction.addToBackStack("frgFormCommunity");
-        transaction.commit();
-    }
-
-    private void openFormUser(PoUser user) {
-        form_opened = true;
-        actionButton.setVisibility(View.INVISIBLE);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("userForm", user);
-        bundle.putString("comcode", actual_code);
-
-        FrgFormUser frgFormUser = new FrgFormUser();
-        frgFormUser.setArguments(bundle);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgFormUser, "frgFormUser");
-        transaction.addToBackStack("frgFormUser");
-        transaction.commit();
-    }
-
-    private void openFormMeeting(PoMeeting meeting) {
-        form_opened = true;
-        actionButton.setVisibility(View.INVISIBLE);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("meetingForm", meeting);
-        bundle.putString("comcode", actual_code);
-        bundle.putString("actualEmail", actual_email);
-
-        FrgFormMeeting frgFormMeeting = new FrgFormMeeting();
-        frgFormMeeting.setArguments(bundle);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgFormMeeting, "frgFormMeeting");
-        transaction.addToBackStack("frgFormMeeting");
-        transaction.commit();
-    }
-
-    private void openFormDocument(PoDocument document) {
-        form_opened = true;
-        actionButton.setVisibility(View.INVISIBLE);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("documentForm", document);
-        bundle.putString("comcode", actual_code);
-        bundle.putString("actualEmail", actual_email);
-
-        FrgFormDocument frgFormDocument = new FrgFormDocument();
-        frgFormDocument.setArguments(bundle);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgFormDocument, "frgFormDocument");
-        transaction.addToBackStack("frgFormDocument");
-        transaction.commit();
-    }
-
-    private void openFormEntry(PoEntry entry, int category) {
-        form_opened = true;
-        actionButton.setVisibility(View.INVISIBLE);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("entryForm", entry);
-        bundle.putString("comcode", actual_code);
-        bundle.putString("myname", actual_name);
-        bundle.putInt("formCategory", category);
-        bundle.putString("actualEmail", actual_email);
-
-        FrgFormEntry frgFormEntry = new FrgFormEntry();
-        frgFormEntry.setArguments(bundle);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgFormEntry, "frgFormEntry");
-        transaction.addToBackStack("frgFormEntry");
-        transaction.commit();
-    }
-
-    private void openFormIncidence(PoIncidence incidence) {
-        form_opened = true;
-        actionButton.setVisibility(View.INVISIBLE);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("incidenceForm", incidence);
-        bundle.putString("comcode", actual_code);
-        bundle.putString("myname", actual_name);
-        bundle.putString("actualEmail", actual_email);
-
-        FrgFormIncidence frgFormIncidence = new FrgFormIncidence();
-        frgFormIncidence.setArguments(bundle);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_main_frame, frgFormIncidence, "frgFormIncidence");
-        transaction.addToBackStack("frgFormIncidence");
-        transaction.commit();
-    }
-
     private void showAbout() {
         Intent intent = new Intent(this, ActivityAbout.class);
         startActivity(intent);
-    }
-
-    private void showHelp() {
-        if (fragment_opened != FRAGMENT_HELP) {
-            actionButton.setVisibility(View.INVISIBLE);
-
-            FrgAbout frgAbout = new FrgAbout();
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgAbout, "frgAbout");
-            transaction.commit();
-
-            fragment_opened = FRAGMENT_HELP;
-        }
-    }
-
-    private void showSettings() {
-        if (fragment_opened != FRAGMENT_SETTINGS) {
-            actionButton.setVisibility(View.INVISIBLE);
-
-            FrgSettings frgSettings = new FrgSettings();
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgSettings, "frgSettings");
-            transaction.commit();
-
-            fragment_opened = FRAGMENT_SETTINGS;
-        }
-    }
-
-    private void showProfile() {
-        if (fragment_opened != FRAGMENT_PROFILE) {
-            actionButton.setVisibility(View.INVISIBLE);
-
-            FrgProfile frgProfile = new FrgProfile();
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgProfile, "frgProfile");
-            transaction.commit();
-
-            fragment_opened = FRAGMENT_PROFILE;
-        }
     }
 
     private void showCommunities() {
@@ -455,43 +638,6 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         }
     }
 
-    private void showUsers() {
-        if (fragment_opened != FRAGMENT_LIST_USER) {
-            actionButton.setVisibility(View.INVISIBLE);
-
-            Bundle bundle = new Bundle();
-            bundle.putString("comcode", actual_code);
-
-            FrgUser frgUser = new FrgUser();
-            frgUser.setArguments(bundle);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgUser, "frgUser");
-            transaction.commit();
-
-            fragment_opened = FRAGMENT_LIST_USER;
-        }
-    }
-
-    private void showMeetings() {
-        if (fragment_opened != FRAGMENT_LIST_MEETING) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-
-            Bundle bundle = new Bundle();
-            bundle.putString("comcode", actual_code);
-
-            FrgMeeting frgMeeting = new FrgMeeting();
-            frgMeeting.setArguments(bundle);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgMeeting, "frgMeeting");
-            transaction.commit();
-
-            fragment_opened = FRAGMENT_LIST_MEETING;
-        }
-    }
-
     private void showDocuments() {
         if (fragment_opened != FRAGMENT_LIST_DOCUMENT) {
             if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
@@ -502,6 +648,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             }
 
             Bundle bundle = new Bundle();
+            bundle.putString("userEmail", actual_email);
             bundle.putString("comcode", actual_code);
             bundle.putInt("userCategory", actual_category);
 
@@ -526,6 +673,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             }
 
             Bundle bundle = new Bundle();
+            bundle.putString("userEmail", actual_email);
             bundle.putInt("category", PoEntry.CATEGORY_FIRST);
             bundle.putString("comcode", actual_code);
             bundle.putInt("userCategory", actual_category);
@@ -547,6 +695,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
 
             Bundle bundle = new Bundle();
+            bundle.putString("userEmail", actual_email);
             bundle.putInt("category", PoEntry.CATEGORY_SECOND);
             bundle.putString("comcode", actual_code);
             bundle.putInt("userCategory", actual_category);
@@ -562,47 +711,6 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         }
     }
 
-    private void showIncidents() {
-        if (fragment_opened != FRAGMENT_LIST_INCIDENCE) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-
-            Bundle bundle = new Bundle();
-            bundle.putString("comcode", actual_code);
-
-            FrgIncidence frgIncidence = new FrgIncidence();
-            frgIncidence.setArguments(bundle);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgIncidence, "frgIncidence");
-            transaction.commit();
-
-            fragment_opened = FRAGMENT_LIST_INCIDENCE;
-        }
-    }
-
-    private void closeSesion() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialog_title_close);
-        builder.setMessage(R.string.dialog_message_close);
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                closeSesionResponse();
-            }
-        });
-        builder.setNegativeButton(android.R.string.no, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void closeSesionResponse() {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, ActivityLogin.class);
-        startActivity(intent);
-        finish();
-    }
-
     private void showHome() {
         actionButton.setVisibility(View.INVISIBLE);
 
@@ -616,11 +724,84 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         changeActionTitle(getString(R.string.app_name));
     }
 
-    private void clearFragmentStack() {
-        FragmentManager manager = getSupportFragmentManager();
-        for (int i = 0; i < manager.getBackStackEntryCount(); i++) {
-            manager.popBackStack();
+    private void showIncidents() {
+        if (fragment_opened != FRAGMENT_LIST_INCIDENCE) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("userEmail", actual_email);
+            bundle.putString("comcode", actual_code);
+
+            FrgIncidence frgIncidence = new FrgIncidence();
+            frgIncidence.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgIncidence, "frgIncidence");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_INCIDENCE;
         }
+    }
+
+    private void showInformation() {
+        if (fragment_opened != FRAGMENT_INFORMATION) {
+            actionButton.setVisibility(View.INVISIBLE);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("comcode", actual_code);
+
+            FrgInfo frgInfo = new FrgInfo();
+            frgInfo.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgInfo, "frgInfo");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_INFORMATION;
+        }
+    }
+
+    private void showMeetings() {
+        if (fragment_opened != FRAGMENT_LIST_MEETING) {
+            actionButton.setVisibility(View.VISIBLE);
+            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("userEmail", actual_email);
+            bundle.putString("comcode", actual_code);
+
+            FrgMeeting frgMeeting = new FrgMeeting();
+            frgMeeting.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgMeeting, "frgMeeting");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_LIST_MEETING;
+        }
+    }
+
+    private void showProfile() {
+        if (fragment_opened != FRAGMENT_PROFILE) {
+            actionButton.setVisibility(View.INVISIBLE);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("userEmail", actual_email);
+
+            FrgProfile frgProfile = new FrgProfile();
+            frgProfile.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgProfile, "frgProfile");
+            transaction.commit();
+
+            fragment_opened = FRAGMENT_PROFILE;
+        }
+    }
+
+    private void showSettings() {
+        //
     }
 
     private void showSnackbar(String message, int duration) {
@@ -638,193 +819,22 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         }
     }
 
-    private void changeActionTitle(CharSequence title) {
-        toolbarText.setText(title);
-    }
+    private void showUsers() {
+        if (fragment_opened != FRAGMENT_LIST_USER) {
+            actionButton.setVisibility(View.INVISIBLE);
 
-    @Override
-    public void changeCode(String code) {
-        actual_code = code;
-        showSnackbar(getString(R.string.changed_code) + " " + actual_code, DURATION_LONG);
-    }
+            Bundle bundle = new Bundle();
+            bundle.putInt("userCategory", actual_category);
+            bundle.putString("comcode", actual_code);
 
-    @Override
-    public void sendCommunity(PoCommunity item) {
-        openFormCommunity(item);
-    }
+            FrgUser frgUser = new FrgUser();
+            frgUser.setArguments(bundle);
 
-    @Override
-    public void deletedCommunity(final PoCommunity item) {
-        Snackbar snackbar;
-        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.community_deleted), Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenterHome.reInsertCommunity(item);
-            }
-        });
-        snackbar.show();
-    }
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.activity_main_frame, frgUser, "frgUser");
+            transaction.commit();
 
-    @Override
-    public void sendUser(PoUser item) {
-        openFormUser(item);
-    }
-
-    @Override
-    public void deletedUser(final PoUser item) {
-        Snackbar snackbar;
-        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.user_deleted), Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenterHome.reInsertUser(item);
-            }
-        });
-        snackbar.show();
-    }
-
-    @Override
-    public void sendEntry(PoEntry item) {
-        openFormEntry(item, item.getCategory());
-    }
-
-    @Override
-    public void deletedEntry(final PoEntry item) {
-        Snackbar snackbar;
-        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.entry_deleted), Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenterHome.reInsertEntry(item, actual_code);
-            }
-        });
-        snackbar.show();
-    }
-
-    @Override
-    public void sendMeeting(PoMeeting item) {
-        openFormMeeting(item);
-    }
-
-    @Override
-    public void deletedMeeting(final PoMeeting item) {
-        Snackbar snackbar;
-        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.meeting_deleted), Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenterHome.reInsertMeeting(item, actual_code);
-            }
-        });
-        snackbar.show();
-    }
-
-    @Override
-    public void sendDocument(PoDocument item) {
-        openFormDocument(item);
-    }
-
-    @Override
-    public void deletedDocument(final PoDocument item) {
-        Snackbar snackbar;
-        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.document_deleted), Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenterHome.reInsertDocument(item, actual_code);
-            }
-        });
-        snackbar.show();
-    }
-
-    @Override
-    public void sendIncidence(PoIncidence item) {
-        openFormIncidence(item);
-    }
-
-    @Override
-    public void deletedIncidence(final PoIncidence item) {
-        Snackbar snackbar;
-        snackbar = Snackbar.make(coordinatorLayout, getString(R.string.incidence_deleted), Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenterHome.reInsertIncidence(item, actual_code);
-            }
-        });
-        snackbar.show();
-    }
-
-    @Override
-    public void reInsertResponse() {
-        showSnackbar(getString(R.string.string_reinsert), DURATION_SHORT);
-    }
-
-    @Override
-    public void getCurrentUserResponseClose() {
-        closeSesion();
-    }
-
-    @Override
-    public void getCurrentUserResponseUser(String community, String name, String photo, String email, int category) {
-        actual_code = community;
-        actual_name = name;
-        actual_photo = photo;
-        actual_email = email;
-        actual_category = category;
-
-        if (!"".equals(actual_photo)) {
-            Glide.with(ActivityHome.this).load(actual_photo).into(profile_image);
-        } else {
-            profile_image.setImageResource(R.drawable.default_image);
-        }
-        profile_name.setText(actual_name);
-
-        if (actual_category != PoUser.GROUP_ADMIN) {
-            Menu menu = navigationView.getMenu();
-            menu.findItem(R.id.groupOptions_Communities).setVisible(false);
-        } else {
-            showCommunities();
-        }
-    }
-
-    @Override
-    public void getCurrentUserResponseFailure() {
-        Toast.makeText(this, R.string.user_response_failure, Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    @Override
-    public void closeFormCall() {
-        super.onBackPressed();
-    }
-
-    @Override
-    public void nothingChanged() {
-        showSnackbar(getString(R.string.no_edit_changes), DURATION_SHORT);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers();
-        } else {
-            if (!form_opened) {
-                if (doubleBackToExit) {
-                    super.onBackPressed();
-                }
-                this.doubleBackToExit = true;
-                showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleBackToExit = false;
-                    }
-                }, 2000);
-            } else {
-                super.onBackPressed();
-            }
+            fragment_opened = FRAGMENT_LIST_USER;
         }
     }
 }

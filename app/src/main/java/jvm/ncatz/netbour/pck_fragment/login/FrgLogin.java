@@ -59,30 +59,23 @@ public class FrgLogin extends Fragment {
         }
     }
 
-    private void logUser(String em, String pa) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(em, pa)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            checkUser();
-                        } else {
-                            callback.logFail();
-                        }
-                    }
-                });
-    }
-
     private IFrgLogin callback;
 
     public interface IFrgLogin {
-        void openRegister();
 
-        void userIsLogged();
+        void deletedUser();
 
         void logFail();
 
-        void deletedUser();
+        void openRegister();
+
+        void userIsLogged();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (IFrgLogin) context;
     }
 
     @Override
@@ -91,6 +84,20 @@ public class FrgLogin extends Fragment {
         setRetainInstance(true);
 
         checkUser();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.frg_login, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
     }
 
     private void checkUser() {
@@ -123,23 +130,17 @@ public class FrgLogin extends Fragment {
         }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frg_login, container, false);
-        ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        callback = (IFrgLogin) context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        callback = null;
+    private void logUser(String em, String pa) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(em, pa)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            checkUser();
+                        } else {
+                            callback.logFail();
+                        }
+                    }
+                });
     }
 }

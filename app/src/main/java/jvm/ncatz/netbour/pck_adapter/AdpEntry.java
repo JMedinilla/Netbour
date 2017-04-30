@@ -20,6 +20,7 @@ import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoEntry;
 
 public class AdpEntry extends ArrayAdapter<PoEntry> {
+
     private Context context;
 
     static class ViewHolder {
@@ -42,6 +43,12 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
     public AdpEntry(@NonNull Context context, List<PoEntry> list) {
         super(context, R.layout.adapter_entry, list);
         this.context = context;
+    }
+
+    @Nullable
+    @Override
+    public PoEntry getItem(int position) {
+        return super.getItem(position);
     }
 
     @NonNull
@@ -76,11 +83,5 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
             }
         }
         return convertView;
-    }
-
-    @Nullable
-    @Override
-    public PoEntry getItem(int position) {
-        return super.getItem(position);
     }
 }

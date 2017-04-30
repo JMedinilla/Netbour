@@ -4,36 +4,53 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoUser implements Parcelable {
+
     public static final int GROUP_NEIGHBOUR = 1;
     public static final int GROUP_PRESIDENT = 2;
     public static final int GROUP_ADMIN = 3;
 
+    private boolean deleted;
+    private int category;
     private long key;
     private String community;
-    private String floor;
     private String door;
-    private String phone;
     private String email;
+    private String floor;
     private String name;
-    private int category;
+    private String phone;
     private String photo;
-    private boolean deleted;
 
-    private PoUser() {
+    public PoUser() {
         //
     }
 
-    public PoUser(long key, String community, String floor, String door, String phone, String email, String name, int category, String photo, boolean deleted) {
+    public PoUser(boolean deleted, int category, long key, String community, String door, String email, String floor, String name, String phone, String photo) {
+        this.deleted = deleted;
+        this.category = category;
         this.key = key;
         this.community = community;
-        this.floor = floor;
         this.door = door;
-        this.phone = phone;
         this.email = email;
+        this.floor = floor;
         this.name = name;
-        this.category = category;
+        this.phone = phone;
         this.photo = photo;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 
     public long getKey() {
@@ -52,28 +69,12 @@ public class PoUser implements Parcelable {
         this.community = community;
     }
 
-    public String getFloor() {
-        return floor;
-    }
-
-    public void setFloor(String floor) {
-        this.floor = floor;
-    }
-
     public String getDoor() {
         return door;
     }
 
     public void setDoor(String door) {
         this.door = door;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getEmail() {
@@ -84,6 +85,14 @@ public class PoUser implements Parcelable {
         this.email = email;
     }
 
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
     public String getName() {
         return name;
     }
@@ -92,12 +101,12 @@ public class PoUser implements Parcelable {
         this.name = name;
     }
 
-    public int getCategory() {
-        return category;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getPhoto() {
@@ -108,25 +117,87 @@ public class PoUser implements Parcelable {
         this.photo = photo;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PoUser)) return false;
+
+        PoUser user = (PoUser) o;
+
+        return isDeleted() == user.isDeleted()
+                && getCategory() == user.getCategory()
+                && getKey() == user.getKey()
+                && getCommunity().equals(user.getCommunity())
+                && getDoor().equals(user.getDoor())
+                && getEmail().equals(user.getEmail())
+                && getFloor().equals(user.getFloor())
+                && getName().equals(user.getName())
+                && getPhone().equals(user.getPhone())
+                && getPhoto().equals(user.getPhoto());
+
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    @Override
+    public int hashCode() {
+        int result = (isDeleted() ? 1 : 0);
+        result = 31 * result + getCategory();
+        result = 31 * result + (int) (getKey() ^ (getKey() >>> 32));
+        result = 31 * result + getCommunity().hashCode();
+        result = 31 * result + getDoor().hashCode();
+        result = 31 * result + getEmail().hashCode();
+        result = 31 * result + getFloor().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getPhone().hashCode();
+        result = 31 * result + getPhoto().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PoUser{" +
+                "deleted=" + deleted +
+                ", category=" + category +
+                ", key=" + key +
+                ", community='" + community + '\'' +
+                ", door='" + door + '\'' +
+                ", email='" + email + '\'' +
+                ", floor='" + floor + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", photo='" + photo + '\'' +
+                '}';
     }
 
     protected PoUser(Parcel in) {
+        deleted = in.readByte() != 0;
+        category = in.readInt();
         key = in.readLong();
         community = in.readString();
-        floor = in.readString();
         door = in.readString();
-        phone = in.readString();
         email = in.readString();
+        floor = in.readString();
         name = in.readString();
-        category = in.readInt();
+        phone = in.readString();
         photo = in.readString();
-        deleted = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (deleted ? 1 : 0));
+        dest.writeInt(category);
+        dest.writeLong(key);
+        dest.writeString(community);
+        dest.writeString(door);
+        dest.writeString(email);
+        dest.writeString(floor);
+        dest.writeString(name);
+        dest.writeString(phone);
+        dest.writeString(photo);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PoUser> CREATOR = new Creator<PoUser>() {
@@ -140,23 +211,4 @@ public class PoUser implements Parcelable {
             return new PoUser[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(key);
-        dest.writeString(community);
-        dest.writeString(floor);
-        dest.writeString(door);
-        dest.writeString(phone);
-        dest.writeString(email);
-        dest.writeString(name);
-        dest.writeInt(category);
-        dest.writeString(photo);
-        dest.writeByte((byte) (deleted ? 1 : 0));
-    }
 }

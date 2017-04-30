@@ -10,19 +10,25 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 
 public class PresenterCommunityImpl implements PresenterCommunity, InteractorCommunity.Listener {
-    private ViewList viewList;
-    private ViewForm viewForm;
-    private InteractorCommunityImpl interactorCommunity;
 
-    public PresenterCommunityImpl(ViewList viewList, ViewForm viewForm) {
-        this.viewList = viewList;
-        this.viewForm = viewForm;
+    private InteractorCommunityImpl interactorCommunity;
+    private ViewForm viewForm;
+    private ViewList viewList;
+
+    public PresenterCommunityImpl(ViewForm viewForm, ViewList viewList) {
         interactorCommunity = new InteractorCommunityImpl(this);
+        this.viewForm = viewForm;
+        this.viewList = viewList;
     }
 
     @Override
-    public void instanceFirebase() {
-        interactorCommunity.instanceFirebase();
+    public void addCommunity(PoCommunity community) {
+        interactorCommunity.addCommunity(community);
+    }
+
+    @Override
+    public void addedCommunity() {
+        viewForm.addedCommunity();
     }
 
     @Override
@@ -31,8 +37,43 @@ public class PresenterCommunityImpl implements PresenterCommunity, InteractorCom
     }
 
     @Override
+    public void deleteCommunity(PoCommunity item) {
+        interactorCommunity.deleteCommunity(item);
+    }
+
+    @Override
+    public void deletedCommunity(PoCommunity item) {
+        viewList.deletedCommunity(item);
+    }
+
+    @Override
     public void dettachFirebase() {
         interactorCommunity.dettachFirebase();
+    }
+
+    @Override
+    public void editCommunity(PoCommunity community) {
+        interactorCommunity.editCommunity(community);
+    }
+
+    @Override
+    public void editedCommunity() {
+        viewForm.editedCommunity();
+    }
+
+    @Override
+    public void instanceFirebase() {
+        interactorCommunity.instanceFirebase();
+    }
+
+    @Override
+    public void returnList(List<PoCommunity> list) {
+        viewList.returnList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        viewList.returnListEmpty();
     }
 
     @Override
@@ -82,45 +123,5 @@ public class PresenterCommunityImpl implements PresenterCommunity, InteractorCom
         if (!error) {
             viewForm.validationResponse(community, SUCCESS);
         }
-    }
-
-    @Override
-    public void addCommunity(PoCommunity community) {
-        interactorCommunity.addCommunity(community);
-    }
-
-    @Override
-    public void editCommunity(PoCommunity community) {
-        interactorCommunity.editCommunity(community);
-    }
-
-    @Override
-    public void deleteCommunity(PoCommunity item) {
-        interactorCommunity.deleteCommunity(item);
-    }
-
-    @Override
-    public void returnList(List<PoCommunity> list) {
-        viewList.returnList(list);
-    }
-
-    @Override
-    public void returnListEmpty() {
-        viewList.returnListEmpty();
-    }
-
-    @Override
-    public void addedCommunity() {
-        viewForm.addedCommunity();
-    }
-
-    @Override
-    public void editedCommunity() {
-        viewForm.editedCommunity();
-    }
-
-    @Override
-    public void deletedCommunity(PoCommunity item) {
-        viewList.deletedCommunity(item);
     }
 }

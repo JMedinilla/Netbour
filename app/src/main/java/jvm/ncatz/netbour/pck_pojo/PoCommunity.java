@@ -4,28 +4,45 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoCommunity implements Parcelable {
+
+    private boolean deleted;
+    private int flats;
     private String code;
-    private String province;
     private String municipality;
-    private String street;
     private String number;
     private String postal;
-    private int flats;
-    private boolean deleted;
+    private String province;
+    private String street;
 
     public PoCommunity() {
         //
     }
 
-    public PoCommunity(String code, String province, String municipality, String street, String number, String postal, int flats, boolean deleted) {
+    public PoCommunity(boolean deleted, int flats, String code, String municipality, String number, String postal, String province, String street) {
+        this.deleted = deleted;
+        this.flats = flats;
         this.code = code;
-        this.province = province;
         this.municipality = municipality;
-        this.street = street;
         this.number = number;
         this.postal = postal;
-        this.flats = flats;
+        this.province = province;
+        this.street = street;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public int getFlats() {
+        return flats;
+    }
+
+    public void setFlats(int flats) {
+        this.flats = flats;
     }
 
     public String getCode() {
@@ -36,28 +53,12 @@ public class PoCommunity implements Parcelable {
         this.code = code;
     }
 
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
     public String getMunicipality() {
         return municipality;
     }
 
     public void setMunicipality(String municipality) {
         this.municipality = municipality;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
     }
 
     public String getNumber() {
@@ -76,31 +77,93 @@ public class PoCommunity implements Parcelable {
         this.postal = postal;
     }
 
-    public int getFlats() {
-        return flats;
+    public String getProvince() {
+        return province;
     }
 
-    public void setFlats(int flats) {
-        this.flats = flats;
+    public void setProvince(String province) {
+        this.province = province;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public String getStreet() {
+        return street;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    private PoCommunity(Parcel in) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PoCommunity)) return false;
+
+        PoCommunity community = (PoCommunity) o;
+
+        return isDeleted() == community.isDeleted()
+                && getFlats() == community.getFlats()
+                && getCode().equals(community.getCode())
+                && getMunicipality().equals(community.getMunicipality())
+                && getNumber().equals(community.getNumber())
+                && getPostal().equals(community.getPostal())
+                && getProvince().equals(community.getProvince())
+                && getStreet().equals(community.getStreet());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (isDeleted() ? 1 : 0);
+        result = 31 * result + getFlats();
+        result = 31 * result + getCode().hashCode();
+        result = 31 * result + getMunicipality().hashCode();
+        result = 31 * result + getNumber().hashCode();
+        result = 31 * result + getPostal().hashCode();
+        result = 31 * result + getProvince().hashCode();
+        result = 31 * result + getStreet().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PoCommunity{" +
+                "deleted=" + deleted +
+                ", flats=" + flats +
+                ", code='" + code + '\'' +
+                ", municipality='" + municipality + '\'' +
+                ", number='" + number + '\'' +
+                ", postal='" + postal + '\'' +
+                ", province='" + province + '\'' +
+                ", street='" + street + '\'' +
+                '}';
+    }
+
+    protected PoCommunity(Parcel in) {
+        deleted = in.readByte() != 0;
+        flats = in.readInt();
         code = in.readString();
-        province = in.readString();
         municipality = in.readString();
-        street = in.readString();
         number = in.readString();
         postal = in.readString();
-        flats = in.readInt();
-        deleted = in.readByte() != 0;
+        province = in.readString();
+        street = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (deleted ? 1 : 0));
+        dest.writeInt(flats);
+        dest.writeString(code);
+        dest.writeString(municipality);
+        dest.writeString(number);
+        dest.writeString(postal);
+        dest.writeString(province);
+        dest.writeString(street);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PoCommunity> CREATOR = new Creator<PoCommunity>() {
@@ -114,21 +177,4 @@ public class PoCommunity implements Parcelable {
             return new PoCommunity[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(code);
-        dest.writeString(province);
-        dest.writeString(municipality);
-        dest.writeString(street);
-        dest.writeString(number);
-        dest.writeString(postal);
-        dest.writeInt(flats);
-        dest.writeByte((byte) (deleted ? 1 : 0));
-    }
 }

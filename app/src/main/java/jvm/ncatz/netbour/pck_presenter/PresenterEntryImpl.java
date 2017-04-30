@@ -10,19 +10,25 @@ import jvm.ncatz.netbour.pck_interface.presenter.PresenterEntry;
 import jvm.ncatz.netbour.pck_pojo.PoEntry;
 
 public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Listener {
-    private ViewList viewList;
-    private ViewForm viewForm;
-    private InteractorEntryImpl interactorEntry;
 
-    public PresenterEntryImpl(ViewList viewList, ViewForm viewForm) {
-        this.viewList = viewList;
-        this.viewForm = viewForm;
+    private InteractorEntryImpl interactorEntry;
+    private ViewForm viewForm;
+    private ViewList viewList;
+
+    public PresenterEntryImpl(ViewForm viewForm, ViewList viewList) {
         interactorEntry = new InteractorEntryImpl(this);
+        this.viewForm = viewForm;
+        this.viewList = viewList;
     }
 
     @Override
-    public void instanceFirebase(String code, int category) {
-        interactorEntry.instanceFirebase(code, category);
+    public void addEntry(PoEntry entry, String code) {
+        interactorEntry.addEntry(entry, code);
+    }
+
+    @Override
+    public void addedEntry() {
+        viewForm.addedEntry();
     }
 
     @Override
@@ -31,8 +37,43 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
     }
 
     @Override
+    public void deleteEntry(PoEntry item) {
+        interactorEntry.deleteEntry(item);
+    }
+
+    @Override
+    public void deletedEntry(PoEntry item) {
+        viewList.deletedEntry(item);
+    }
+
+    @Override
     public void dettachFirebase() {
         interactorEntry.dettachFirebase();
+    }
+
+    @Override
+    public void editEntry(PoEntry entry, String code) {
+        interactorEntry.editEntry(entry, code);
+    }
+
+    @Override
+    public void editedEntry() {
+        viewForm.editedEntry();
+    }
+
+    @Override
+    public void instanceFirebase(String code, int category) {
+        interactorEntry.instanceFirebase(code, category);
+    }
+
+    @Override
+    public void returnList(List<PoEntry> list) {
+        viewList.returnList(list);
+    }
+
+    @Override
+    public void returnListEmpty() {
+        viewList.returnListEmpty();
     }
 
     @Override
@@ -61,45 +102,5 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
         if (!error) {
             viewForm.validationResponse(entry, SUCCESS);
         }
-    }
-
-    @Override
-    public void addEntry(PoEntry entry, String code) {
-        interactorEntry.addEntry(entry, code);
-    }
-
-    @Override
-    public void editEntry(PoEntry entry, String code) {
-        interactorEntry.editEntry(entry, code);
-    }
-
-    @Override
-    public void deleteEntry(PoEntry item) {
-        interactorEntry.deleteEntry(item);
-    }
-
-    @Override
-    public void returnList(List<PoEntry> list) {
-        viewList.returnList(list);
-    }
-
-    @Override
-    public void returnListEmpty() {
-        viewList.returnListEmpty();
-    }
-
-    @Override
-    public void addedEntry() {
-        viewForm.addedEntry();
-    }
-
-    @Override
-    public void editedEntry() {
-        viewForm.editedEntry();
-    }
-
-    @Override
-    public void deletedEntry(PoEntry item) {
-        viewList.deletedEntry(item);
     }
 }

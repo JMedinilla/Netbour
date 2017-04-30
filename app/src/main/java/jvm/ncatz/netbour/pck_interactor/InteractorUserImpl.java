@@ -14,14 +14,44 @@ import jvm.ncatz.netbour.pck_interface.interactor.InteractorUser;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public class InteractorUserImpl implements InteractorUser {
-    private InteractorUser.Listener listener;
 
     private DatabaseReference databaseReference;
+    private InteractorUser.Listener listener;
     private Query query;
     private ValueEventListener eventListener;
 
     public InteractorUserImpl(InteractorUser.Listener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void attachFirebase() {
+        query.addValueEventListener(eventListener);
+    }
+
+    @Override
+    public void deleteUser(PoUser item) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(item.getKey()));
+        databaseReference.child("deleted").setValue(true);
+        listener.deletedUser(item);
+    }
+
+    @Override
+    public void dettachFirebase() {
+        if (eventListener != null) {
+            query.removeEventListener(eventListener);
+        }
+    }
+
+    @Override
+    public void editUser(PoUser user) {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(user.getKey()));
+        databaseReference.child("category").setValue(user.getCategory());
+        databaseReference.child("door").setValue(user.getDoor());
+        databaseReference.child("floor").setValue(user.getFloor());
+        databaseReference.child("name").setValue(user.getName());
+        databaseReference.child("phone").setValue(user.getPhone());
+        listener.editedUser();
     }
 
     @Override
@@ -53,35 +83,5 @@ public class InteractorUserImpl implements InteractorUser {
                 listener.returnListEmpty();
             }
         };
-    }
-
-    @Override
-    public void attachFirebase() {
-        query.addValueEventListener(eventListener);
-    }
-
-    @Override
-    public void dettachFirebase() {
-        if (eventListener != null) {
-            query.removeEventListener(eventListener);
-        }
-    }
-
-    @Override
-    public void editUser(PoUser user) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(user.getKey()));
-        databaseReference.child("category").setValue(user.getCategory());
-        databaseReference.child("door").setValue(user.getDoor());
-        databaseReference.child("floor").setValue(user.getFloor());
-        databaseReference.child("name").setValue(user.getName());
-        databaseReference.child("phone").setValue(user.getPhone());
-        listener.editedUser();
-    }
-
-    @Override
-    public void deleteUser(PoUser item) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(item.getKey()));
-        databaseReference.child("deleted").setValue(true);
-        listener.deletedUser(item);
     }
 }

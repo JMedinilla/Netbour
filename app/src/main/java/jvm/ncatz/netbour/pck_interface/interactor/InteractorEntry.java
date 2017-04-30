@@ -6,28 +6,28 @@ import jvm.ncatz.netbour.pck_pojo.PoEntry;
 
 public interface InteractorEntry {
 
-    void instanceFirebase(String code, int category);
+    void addEntry(PoEntry entry, String code);
 
     void attachFirebase();
 
-    void dettachFirebase();
+    void deleteEntry(PoEntry item);
 
-    void addEntry(PoEntry entry, String code);
+    void dettachFirebase();
 
     void editEntry(PoEntry entry, String code);
 
-    void deleteEntry(PoEntry item);
+    void instanceFirebase(String code, int category);
 
     interface Listener {
+
+        void addedEntry();
+
+        void deletedEntry(PoEntry item);
+
+        void editedEntry();
 
         void returnList(List<PoEntry> list);
 
         void returnListEmpty();
-
-        void addedEntry();
-
-        void editedEntry();
-
-        void deletedEntry(PoEntry item);
     }
 }

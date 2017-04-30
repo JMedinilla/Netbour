@@ -5,6 +5,7 @@ import java.util.List;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public interface PresenterUser {
+
     int SUCCESS = 0;
     int ERROR_NAME_EMPTY = 10;
     int ERROR_NAME_SHORT = 11;
@@ -17,25 +18,25 @@ public interface PresenterUser {
     int ERROR_PIN_EMPTY = 50;
     int ERROR_PIN_SHORT = 51;
 
-    void instanceFirebase(String code);
-
     void attachFirebase();
-
-    void dettachFirebase();
-
-    void validateUser(PoUser user, String pin, boolean updateMode);
-
-    void editUser(PoUser user);
 
     void deleteUser(PoUser item);
 
+    void dettachFirebase();
+
+    void editUser(PoUser user);
+
+    void instanceFirebase(String code);
+
+    void validateUser(PoUser user, String pin, boolean updateMode);
+
     interface ViewList {
+
+        void deletedUser(PoUser item);
 
         void returnList(List<PoUser> list);
 
         void returnListEmpty();
-
-        void deletedUser(PoUser item);
     }
 
     interface ViewForm {

@@ -38,11 +38,14 @@ public class ActivityLogin extends AppCompatActivity implements FrgLogin.IFrgLog
         showLogin();
     }
 
-    private void showLogin() {
-        FrgLogin frgLogin = new FrgLogin();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_login_frame, frgLogin, "frgLogin");
-        transaction.commit();
+    @Override
+    public void deletedUser() {
+        Snackbar.make(activityLoginCoordinator, R.string.deletedUser, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void logFail() {
+        Snackbar.make(activityLoginCoordinator, R.string.wrongUser, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -53,24 +56,6 @@ public class ActivityLogin extends AppCompatActivity implements FrgLogin.IFrgLog
     @Override
     public void userIsLogged() {
         showHome();
-    }
-
-    @Override
-    public void logFail() {
-        Snackbar.make(activityLoginCoordinator, R.string.wrongUser, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void deletedUser() {
-        Snackbar.make(activityLoginCoordinator, R.string.deletedUser, Snackbar.LENGTH_LONG).show();
-    }
-
-    private void showRegister() {
-        FrgRegister frgRegister = new FrgRegister();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.activity_login_frame, frgRegister, "frgRegister");
-        transaction.addToBackStack("FrgRegister");
-        transaction.commit();
     }
 
     @Override
@@ -91,5 +76,20 @@ public class ActivityLogin extends AppCompatActivity implements FrgLogin.IFrgLog
         Intent intent = new Intent(this, ActivityHome.class);
         startActivity(intent);
         finish();
+    }
+
+    private void showLogin() {
+        FrgLogin frgLogin = new FrgLogin();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_login_frame, frgLogin, "frgLogin");
+        transaction.commit();
+    }
+
+    private void showRegister() {
+        FrgRegister frgRegister = new FrgRegister();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_login_frame, frgRegister, "frgRegister");
+        transaction.addToBackStack("FrgRegister");
+        transaction.commit();
     }
 }

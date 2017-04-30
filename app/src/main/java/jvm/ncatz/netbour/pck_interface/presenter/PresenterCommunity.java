@@ -5,6 +5,7 @@ import java.util.List;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 
 public interface PresenterCommunity {
+
     int SUCCESS = 0;
     int ERROR_CODE_EMPTY = 10;
     int ERROR_CODE_SHORT = 11;
@@ -18,27 +19,27 @@ public interface PresenterCommunity {
     int ERROR_FLATS_EMPTY = 60;
     int ERROR_STREET_EMPTY = 70;
 
-    void instanceFirebase();
+    void addCommunity(PoCommunity community);
 
     void attachFirebase();
 
+    void deleteCommunity(PoCommunity item);
+
     void dettachFirebase();
-
-    void validateCommunity(PoCommunity community);
-
-    void addCommunity(PoCommunity community);
 
     void editCommunity(PoCommunity community);
 
-    void deleteCommunity(PoCommunity item);
+    void instanceFirebase();
+
+    void validateCommunity(PoCommunity community);
 
     interface ViewList {
+
+        void deletedCommunity(PoCommunity item);
 
         void returnList(List<PoCommunity> list);
 
         void returnListEmpty();
-
-        void deletedCommunity(PoCommunity item);
     }
 
     interface ViewForm {

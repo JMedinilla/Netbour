@@ -5,6 +5,7 @@ import java.util.List;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 
 public interface PresenterIncidence {
+
     int SUCCESS = 0;
     int ERROR_TITLE_EMPTY = 10;
     int ERROR_TITLE_SHORT = 11;
@@ -14,27 +15,27 @@ public interface PresenterIncidence {
     int ERROR_DESCRIPTION_LONG = 22;
     int ERROR_URI_EMPTY = 30;
 
-    void instanceFirebase(String code);
+    void addIncidence(PoIncidence incidence, String code);
 
     void attachFirebase();
 
+    void deleteIncidence(PoIncidence item);
+
     void dettachFirebase();
-
-    void validateIncidence(PoIncidence incidence);
-
-    void addIncidence(PoIncidence incidence, String code);
 
     void editIncidence(PoIncidence incidence, String code);
 
-    void deleteIncidence(PoIncidence item);
+    void instanceFirebase(String code);
+
+    void validateIncidence(PoIncidence incidence);
 
     interface ViewList {
+
+        void deletedIncidence(PoIncidence item);
 
         void returnList(List<PoIncidence> list);
 
         void returnListEmpty();
-
-        void deletedIncidence(PoIncidence item);
     }
 
     interface ViewForm {

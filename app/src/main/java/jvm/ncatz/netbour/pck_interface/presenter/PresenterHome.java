@@ -9,28 +9,28 @@ import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public interface PresenterHome {
 
+    void getCurrentUser();
+
     void reInsertCommunity(PoCommunity item);
-
-    void reInsertUser(PoUser item);
-
-    void reInsertEntry(PoEntry item, String actual_code);
-
-    void reInsertMeeting(PoMeeting item, String actual_code);
 
     void reInsertDocument(PoDocument item, String actual_code);
 
+    void reInsertEntry(PoEntry item, String actual_code);
+
     void reInsertIncidence(PoIncidence item, String actual_code);
 
-    void getCurrentUser();
+    void reInsertMeeting(PoMeeting item, String actual_code);
+
+    void reInsertUser(PoUser item);
 
     interface Activity {
 
-        void reInsertResponse();
-
         void getCurrentUserResponseClose();
+
+        void getCurrentUserResponseFailure();
 
         void getCurrentUserResponseUser(String community, String name, String photo, String email, int category);
 
-        void getCurrentUserResponseFailure();
+        void reInsertResponse();
     }
 }

@@ -6,28 +6,28 @@ import jvm.ncatz.netbour.pck_pojo.PoDocument;
 
 public interface InteractorDocument {
 
-    void instanceFirebase(String code);
+    void addDocument(PoDocument document, String code);
 
     void attachFirebase();
 
-    void dettachFirebase();
+    void deleteDocument(PoDocument item);
 
-    void addDocument(PoDocument document, String code);
+    void dettachFirebase();
 
     void editDocument(PoDocument document, String code);
 
-    void deleteDocument(PoDocument item);
+    void instanceFirebase(String code);
 
     interface Listener {
+
+        void addedDocument();
+
+        void deletedDocument(PoDocument item);
+
+        void editedDocument();
 
         void returnList(List<PoDocument> list);
 
         void returnListEmpty();
-
-        void addedDocument();
-
-        void editedDocument();
-
-        void deletedDocument(PoDocument item);
     }
 }

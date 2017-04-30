@@ -4,23 +4,32 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PoDocument implements Parcelable {
+
+    private boolean deleted;
     private long key;
     private String authorEmail;
-    private String title;
     private String description;
     private String link;
-    private boolean deleted;
+    private String title;
 
     public PoDocument() {
         //
     }
 
-    public PoDocument(long key, String authorEmail, String title, String description, String link, boolean deleted) {
+    public PoDocument(boolean deleted, long key, String authorEmail, String description, String link, String title) {
+        this.deleted = deleted;
         this.key = key;
         this.authorEmail = authorEmail;
-        this.title = title;
         this.description = description;
         this.link = link;
+        this.title = title;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -40,14 +49,6 @@ public class PoDocument implements Parcelable {
         this.authorEmail = authorEmail;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -64,21 +65,75 @@ public class PoDocument implements Parcelable {
         this.link = link;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PoDocument)) return false;
+
+        PoDocument document = (PoDocument) o;
+
+        return isDeleted() == document.isDeleted()
+                && getKey() == document.getKey()
+                && getAuthorEmail().equals(document.getAuthorEmail())
+                && getDescription().equals(document.getDescription())
+                && getLink().equals(document.getLink())
+                && getTitle().equals(document.getTitle());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (isDeleted() ? 1 : 0);
+        result = 31 * result + (int) (getKey() ^ (getKey() >>> 32));
+        result = 31 * result + getAuthorEmail().hashCode();
+        result = 31 * result + getDescription().hashCode();
+        result = 31 * result + getLink().hashCode();
+        result = 31 * result + getTitle().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PoDocument{" +
+                "deleted=" + deleted +
+                ", key=" + key +
+                ", authorEmail='" + authorEmail + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", title='" + title + '\'' +
+                '}';
     }
 
     protected PoDocument(Parcel in) {
+        deleted = in.readByte() != 0;
         key = in.readLong();
         authorEmail = in.readString();
-        title = in.readString();
         description = in.readString();
         link = in.readString();
-        deleted = in.readByte() != 0;
+        title = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (deleted ? 1 : 0));
+        dest.writeLong(key);
+        dest.writeString(authorEmail);
+        dest.writeString(description);
+        dest.writeString(link);
+        dest.writeString(title);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PoDocument> CREATOR = new Creator<PoDocument>() {
@@ -92,19 +147,4 @@ public class PoDocument implements Parcelable {
             return new PoDocument[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(key);
-        dest.writeString(authorEmail);
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeString(link);
-        dest.writeByte((byte) (deleted ? 1 : 0));
-    }
 }
