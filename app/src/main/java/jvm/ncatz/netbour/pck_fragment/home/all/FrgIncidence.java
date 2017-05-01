@@ -32,6 +32,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import jvm.ncatz.netbour.ActivityZoom;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpIncidence;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
@@ -49,7 +50,12 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
 
     @OnItemClick(R.id.fragListIncidence_list)
     public void itemClick(int position) {
-        //
+        PoIncidence incidence = adpIncidence.getItem(position);
+        if (incidence != null) {
+            Intent intent = new Intent(getActivity(), ActivityZoom.class);
+            intent.putExtra("photoZoom", incidence.getPhoto());
+            startActivity(intent);
+        }
     }
 
     private AdpIncidence adpIncidence;

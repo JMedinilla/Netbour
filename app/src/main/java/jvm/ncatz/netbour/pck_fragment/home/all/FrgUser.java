@@ -32,6 +32,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import jvm.ncatz.netbour.ActivityZoom;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpUser;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
@@ -48,7 +49,12 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
 
     @OnItemClick(R.id.fragListUsers_list)
     public void itemClick(int position) {
-        //
+        PoUser us = adpUser.getItem(position);
+        if (us != null) {
+            Intent intent = new Intent(getActivity(), ActivityZoom.class);
+            intent.putExtra("photoZoom", us.getPhoto());
+            startActivity(intent);
+        }
     }
 
     private AdpUser adpUser;
