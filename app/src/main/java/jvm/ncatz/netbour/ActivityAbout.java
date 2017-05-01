@@ -19,8 +19,6 @@ import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 
-import de.cketti.mailto.EmailIntentBuilder;
-
 public class ActivityAbout extends MaterialAboutActivity {
 
     private int cont;
@@ -191,6 +189,11 @@ public class ActivityAbout extends MaterialAboutActivity {
     }
 
     private void sendEmail(String subj) {
-        EmailIntentBuilder.from(this).to("javimedinilla@gmail.com").subject(subj).start();
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, "javimedinilla@gmail.com");
+        intent.putExtra(Intent.EXTRA_SUBJECT, subj);
+        intent.putExtra(Intent.EXTRA_TEXT, "");
+        startActivity(Intent.createChooser(intent, getString(R.string.email_report)));
     }
 }

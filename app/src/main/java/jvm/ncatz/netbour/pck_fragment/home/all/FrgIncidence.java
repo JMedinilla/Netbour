@@ -3,6 +3,7 @@ package jvm.ncatz.netbour.pck_fragment.home.all;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,10 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.MenuParams;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +53,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     }
 
     private AdpIncidence adpIncidence;
+    private ContextMenuDialogFragment frg;
     private FrgBack callbackBack;
     private FrgLists callSnack;
     private ListIncidence callback;
@@ -86,6 +92,8 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
             String code = bundle.getString("comcode");
             presenterIncidence.instanceFirebase(code);
         }
+
+        createMenu();
     }
 
     @Nullable
@@ -127,11 +135,17 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_menu:
+                frg.show(getActivity().getSupportFragmentManager(), "cmdf");
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -153,6 +167,60 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         incidenceEmpty.setVisibility(View.VISIBLE);
         List<PoIncidence> list = new ArrayList<>();
         updateList(list);
+    }
+
+    private void createMenu() {
+        int actionBarHeight;
+        TypedArray styledAttributes = getContext().getTheme().obtainStyledAttributes(
+                new int[]{android.R.attr.actionBarSize});
+        actionBarHeight = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+
+        MenuObject close = new MenuObject();
+        close.setResource(R.drawable.window_close);
+
+        MenuObject title = new MenuObject(getString(R.string.sort_title));
+        title.setResource(R.drawable.format_title);
+
+        MenuObject date = new MenuObject(getString(R.string.sort_date));
+        date.setResource(R.drawable.calendar);
+
+        MenuObject author = new MenuObject(getString(R.string.sort_author));
+        author.setResource(R.drawable.face);
+
+        List<MenuObject> menuObjects = new ArrayList<>();
+        menuObjects.add(close);
+        menuObjects.add(title);
+        menuObjects.add(date);
+        menuObjects.add(author);
+
+        MenuParams menuParams = new MenuParams();
+        menuParams.setActionBarSize(actionBarHeight);
+        menuParams.setMenuObjects(menuObjects);
+        menuParams.setClosableOutside(true);
+        menuParams.setFitsSystemWindow(true);
+        menuParams.setClipToPadding(false);
+
+        frg = ContextMenuDialogFragment.newInstance(menuParams);
+        frg.setItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(View clickedView, int position) {
+                switch (position) {
+                    case 0:
+
+                        break;
+                    case 1:
+
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                }
+            }
+        });
     }
 
     private void deleteResponse(int position) {
@@ -196,7 +264,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
                 editItem.setTitleSize(16);
                 editItem.setTitleColor(Color.WHITE);
                 editItem.setIcon(R.drawable.tooltip_edit);
-                editItem.setWidth(140);
+                editItem.setWidth(160);
                 menu.addMenuItem(editItem);
 
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
@@ -205,7 +273,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
                 deleteItem.setTitleSize(16);
                 deleteItem.setTitleColor(Color.WHITE);
                 deleteItem.setIcon(R.drawable.delete_empty);
-                deleteItem.setWidth(140);
+                deleteItem.setWidth(160);
                 menu.addMenuItem(deleteItem);
 
                 SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
@@ -214,7 +282,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
                 reportItem.setTitleSize(16);
                 reportItem.setTitleColor(Color.WHITE);
                 reportItem.setIcon(R.drawable.alert_decagram);
-                reportItem.setWidth(140);
+                reportItem.setWidth(160);
                 menu.addMenuItem(reportItem);
             }
         };

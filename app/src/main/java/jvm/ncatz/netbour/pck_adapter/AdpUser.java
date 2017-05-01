@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
@@ -21,6 +24,8 @@ public class AdpUser extends ArrayAdapter<PoUser> {
     private Context context;
 
     static class ViewHolder {
+        @BindView(R.id.adapterUsers_imgPhoto)
+        CircleImageView adapterUsers_imgPhoto;
         @BindView(R.id.adapterUsers_txtName)
         TextView adapterUsersTxtName;
         @BindView(R.id.adapterUsers_txtEmail)
@@ -61,6 +66,7 @@ public class AdpUser extends ArrayAdapter<PoUser> {
         }
         PoUser user = getItem(position);
         if (user != null) {
+            Glide.with(context).load(user.getPhoto()).centerCrop().into(holder.adapterUsers_imgPhoto);
             holder.adapterUsersTxtName.setText(user.getName());
             holder.adapterUsersTxtEmail.setText(user.getEmail());
             holder.adapterUsersTxtPhone.setText(user.getPhone());

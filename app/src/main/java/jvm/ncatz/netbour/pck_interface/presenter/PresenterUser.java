@@ -13,7 +13,7 @@ public interface PresenterUser {
     int ERROR_PHONE_EMPTY = 20;
     int ERROR_PHONE_SHORT = 21;
     int ERROR_PHONE_LONG = 22;
-    int ERROR_FLOOR_RMPTY = 30;
+    int ERROR_FLOOR_EMPTY = 30;
     int ERROR_DOOR_EMPTY = 40;
     int ERROR_PIN_EMPTY = 50;
     int ERROR_PIN_SHORT = 51;

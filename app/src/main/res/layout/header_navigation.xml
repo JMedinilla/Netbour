@@ -9,7 +9,7 @@
         android:id="@+id/header_circle_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="26dp"
         android:src="@mipmap/ic_launcher"
         app:civ_border_color="#FFFFFF"
         app:civ_border_width="1dp" />
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="14dp"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold" />

@@ -91,7 +91,7 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
         }
         if (TextUtils.equals("", user.getFloor())) {
             error = true;
-            viewForm.validationResponse(user, ERROR_FLOOR_RMPTY);
+            viewForm.validationResponse(user, ERROR_FLOOR_EMPTY);
         }
         if (TextUtils.equals("", user.getDoor())) {
             error = true;

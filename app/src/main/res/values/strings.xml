@@ -1,5 +1,4 @@
 <resources>
-    <!-- A -->
     <string name="aboutApp">App</string>
     <string name="aboutAuthor">Author</string>
     <string name="aboutOther">Other</string>
@@ -25,8 +24,6 @@
     <string name="author_name">Javier J. Medinilla</string>
     <string name="author_web_sub">https://jvmedinilla.ncatz.com/</string>
     <string name="author_web_title">JVMedinilla</string>
-    <!-- B -->
-    <!-- C -->
     <string name="category_administrator">Administrator</string>
     <string name="category_neighbour">Neighbour</string>
     <string name="category_president">President</string>
@@ -48,7 +45,6 @@
     <string name="confirm_province">Province:</string>
     <string name="confirm_street">Street:</string>
     <string name="confirm_title">Title:</string>
-    <!-- D -->
     <string name="default_community_code">You have to change the actual community code</string>
     <string name="deletedUser">This user was deleted, contact the admin for more information</string>
     <string name="dialog_message_close">Do you want to close the current session?</string>
@@ -60,7 +56,6 @@
     <string name="dialog_title_edit">Are you sure?</string>
     <string name="dialog_title_email">Fake email</string>
     <string name="document_deleted">Document deleted!</string>
-    <!-- E -->
     <string name="ERROR_EMPTY">Cannot be empty</string>
     <string name="ERROR_FORMAT">Invalid email</string>
     <string name="ERROR_LONG_16">Too long (max 16)</string>
@@ -80,7 +75,6 @@
     <string name="ERROR_SHORT_9">Too short (min 9)</string>
     <string name="email_report">Email report</string>
     <string name="entry_deleted">Entry deleted!</string>
-    <!-- F -->
     <string name="fragFormCommunityCode">Code</string>
     <string name="fragFormCommunityFlats">Flats</string>
     <string name="fragFormCommunityMunicipality">Municipality</string>
@@ -113,7 +107,6 @@
     <string name="fragFormUserName">Name</string>
     <string name="fragFormUserPhone">Phone</string>
     <string name="fragFormUserPin">Password</string>
-    <!-- G -->
     <string name="groupClose_Close">Close sesion</string>
     <string name="groupOptions_Board">Board</string>
     <string name="groupOptions_ComBoard">Community Board</string>
@@ -126,29 +119,17 @@
     <string name="groupOthers_About">About</string>
     <string name="groupOthers_Information">Information</string>
     <string name="groupOthers_Settings">Settings</string>
-    <!-- H -->
-    <!-- I -->
     <string name="incidence_deleted">Incidence deleted!</string>
     <string name="invalidUser">Invalid user</string>
-    <!-- J -->
-    <!-- K -->
-    <!-- L -->
     <string name="loginFieldEmpty">Email or password is empty!</string>
-    <!-- M -->
     <string name="meeting_deleted">Meeting deleted!</string>
-    <!-- N -->
     <string name="no_edit_changes">No changes were made</string>
     <string name="no_permission">You have no permissions to do that</string>
     <string name="nothing_to_show">There is nothing to show</string>
-    <!-- O -->
     <string name="other_bug_sub">Click to send an email</string>
     <string name="other_bug_subject">Bug report</string>
     <string name="other_bug_title">Report a bug</string>
-    <!-- P -->
     <string name="pressBack">Press BACK again to exit</string>
-    <!-- Q -->
-    <!-- R -->
-    <!-- S -->
     <string name="sendEmailTitle">Send email</string>
     <string name="separator">-</string>
     <string name="snack_undo">Undo</string>
@@ -164,14 +145,23 @@
     <string name="swipeMenuDelete">Delete</string>
     <string name="swipeMenuEdit">Edit</string>
     <string name="swipeMenuReport">Report</string>
-    <!-- T -->
-    <!-- U -->
     <string name="user_deleted">User deleted!</string>
     <string name="user_response_failure">User could not be retrieved</string>
-    <!-- V -->
-    <!-- W -->
     <string name="wrongUser">Authentication failed</string>
-    <!-- X -->
-    <!-- Y -->
-    <!-- Z -->
+    <string name="sort_menu">Sort by</string>
+    <string name="sort_postal">Sort by Postal</string>
+    <string name="sort_flats">Sort by Flats</string>
+    <string name="sort_title">Sort by Title</string>
+    <string name="sort_date">Sort by Date</string>
+    <string name="sort_category">Sort by Category</string>
+    <string name="sort_phone">Sort by Phone</string>
+    <string name="sort_name">Sort by Name</string>
+    <string name="sort_author">Sort by Author</string>
+    <string name="no_code">There is no community code selected</string>
+    <string name="select_code">Select a community</string>
+    <string name="image_pick">Select an image from the gallery</string>
+    <string name="uri_to_bitmap">Image could not be loaded</string>
+    <string name="image_confirm_title">Send image?</string>
+    <string name="updated_image">Image updated</string>
+    <string name="updated_fields">All fields updated</string>
 </resources>

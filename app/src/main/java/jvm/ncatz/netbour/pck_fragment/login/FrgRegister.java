@@ -52,7 +52,8 @@ public class FrgRegister extends Fragment {
                 currentTime, fragFormRegisterCode.getText().toString(),
                 fragFormRegisterDoor.getText().toString(), fragFormRegisterEmail.getText().toString(),
                 fragFormRegisterFloor.getText().toString(), fragFormRegisterName.getText().toString(),
-                fragFormRegisterPhone.getText().toString(), ""
+                fragFormRegisterPhone.getText().toString(),
+                "https://firebasestorage.googleapis.com/v0/b/netbour-8e8a7.appspot.com/o/default_image.png?alt=media&token=c0b560e2-ed91-474c-ba8e-d9d41125aaf0"
         );
         validateUser(user, fragFormRegisterPin.getText().toString());
     }

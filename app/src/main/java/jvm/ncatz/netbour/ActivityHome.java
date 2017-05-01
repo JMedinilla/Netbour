@@ -58,7 +58,7 @@ import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterHomeImpl;
 
 public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser, FrgBack, FrgLists,
-        FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry,
+        FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry, FrgProfile.ProfileInterface,
         FrgDocument.ListDocument, FrgCommunity.ListCommunity, PresenterForm, PresenterHome.Activity {
 
     public static final int FRAGMENT_HOME = 100;
@@ -274,7 +274,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         actual_category = category;
 
         if (!"".equals(actual_photo)) {
-            Glide.with(ActivityHome.this).load(actual_photo).into(profile_image);
+            Glide.with(ActivityHome.this).load(actual_photo).centerCrop().into(profile_image);
         } else {
             profile_image.setImageResource(R.drawable.default_image);
         }
@@ -284,7 +284,17 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             Menu menu = navigationView.getMenu();
             menu.findItem(R.id.groupOptions_Communities).setVisible(false);
         } else {
+            actual_code = "";
             showCommunities();
+            showSnackbar(getString(R.string.select_code), DURATION_SHORT);
+        }
+    }
+
+    @Override
+    public void newImage(String photo) {
+        actual_photo = photo;
+        if (!"".equals(actual_photo)) {
+            Glide.with(ActivityHome.this).load(actual_photo).centerCrop().into(profile_image);
         }
     }
 
@@ -356,8 +366,13 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         openFormUser(item);
     }
 
+    @Override
+    public void updatedField(String msg) {
+        showSnackbar(msg, DURATION_SHORT);
+    }
+
     private void changeActionTitle(CharSequence title) {
-        toolbarText.setText(title);
+        toolbar.setTitle(title);
     }
 
     private void clearFragmentStack() {
@@ -639,75 +654,87 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     private void showDocuments() {
-        if (fragment_opened != FRAGMENT_LIST_DOCUMENT) {
-            if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
-                actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-            } else {
-                actionButton.setVisibility(View.INVISIBLE);
+        if (!"".equals(actual_code)) {
+            if (fragment_opened != FRAGMENT_LIST_DOCUMENT) {
+                if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
+                    actionButton.setVisibility(View.VISIBLE);
+                    actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                } else {
+                    actionButton.setVisibility(View.INVISIBLE);
+                }
+
+                Bundle bundle = new Bundle();
+                bundle.putString("userEmail", actual_email);
+                bundle.putString("comcode", actual_code);
+                bundle.putInt("userCategory", actual_category);
+
+                FrgDocument frgDocument = new FrgDocument();
+                frgDocument.setArguments(bundle);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main_frame, frgDocument, "frgDocument");
+                transaction.commit();
+
+                fragment_opened = FRAGMENT_LIST_DOCUMENT;
             }
-
-            Bundle bundle = new Bundle();
-            bundle.putString("userEmail", actual_email);
-            bundle.putString("comcode", actual_code);
-            bundle.putInt("userCategory", actual_category);
-
-            FrgDocument frgDocument = new FrgDocument();
-            frgDocument.setArguments(bundle);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgDocument, "frgDocument");
-            transaction.commit();
-
-            fragment_opened = FRAGMENT_LIST_DOCUMENT;
+        } else {
+            showSnackbar(getString(R.string.no_code), DURATION_SHORT);
         }
     }
 
     private void showEntryFirst() {
-        if (fragment_opened != FRAGMENT_LIST_ENTRYF) {
-            if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
-                actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
-            } else {
-                actionButton.setVisibility(View.INVISIBLE);
+        if (!"".equals(actual_code)) {
+            if (fragment_opened != FRAGMENT_LIST_ENTRYF) {
+                if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
+                    actionButton.setVisibility(View.VISIBLE);
+                    actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                } else {
+                    actionButton.setVisibility(View.INVISIBLE);
+                }
+
+                Bundle bundle = new Bundle();
+                bundle.putString("userEmail", actual_email);
+                bundle.putInt("category", PoEntry.CATEGORY_FIRST);
+                bundle.putString("comcode", actual_code);
+                bundle.putInt("userCategory", actual_category);
+
+                FrgEntry frgEntry = new FrgEntry();
+                frgEntry.setArguments(bundle);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
+                transaction.commit();
+
+                fragment_opened = FRAGMENT_LIST_ENTRYF;
             }
-
-            Bundle bundle = new Bundle();
-            bundle.putString("userEmail", actual_email);
-            bundle.putInt("category", PoEntry.CATEGORY_FIRST);
-            bundle.putString("comcode", actual_code);
-            bundle.putInt("userCategory", actual_category);
-
-            FrgEntry frgEntry = new FrgEntry();
-            frgEntry.setArguments(bundle);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
-            transaction.commit();
-
-            fragment_opened = FRAGMENT_LIST_ENTRYF;
+        } else {
+            showSnackbar(getString(R.string.no_code), DURATION_SHORT);
         }
     }
 
     private void showEntrySecond() {
-        if (fragment_opened != FRAGMENT_LIST_ENTRYS) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+        if (!"".equals(actual_code)) {
+            if (fragment_opened != FRAGMENT_LIST_ENTRYS) {
+                actionButton.setVisibility(View.VISIBLE);
+                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("userEmail", actual_email);
-            bundle.putInt("category", PoEntry.CATEGORY_SECOND);
-            bundle.putString("comcode", actual_code);
-            bundle.putInt("userCategory", actual_category);
+                Bundle bundle = new Bundle();
+                bundle.putString("userEmail", actual_email);
+                bundle.putInt("category", PoEntry.CATEGORY_SECOND);
+                bundle.putString("comcode", actual_code);
+                bundle.putInt("userCategory", actual_category);
 
-            FrgEntry frgEntry = new FrgEntry();
-            frgEntry.setArguments(bundle);
+                FrgEntry frgEntry = new FrgEntry();
+                frgEntry.setArguments(bundle);
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
-            transaction.commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main_frame, frgEntry, "frgEntry");
+                transaction.commit();
 
-            fragment_opened = FRAGMENT_LIST_ENTRYS;
+                fragment_opened = FRAGMENT_LIST_ENTRYS;
+            }
+        } else {
+            showSnackbar(getString(R.string.no_code), DURATION_SHORT);
         }
     }
 
@@ -725,60 +752,72 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     private void showIncidents() {
-        if (fragment_opened != FRAGMENT_LIST_INCIDENCE) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+        if (!"".equals(actual_code)) {
+            if (fragment_opened != FRAGMENT_LIST_INCIDENCE) {
+                actionButton.setVisibility(View.VISIBLE);
+                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("userEmail", actual_email);
-            bundle.putString("comcode", actual_code);
+                Bundle bundle = new Bundle();
+                bundle.putString("userEmail", actual_email);
+                bundle.putString("comcode", actual_code);
 
-            FrgIncidence frgIncidence = new FrgIncidence();
-            frgIncidence.setArguments(bundle);
+                FrgIncidence frgIncidence = new FrgIncidence();
+                frgIncidence.setArguments(bundle);
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgIncidence, "frgIncidence");
-            transaction.commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main_frame, frgIncidence, "frgIncidence");
+                transaction.commit();
 
-            fragment_opened = FRAGMENT_LIST_INCIDENCE;
+                fragment_opened = FRAGMENT_LIST_INCIDENCE;
+            }
+        } else {
+            showSnackbar(getString(R.string.no_code), DURATION_SHORT);
         }
     }
 
     private void showInformation() {
-        if (fragment_opened != FRAGMENT_INFORMATION) {
-            actionButton.setVisibility(View.INVISIBLE);
+        if (!"".equals(actual_code)) {
+            if (fragment_opened != FRAGMENT_INFORMATION) {
+                actionButton.setVisibility(View.INVISIBLE);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("comcode", actual_code);
+                Bundle bundle = new Bundle();
+                bundle.putString("comcode", actual_code);
 
-            FrgInfo frgInfo = new FrgInfo();
-            frgInfo.setArguments(bundle);
+                FrgInfo frgInfo = new FrgInfo();
+                frgInfo.setArguments(bundle);
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgInfo, "frgInfo");
-            transaction.commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main_frame, frgInfo, "frgInfo");
+                transaction.commit();
 
-            fragment_opened = FRAGMENT_INFORMATION;
+                fragment_opened = FRAGMENT_INFORMATION;
+            }
+        } else {
+            showSnackbar(getString(R.string.no_code), DURATION_SHORT);
         }
     }
 
     private void showMeetings() {
-        if (fragment_opened != FRAGMENT_LIST_MEETING) {
-            actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+        if (!"".equals(actual_code)) {
+            if (fragment_opened != FRAGMENT_LIST_MEETING) {
+                actionButton.setVisibility(View.VISIBLE);
+                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("userEmail", actual_email);
-            bundle.putString("comcode", actual_code);
+                Bundle bundle = new Bundle();
+                bundle.putString("userEmail", actual_email);
+                bundle.putString("comcode", actual_code);
 
-            FrgMeeting frgMeeting = new FrgMeeting();
-            frgMeeting.setArguments(bundle);
+                FrgMeeting frgMeeting = new FrgMeeting();
+                frgMeeting.setArguments(bundle);
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgMeeting, "frgMeeting");
-            transaction.commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main_frame, frgMeeting, "frgMeeting");
+                transaction.commit();
 
-            fragment_opened = FRAGMENT_LIST_MEETING;
+                fragment_opened = FRAGMENT_LIST_MEETING;
+            }
+        } else {
+            showSnackbar(getString(R.string.no_code), DURATION_SHORT);
         }
     }
 
@@ -786,11 +825,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         if (fragment_opened != FRAGMENT_PROFILE) {
             actionButton.setVisibility(View.INVISIBLE);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("userEmail", actual_email);
-
             FrgProfile frgProfile = new FrgProfile();
-            frgProfile.setArguments(bundle);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.activity_main_frame, frgProfile, "frgProfile");
@@ -820,21 +855,25 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     private void showUsers() {
-        if (fragment_opened != FRAGMENT_LIST_USER) {
-            actionButton.setVisibility(View.INVISIBLE);
+        if (!"".equals(actual_code)) {
+            if (fragment_opened != FRAGMENT_LIST_USER) {
+                actionButton.setVisibility(View.INVISIBLE);
 
-            Bundle bundle = new Bundle();
-            bundle.putInt("userCategory", actual_category);
-            bundle.putString("comcode", actual_code);
+                Bundle bundle = new Bundle();
+                bundle.putInt("userCategory", actual_category);
+                bundle.putString("comcode", actual_code);
 
-            FrgUser frgUser = new FrgUser();
-            frgUser.setArguments(bundle);
+                FrgUser frgUser = new FrgUser();
+                frgUser.setArguments(bundle);
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.activity_main_frame, frgUser, "frgUser");
-            transaction.commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main_frame, frgUser, "frgUser");
+                transaction.commit();
 
-            fragment_opened = FRAGMENT_LIST_USER;
+                fragment_opened = FRAGMENT_LIST_USER;
+            }
+        } else {
+            showSnackbar(getString(R.string.no_code), DURATION_SHORT);
         }
     }
 }

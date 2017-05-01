@@ -92,7 +92,7 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                     return false;
                 }
-            }).into(holder.adapterIncidenceImgPhoto);
+            }).centerCrop().into(holder.adapterIncidenceImgPhoto);
         }
         return convertView;
     }

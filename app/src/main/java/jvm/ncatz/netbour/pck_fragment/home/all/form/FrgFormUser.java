@@ -159,7 +159,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             case PresenterUser.ERROR_PHONE_LONG:
                 fragFormUserPhone.setError(getString(R.string.ERROR_LONG_9));
                 break;
-            case PresenterUser.ERROR_FLOOR_RMPTY:
+            case PresenterUser.ERROR_FLOOR_EMPTY:
                 fragFormUserFloor.setError(getString(R.string.ERROR_EMPTY));
                 break;
             case PresenterUser.ERROR_DOOR_EMPTY:
