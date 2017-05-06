@@ -1,11 +1,20 @@
 package jvm.ncatz.netbour.pck_interactor;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +35,30 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
     }
 
     @Override
-    public void addIncidence(PoIncidence incidence, String code) {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("incidences").child(String.valueOf(incidence.getKey()));
-        databaseReference.setValue(incidence);
-        listener.addedIncidence();
+    public void addIncidence(final PoIncidence incidence, final String code, Uri photoUri) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("incidence_photos");
+        storageReference.child("inc" + incidence.getKey()).putFile(photoUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri u = taskSnapshot.getDownloadUrl();
+                        if (u != null) {
+                            setIncidence(incidence, code, u);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        //
+                    }
+                });
     }
 
     @Override
@@ -90,5 +119,12 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
                 listener.returnListEmpty();
             }
         };
+    }
+
+    private void setIncidence(PoIncidence incidence, String code, Uri u) {
+        incidence.setPhoto(u.toString());
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("incidences").child(String.valueOf(incidence.getKey()));
+        databaseReference.setValue(incidence);
+        listener.addedIncidence();
     }
 }

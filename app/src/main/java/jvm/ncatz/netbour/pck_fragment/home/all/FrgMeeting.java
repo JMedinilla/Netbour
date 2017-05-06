@@ -3,16 +3,12 @@ package jvm.ncatz.netbour.pck_fragment.home.all;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,10 +17,6 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
-import com.yalantis.contextmenu.lib.MenuObject;
-import com.yalantis.contextmenu.lib.MenuParams;
-import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +30,7 @@ import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoMeeting;
+import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterMeetingImpl;
 
 public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
@@ -53,12 +46,12 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     }
 
     private AdpMeeting adpMeeting;
-    private ContextMenuDialogFragment frg;
     private FrgBack callbackBack;
     private FrgLists callSnack;
     private ListMeeting callback;
     private PresenterMeetingImpl presenterMeeting;
 
+    private int userCategory;
     private String userEmail;
 
     public interface ListMeeting {
@@ -90,10 +83,9 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         if (bundle != null) {
             userEmail = bundle.getString("userEmail");
             String code = bundle.getString("comcode");
+            userCategory = bundle.getInt("userCategory");
             presenterMeeting.instanceFirebase(code);
         }
-
-        createMenu();
     }
 
     @Nullable
@@ -134,22 +126,6 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_list, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sort_menu:
-                frg.show(getActivity().getSupportFragmentManager(), "cmdf");
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void deletedMeeting(PoMeeting item) {
         callback.deletedMeeting(item);
     }
@@ -167,46 +143,6 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         meetingEmpty.setVisibility(View.VISIBLE);
         List<PoMeeting> list = new ArrayList<>();
         updateList(list);
-    }
-
-    private void createMenu() {
-        int actionBarHeight;
-        TypedArray styledAttributes = getContext().getTheme().obtainStyledAttributes(
-                new int[]{android.R.attr.actionBarSize});
-        actionBarHeight = (int) styledAttributes.getDimension(0, 0);
-        styledAttributes.recycle();
-
-        MenuObject close = new MenuObject();
-        close.setResource(R.drawable.window_close);
-
-        MenuObject date = new MenuObject(getString(R.string.sort_date));
-        date.setResource(R.drawable.calendar);
-
-        List<MenuObject> menuObjects = new ArrayList<>();
-        menuObjects.add(close);
-        menuObjects.add(date);
-
-        MenuParams menuParams = new MenuParams();
-        menuParams.setActionBarSize(actionBarHeight);
-        menuParams.setMenuObjects(menuObjects);
-        menuParams.setClosableOutside(true);
-        menuParams.setFitsSystemWindow(true);
-        menuParams.setClipToPadding(false);
-
-        frg = ContextMenuDialogFragment.newInstance(menuParams);
-        frg.setItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public void onMenuItemClick(View clickedView, int position) {
-                switch (position) {
-                    case 0:
-
-                        break;
-                    case 1:
-
-                        break;
-                }
-            }
-        });
     }
 
     private void deleteResponse(int position) {
@@ -281,7 +217,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
                 switch (index) {
                     case 0:
                         if (meeting != null) {
-                            if (userEmail.equals(meeting.getAuthorEmail())) {
+                            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 callback.sendMeeting(meeting);
                                 meetingList.smoothCloseMenu();
                             } else {
@@ -291,7 +227,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
                         break;
                     case 1:
                         if (meeting != null) {
-                            if (userEmail.equals(meeting.getAuthorEmail())) {
+                            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 showDeleteDialog(meeting, position);
                             } else {
                                 callSnack.sendSnack(getString(R.string.no_permission));

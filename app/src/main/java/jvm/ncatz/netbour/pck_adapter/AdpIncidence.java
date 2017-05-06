@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -69,17 +69,11 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
         }
         PoIncidence incidence = getItem(position);
         if (incidence != null) {
-            Glide.with(context).load(incidence.getPhoto()).listener(new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    return false;
-                }
-            }).centerCrop().into(holder.adapterIncidenceImgPhoto);
+            StorageReference storageReference = FirebaseStorage.getInstance()
+                    .getReference().child("incidence_photos").child("inc" + incidence.getKey());
+            Glide.with(context).using(new jvm.ncatz.netbour.FirebaseImageLoader()).load(storageReference)
+                    .centerCrop().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .error(R.drawable.glide_error).into(holder.adapterIncidenceImgPhoto);
 
             Date date = new Date(incidence.getDate());
             Calendar calendar = Calendar.getInstance();

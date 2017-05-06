@@ -1,5 +1,7 @@
 package jvm.ncatz.netbour.pck_interface.presenter;
 
+import android.net.Uri;
+
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
@@ -15,7 +17,7 @@ public interface PresenterIncidence {
     int ERROR_DESCRIPTION_LONG = 22;
     int ERROR_URI_EMPTY = 30;
 
-    void addIncidence(PoIncidence incidence, String code);
+    void addIncidence(PoIncidence incidence, String code, Uri photoUri);
 
     void attachFirebase();
 

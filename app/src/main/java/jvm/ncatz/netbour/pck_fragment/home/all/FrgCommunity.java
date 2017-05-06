@@ -27,6 +27,7 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,6 +64,8 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     private ListCommunity callback;
     private PresenterCommunityImpl presenterCommunity;
 
+    private boolean flatsSort;
+    private boolean postalSort;
     private int userCategory;
 
     public interface ListCommunity {
@@ -87,6 +90,9 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+
+        flatsSort = false;
+        postalSort = false;
 
         List<PoCommunity> list = new ArrayList<>();
         adpCommunity = new AdpCommunity(getActivity(), list);
@@ -209,13 +215,13 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
             public void onMenuItemClick(View clickedView, int position) {
                 switch (position) {
                     case 0:
-
+                        //Close
                         break;
                     case 1:
-
+                        sortPostal(postalSort);
                         break;
                     case 2:
-
+                        sortFlats(flatsSort);
                         break;
                 }
             }
@@ -251,6 +257,44 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void sortFlats(boolean flatsSort) {
+        if (flatsSort) {
+            adpCommunity.sort(new Comparator<PoCommunity>() {
+                @Override
+                public int compare(PoCommunity o1, PoCommunity o2) {
+                    return o2.getFlats() - o1.getFlats();
+                }
+            });
+        } else {
+            adpCommunity.sort(new Comparator<PoCommunity>() {
+                @Override
+                public int compare(PoCommunity o1, PoCommunity o2) {
+                    return o1.getFlats() - o2.getFlats();
+                }
+            });
+        }
+        this.flatsSort = !flatsSort;
+    }
+
+    private void sortPostal(boolean postalSort) {
+        if (postalSort) {
+            adpCommunity.sort(new Comparator<PoCommunity>() {
+                @Override
+                public int compare(PoCommunity o1, PoCommunity o2) {
+                    return o2.getPostal().compareTo(o1.getPostal());
+                }
+            });
+        } else {
+            adpCommunity.sort(new Comparator<PoCommunity>() {
+                @Override
+                public int compare(PoCommunity o1, PoCommunity o2) {
+                    return o1.getPostal().compareTo(o2.getPostal());
+                }
+            });
+        }
+        this.postalSort = !postalSort;
     }
 
     private void swipeMenuInstance() {
@@ -299,8 +343,6 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
                         } else {
                             callSnack.sendSnack(getString(R.string.no_permission));
                         }
-                        callback.sendCommunity(community);
-                        communityList.smoothCloseMenu();
                         break;
                     case 1:
                         if (community != null) {
@@ -323,5 +365,11 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     private void updateList(List<PoCommunity> list) {
         adpCommunity.clear();
         adpCommunity.addAll(list);
+        adpCommunity.sort(new Comparator<PoCommunity>() {
+            @Override
+            public int compare(PoCommunity o1, PoCommunity o2) {
+                return o2.getCode().compareTo(o1.getCode());
+            }
+        });
     }
 }

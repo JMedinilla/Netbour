@@ -66,7 +66,8 @@ public class AdpUser extends ArrayAdapter<PoUser> {
         }
         PoUser user = getItem(position);
         if (user != null) {
-            Glide.with(context).load(user.getPhoto()).centerCrop().into(holder.adapterUsers_imgPhoto);
+            Glide.with(context).load(user.getPhoto()).centerCrop()
+                    .error(R.drawable.glide_error).into(holder.adapterUsers_imgPhoto);
             holder.adapterUsersTxtName.setText(user.getName());
             holder.adapterUsersTxtEmail.setText(user.getEmail());
             holder.adapterUsersTxtPhone.setText(user.getPhone());

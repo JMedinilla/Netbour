@@ -1,9 +1,14 @@
 package jvm.ncatz.netbour.pck_fragment.home.all.form;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -14,8 +19,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +36,8 @@ import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
 
 public class FrgFormIncidence extends Fragment implements PresenterIncidence.ViewForm {
+
+    public static final int PHOTO_PICKER = 100;
 
     @BindView(R.id.fragFormIncidenceImage)
     ImageView fragFormIncidenceImage;
@@ -60,8 +70,10 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     private PresenterIncidenceImpl presenterIncidence;
     private PoIncidence original;
     private PoIncidence updateItem;
+    private Uri photoUri;
 
-    private boolean uptitleMode;
+    private boolean photo;
+    private boolean updateMode;
     private String code;
     private String email;
     private String name;
@@ -76,8 +88,10 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        uptitleMode = false;
         updateItem = null;
+        photoUri = null;
+        photo = false;
+        updateMode = false;
         code = "";
         name = "";
         email = "";
@@ -91,7 +105,8 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
             email = bndl.getString("actualEmail");
             updateItem = bndl.getParcelable("incidenceForm");
             if (updateItem != null) {
-                uptitleMode = true;
+                updateMode = true;
+                photo = true;
                 original = updateItem;
             }
         }
@@ -102,11 +117,26 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_form_incidence, container, false);
         ButterKnife.bind(this, view);
-        if (uptitleMode) {
+        if (updateMode) {
             fragFormIncidenceTitle.setText(updateItem.getTitle());
             fragFormIncidenceDescription.setText(updateItem.getDescription());
             Glide.with(this).load(updateItem.getPhoto()).into(fragFormIncidenceImage);
         }
+
+        fragFormIncidenceImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!updateMode) {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/jpeg");
+                    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                    startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
+                } else {
+                    Toast.makeText(getActivity(), R.string.edit_photo, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         return view;
     }
 
@@ -114,6 +144,30 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     public void onDetach() {
         super.onDetach();
         callback = null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case PHOTO_PICKER:
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri uri = data.getData();
+                    Bitmap bmp;
+                    try {
+                        photo = true;
+
+                        bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                        fragFormIncidenceImage.setImageBitmap(bmp);
+                        photoUri = uri;
+                    } catch (IOException e) {
+                        photo = false;
+
+                        Toast.makeText(getActivity(), R.string.conversion_error, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
     }
 
     @Override
@@ -130,10 +184,15 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     public void validationResponse(PoIncidence incidence, int error) {
         switch (error) {
             case PresenterIncidence.SUCCESS:
-                if (uptitleMode) {
-                    showEditDialog(incidence);
+                if (photo) {
+                    if (updateMode) {
+                        showEditDialog(incidence);
+                    }
+                    else {
+                        presenterIncidence.addIncidence(incidence, code, photoUri);
+                    }
                 } else {
-                    presenterIncidence.addIncidence(incidence, code);
+                    Toast.makeText(getActivity(), R.string.photo_upload, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case PresenterIncidence.ERROR_TITLE_EMPTY:
@@ -153,9 +212,6 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 break;
             case PresenterIncidence.ERROR_DESCRIPTION_LONG:
                 fragFormIncidenceDescription.setError(getString(R.string.ERROR_LONG_400));
-                break;
-            case PresenterIncidence.ERROR_URI_EMPTY:
-                //
                 break;
         }
     }

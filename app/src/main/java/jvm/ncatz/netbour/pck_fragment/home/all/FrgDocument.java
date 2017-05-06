@@ -27,6 +27,7 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,7 +61,8 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     private ListDocument callback;
     private PresenterDocumentImpl presenterDocument;
 
-    private int userCateogory;
+    private boolean titleSort;
+    private int userCategory;
     private String userEmail;
 
     public interface ListDocument {
@@ -84,6 +86,8 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
+        titleSort = false;
+
         List<PoDocument> list = new ArrayList<>();
         adpDocument = new AdpDocument(getActivity(), list);
         presenterDocument = new PresenterDocumentImpl(null, this);
@@ -92,7 +96,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         if (bundle != null) {
             String code = bundle.getString("comcode");
             userEmail = bundle.getString("userEmail");
-            userCateogory = bundle.getInt("userCategory");
+            userCategory = bundle.getInt("userCategory");
             presenterDocument.instanceFirebase(code);
         }
 
@@ -118,7 +122,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     @Override
     public void onStart() {
         super.onStart();
-        if (userCateogory == PoUser.GROUP_ADMIN || userCateogory == PoUser.GROUP_PRESIDENT) {
+        if (userCategory == PoUser.GROUP_ADMIN || userCategory == PoUser.GROUP_PRESIDENT) {
             callbackBack.backFromForm();
         }
         presenterDocument.attachFirebase();
@@ -187,13 +191,13 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         MenuObject title = new MenuObject(getString(R.string.sort_title));
         title.setResource(R.drawable.format_title);
 
-        MenuObject date = new MenuObject(getString(R.string.sort_date));
-        date.setResource(R.drawable.calendar);
+        MenuObject keys = new MenuObject(getString(R.string.sort_chronologically));
+        keys.setResource(R.drawable.sort);
 
         List<MenuObject> menuObjects = new ArrayList<>();
         menuObjects.add(close);
         menuObjects.add(title);
-        menuObjects.add(date);
+        menuObjects.add(keys);
 
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize(actionBarHeight);
@@ -208,13 +212,13 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
             public void onMenuItemClick(View clickedView, int position) {
                 switch (position) {
                     case 0:
-
+                        //Close
                         break;
                     case 1:
-
+                        sortTitle(titleSort);
                         break;
                     case 2:
-
+                        resetSort();
                         break;
                 }
             }
@@ -224,6 +228,16 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     private void deleteResponse(int position) {
         presenterDocument.deleteDocument(adpDocument.getItem(position));
         documentList.smoothCloseMenu();
+    }
+
+    private void resetSort() {
+        titleSort = false;
+        adpDocument.sort(new Comparator<PoDocument>() {
+            @Override
+            public int compare(PoDocument o1, PoDocument o2) {
+                return (int) (o1.getKey() - o2.getKey());
+            }
+        });
     }
 
     private void sendEmail() {
@@ -250,6 +264,25 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void sortTitle(boolean titleSort) {
+        if (titleSort) {
+            adpDocument.sort(new Comparator<PoDocument>() {
+                @Override
+                public int compare(PoDocument o1, PoDocument o2) {
+                    return o2.getTitle().compareTo(o1.getTitle());
+                }
+            });
+        } else {
+            adpDocument.sort(new Comparator<PoDocument>() {
+                @Override
+                public int compare(PoDocument o1, PoDocument o2) {
+                    return o1.getTitle().compareTo(o2.getTitle());
+                }
+            });
+        }
+        this.titleSort = !titleSort;
     }
 
     private void swipeMenuInstance() {
@@ -293,7 +326,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
                 switch (index) {
                     case 0:
                         if (document != null) {
-                            if (userEmail.equals(document.getAuthorEmail())) {
+                            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 callback.sendDocument(document);
                                 documentList.smoothCloseMenu();
                             } else {
@@ -303,7 +336,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
                         break;
                     case 1:
                         if (document != null) {
-                            if (userEmail.equals(document.getAuthorEmail())) {
+                            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 showDeleteDialog(document, position);
                             } else {
                                 callSnack.sendSnack(getString(R.string.no_permission));

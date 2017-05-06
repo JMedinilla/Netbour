@@ -1,5 +1,6 @@
 package jvm.ncatz.netbour.pck_presenter;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     }
 
     @Override
-    public void addIncidence(PoIncidence incidence, String code) {
-        interactorIncidence.addIncidence(incidence, code);
+    public void addIncidence(PoIncidence incidence, String code, Uri photoUri) {
+        interactorIncidence.addIncidence(incidence, code, photoUri);
     }
 
     @Override

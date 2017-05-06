@@ -1,12 +1,14 @@
 package jvm.ncatz.netbour.pck_interface.interactor;
 
+import android.net.Uri;
+
 import java.util.List;
 
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 
 public interface InteractorIncidence {
 
-    void addIncidence(PoIncidence incidence, String code);
+    void addIncidence(PoIncidence incidence, String code, Uri photoUri);
 
     void attachFirebase();
 

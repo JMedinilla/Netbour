@@ -643,7 +643,11 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             actionButton.setVisibility(View.VISIBLE);
             actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
 
+            Bundle bundle = new Bundle();
+            bundle.putInt("userCategory", actual_category);
+
             FrgCommunity frgCommunity = new FrgCommunity();
+            frgCommunity.setArguments(bundle);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.activity_main_frame, frgCommunity, "frgCommunity");
@@ -760,6 +764,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);
                 bundle.putString("comcode", actual_code);
+                bundle.putInt("userCategory", actual_category);
 
                 FrgIncidence frgIncidence = new FrgIncidence();
                 frgIncidence.setArguments(bundle);
@@ -806,6 +811,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);
                 bundle.putString("comcode", actual_code);
+                bundle.putInt("userCategory", actual_category);
 
                 FrgMeeting frgMeeting = new FrgMeeting();
                 frgMeeting.setArguments(bundle);

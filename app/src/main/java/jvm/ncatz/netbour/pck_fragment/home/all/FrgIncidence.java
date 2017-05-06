@@ -27,6 +27,7 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,6 +40,7 @@ import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoIncidence;
+import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
 
 public class FrgIncidence extends Fragment implements PresenterIncidence.ViewList {
@@ -65,6 +67,10 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     private ListIncidence callback;
     private PresenterIncidenceImpl presenterIncidence;
 
+    private boolean authorSort;
+    private boolean dateSort;
+    private boolean titleSort;
+    private int userCategory;
     private String userEmail;
 
     public interface ListIncidence {
@@ -88,6 +94,10 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
+        authorSort = false;
+        dateSort = false;
+        titleSort = false;
+
         List<PoIncidence> list = new ArrayList<>();
         adpIncidence = new AdpIncidence(getActivity(), list);
         presenterIncidence = new PresenterIncidenceImpl(null, this);
@@ -96,6 +106,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         if (bundle != null) {
             userEmail = bundle.getString("userEmail");
             String code = bundle.getString("comcode");
+            userCategory = bundle.getInt("userCategory");
             presenterIncidence.instanceFirebase(code);
         }
 
@@ -194,11 +205,15 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         MenuObject author = new MenuObject(getString(R.string.sort_author));
         author.setResource(R.drawable.face);
 
+        MenuObject keys = new MenuObject(getString(R.string.sort_chronologically));
+        keys.setResource(R.drawable.sort);
+
         List<MenuObject> menuObjects = new ArrayList<>();
         menuObjects.add(close);
         menuObjects.add(title);
         menuObjects.add(date);
         menuObjects.add(author);
+        menuObjects.add(keys);
 
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize(actionBarHeight);
@@ -213,16 +228,19 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
             public void onMenuItemClick(View clickedView, int position) {
                 switch (position) {
                     case 0:
-
+                        //Close
                         break;
                     case 1:
-
+                        sortTitle(titleSort);
                         break;
                     case 2:
-
+                        sortDate(dateSort);
                         break;
                     case 3:
-
+                        sortAuthor(authorSort);
+                        break;
+                    case 4:
+                        resetSort();
                         break;
                 }
             }
@@ -232,6 +250,18 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     private void deleteResponse(int position) {
         presenterIncidence.deleteIncidence(adpIncidence.getItem(position));
         incidenceList.smoothCloseMenu();
+    }
+
+    private void resetSort() {
+        authorSort = false;
+        dateSort = false;
+        titleSort = false;
+        adpIncidence.sort(new Comparator<PoIncidence>() {
+            @Override
+            public int compare(PoIncidence o1, PoIncidence o2) {
+                return (int) (o1.getKey() - o2.getKey());
+            }
+        });
     }
 
     private void sendEmail() {
@@ -258,6 +288,63 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void sortAuthor(boolean authorSort) {
+        if (authorSort) {
+            adpIncidence.sort(new Comparator<PoIncidence>() {
+                @Override
+                public int compare(PoIncidence o1, PoIncidence o2) {
+                    return o2.getAuthorEmail().compareTo(o1.getAuthorEmail());
+                }
+            });
+        } else {
+            adpIncidence.sort(new Comparator<PoIncidence>() {
+                @Override
+                public int compare(PoIncidence o1, PoIncidence o2) {
+                    return o1.getAuthorEmail().compareTo(o2.getAuthorEmail());
+                }
+            });
+        }
+        this.authorSort = !authorSort;
+    }
+
+    private void sortDate(boolean dateSort) {
+        if (dateSort) {
+            adpIncidence.sort(new Comparator<PoIncidence>() {
+                @Override
+                public int compare(PoIncidence o1, PoIncidence o2) {
+                    return (int) (o2.getDate() - o1.getDate());
+                }
+            });
+        } else {
+            adpIncidence.sort(new Comparator<PoIncidence>() {
+                @Override
+                public int compare(PoIncidence o1, PoIncidence o2) {
+                    return (int) (o1.getDate() - o2.getDate());
+                }
+            });
+        }
+        this.dateSort = !dateSort;
+    }
+
+    private void sortTitle(boolean titleSort) {
+        if (titleSort) {
+            adpIncidence.sort(new Comparator<PoIncidence>() {
+                @Override
+                public int compare(PoIncidence o1, PoIncidence o2) {
+                    return o2.getTitle().compareTo(o1.getTitle());
+                }
+            });
+        } else {
+            adpIncidence.sort(new Comparator<PoIncidence>() {
+                @Override
+                public int compare(PoIncidence o1, PoIncidence o2) {
+                    return o1.getTitle().compareTo(o2.getTitle());
+                }
+            });
+        }
+        this.titleSort = !titleSort;
     }
 
     private void swipeMenuInstance() {
@@ -301,7 +388,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
                 switch (index) {
                     case 0:
                         if (incidence != null) {
-                            if (userEmail.equals(incidence.getAuthorEmail())) {
+                            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 callback.sendIncidence(incidence);
                                 incidenceList.smoothCloseMenu();
                             } else {
@@ -311,7 +398,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
                         break;
                     case 1:
                         if (incidence != null) {
-                            if (userEmail.equals(incidence.getAuthorEmail())) {
+                            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 showDeleteDialog(incidence, position);
                             } else {
                                 callSnack.sendSnack(getString(R.string.no_permission));

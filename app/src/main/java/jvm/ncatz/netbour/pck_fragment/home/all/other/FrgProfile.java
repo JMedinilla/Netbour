@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -228,11 +227,11 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
 
     private void imageConfirmation(final Uri uri) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        ImageView img = new ImageView(getActivity());
+        CircleImageView img = new CircleImageView(getActivity());
         LinearLayout.LayoutParams params =
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         img.setLayoutParams(params);
-        img.setPadding(0, 10, 0, 0);
+        img.setPadding(40, 60, 40, 20);
         try {
             Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
 

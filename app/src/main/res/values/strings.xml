@@ -164,4 +164,8 @@
     <string name="image_confirm_title">Send image?</string>
     <string name="updated_image">Image updated</string>
     <string name="updated_fields">All fields updated</string>
+    <string name="sort_chronologically">Sort chronologically</string>
+    <string name="photo_upload">You have to upload a photo</string>
+    <string name="conversion_error">Image conversion error</string>
+    <string name="edit_photo">The photo can not be edited</string>
 </resources>

@@ -27,6 +27,7 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,8 +61,11 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     private ListEntry callback;
     private PresenterEntryImpl presenterEntry;
 
+    private boolean authorSort;
+    private boolean dateSort;
+    private boolean titleSort;
     private int cat;
-    private int userCateogory;
+    private int userCategory;
     private String userEmail;
 
     public interface ListEntry {
@@ -85,6 +89,10 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
+        authorSort = false;
+        dateSort = false;
+        titleSort = false;
+
         List<PoEntry> list = new ArrayList<>();
         adpEntry = new AdpEntry(getActivity(), list);
         presenterEntry = new PresenterEntryImpl(null, this);
@@ -94,7 +102,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
             userEmail = bundle.getString("userEmail");
             cat = bundle.getInt("category");
             String code = bundle.getString("comcode");
-            userCateogory = bundle.getInt("userCategory");
+            userCategory = bundle.getInt("userCategory");
             if (cat == PoEntry.CATEGORY_FIRST) {
                 presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
             } else {
@@ -127,7 +135,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         if (cat == PoEntry.CATEGORY_SECOND) {
             callbackBack.backFromForm();
         } else {
-            if (userCateogory == PoUser.GROUP_ADMIN || userCateogory == PoUser.GROUP_PRESIDENT) {
+            if (userCategory == PoUser.GROUP_ADMIN || userCategory == PoUser.GROUP_PRESIDENT) {
                 callbackBack.backFromForm();
             }
         }
@@ -203,11 +211,15 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         MenuObject author = new MenuObject(getString(R.string.sort_author));
         author.setResource(R.drawable.face);
 
+        MenuObject keys = new MenuObject(getString(R.string.sort_chronologically));
+        keys.setResource(R.drawable.sort);
+
         List<MenuObject> menuObjects = new ArrayList<>();
         menuObjects.add(close);
         menuObjects.add(title);
         menuObjects.add(date);
         menuObjects.add(author);
+        menuObjects.add(keys);
 
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize(actionBarHeight);
@@ -222,16 +234,19 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
             public void onMenuItemClick(View clickedView, int position) {
                 switch (position) {
                     case 0:
-
+                        //Close
                         break;
                     case 1:
-
+                        sortTitle(titleSort);
                         break;
                     case 2:
-
+                        sortDate(dateSort);
                         break;
                     case 3:
-
+                        sortAuthor(authorSort);
+                        break;
+                    case 4:
+                        resetSort();
                         break;
                 }
             }
@@ -241,6 +256,18 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     private void deleteResponse(int position) {
         presenterEntry.deleteEntry(adpEntry.getItem(position));
         entryList.smoothCloseMenu();
+    }
+
+    private void resetSort() {
+        authorSort = false;
+        dateSort = false;
+        titleSort = false;
+        adpEntry.sort(new Comparator<PoEntry>() {
+            @Override
+            public int compare(PoEntry o1, PoEntry o2) {
+                return (int) (o1.getKey() - o2.getKey());
+            }
+        });
     }
 
     private void sendEmail() {
@@ -267,6 +294,63 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void sortAuthor(boolean authorSort) {
+        if (authorSort) {
+            adpEntry.sort(new Comparator<PoEntry>() {
+                @Override
+                public int compare(PoEntry o1, PoEntry o2) {
+                    return o2.getAuthorEmail().compareTo(o1.getAuthorEmail());
+                }
+            });
+        } else {
+            adpEntry.sort(new Comparator<PoEntry>() {
+                @Override
+                public int compare(PoEntry o1, PoEntry o2) {
+                    return o1.getAuthorEmail().compareTo(o2.getAuthorEmail());
+                }
+            });
+        }
+        this.authorSort = !authorSort;
+    }
+
+    private void sortDate(boolean dateSort) {
+        if (dateSort) {
+            adpEntry.sort(new Comparator<PoEntry>() {
+                @Override
+                public int compare(PoEntry o1, PoEntry o2) {
+                    return (int) (o2.getDate() - o1.getDate());
+                }
+            });
+        } else {
+            adpEntry.sort(new Comparator<PoEntry>() {
+                @Override
+                public int compare(PoEntry o1, PoEntry o2) {
+                    return (int) (o1.getDate() - o2.getDate());
+                }
+            });
+        }
+        this.dateSort = !dateSort;
+    }
+
+    private void sortTitle(boolean titleSort) {
+        if (titleSort) {
+            adpEntry.sort(new Comparator<PoEntry>() {
+                @Override
+                public int compare(PoEntry o1, PoEntry o2) {
+                    return o2.getTitle().compareTo(o1.getTitle());
+                }
+            });
+        } else {
+            adpEntry.sort(new Comparator<PoEntry>() {
+                @Override
+                public int compare(PoEntry o1, PoEntry o2) {
+                    return o1.getTitle().compareTo(o2.getTitle());
+                }
+            });
+        }
+        this.titleSort = !titleSort;
     }
 
     private void swipeMenuInstance() {
@@ -310,7 +394,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
                 switch (index) {
                     case 0:
                         if (entry != null) {
-                            if (userEmail.equals(entry.getAuthorEmail())) {
+                            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 callback.sendEntry(entry);
                                 entryList.smoothCloseMenu();
                             } else {
@@ -320,7 +404,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
                         break;
                     case 1:
                         if (entry != null) {
-                            if (userEmail.equals(entry.getAuthorEmail())) {
+                            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 showDeleteDialog(entry, position);
                             } else {
                                 callSnack.sendSnack(getString(R.string.no_permission));

@@ -27,6 +27,7 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,6 +64,9 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     private ListUser callback;
     private PresenterUserImpl presenterUser;
 
+    private boolean categorySort;
+    private boolean nameSort;
+    private boolean phoneSort;
     private int userCategory;
 
     public interface ListUser {
@@ -84,6 +88,10 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+
+        categorySort = false;
+        nameSort = false;
+        phoneSort = false;
 
         List<PoUser> list = new ArrayList<>();
         adpUser = new AdpUser(getActivity(), list);
@@ -189,11 +197,15 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         MenuObject category = new MenuObject(getString(R.string.sort_category));
         category.setResource(R.drawable.account_card_details);
 
+        MenuObject keys = new MenuObject(getString(R.string.sort_chronologically));
+        keys.setResource(R.drawable.sort);
+
         List<MenuObject> menuObjects = new ArrayList<>();
         menuObjects.add(close);
         menuObjects.add(name);
         menuObjects.add(phone);
         menuObjects.add(category);
+        menuObjects.add(keys);
 
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize(actionBarHeight);
@@ -208,16 +220,19 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
             public void onMenuItemClick(View clickedView, int position) {
                 switch (position) {
                     case 0:
-
+                        //Close
                         break;
                     case 1:
-
+                        sortName(nameSort);
                         break;
                     case 2:
-
+                        sortPhone(phoneSort);
                         break;
                     case 3:
-
+                        sortCategory(categorySort);
+                        break;
+                    case 4:
+                        resetSort();
                         break;
                 }
             }
@@ -227,6 +242,18 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     private void deleteResponse(int position) {
         presenterUser.deleteUser(adpUser.getItem(position));
         userList.smoothCloseMenu();
+    }
+
+    private void resetSort() {
+        categorySort = false;
+        nameSort = false;
+        phoneSort = false;
+        adpUser.sort(new Comparator<PoUser>() {
+            @Override
+            public int compare(PoUser o1, PoUser o2) {
+                return (int) (o1.getKey() - o2.getKey());
+            }
+        });
     }
 
     private void sendEmail() {
@@ -253,6 +280,63 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void sortCategory(boolean categorySort) {
+        if (categorySort) {
+            adpUser.sort(new Comparator<PoUser>() {
+                @Override
+                public int compare(PoUser o1, PoUser o2) {
+                    return o2.getCategory() - o1.getCategory();
+                }
+            });
+        } else {
+            adpUser.sort(new Comparator<PoUser>() {
+                @Override
+                public int compare(PoUser o1, PoUser o2) {
+                    return o1.getCategory() - o2.getCategory();
+                }
+            });
+        }
+        this.categorySort = !categorySort;
+    }
+
+    private void sortName(boolean nameSort) {
+        if (nameSort) {
+            adpUser.sort(new Comparator<PoUser>() {
+                @Override
+                public int compare(PoUser o1, PoUser o2) {
+                    return o2.getName().compareTo(o1.getName());
+                }
+            });
+        } else {
+            adpUser.sort(new Comparator<PoUser>() {
+                @Override
+                public int compare(PoUser o1, PoUser o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+        }
+        this.nameSort = !nameSort;
+    }
+
+    private void sortPhone(boolean phoneSort) {
+        if (phoneSort) {
+            adpUser.sort(new Comparator<PoUser>() {
+                @Override
+                public int compare(PoUser o1, PoUser o2) {
+                    return o2.getPhone().compareTo(o1.getPhone());
+                }
+            });
+        } else {
+            adpUser.sort(new Comparator<PoUser>() {
+                @Override
+                public int compare(PoUser o1, PoUser o2) {
+                    return o1.getPhone().compareTo(o2.getPhone());
+                }
+            });
+        }
+        this.phoneSort = !phoneSort;
     }
 
     private void swipeMenuInstance() {
