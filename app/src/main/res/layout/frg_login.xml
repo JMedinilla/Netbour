@@ -12,7 +12,7 @@
         android:layout_height="160dp"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/face" />
+        android:src="@drawable/logo300" />
 
     <TextView
         android:id="@+id/fragFormLoginWelcome"

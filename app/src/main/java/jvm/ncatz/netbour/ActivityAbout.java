@@ -71,7 +71,7 @@ public class ActivityAbout extends MaterialAboutActivity {
         IconicsDrawable iconSocialTwitter = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_twitter).color(Color.BLUE).sizeDp(20);
         IconicsDrawable iconOtherBugs = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_bug).color(Color.GRAY).sizeDp(20);
 
-        MaterialAboutTitleItem itemAppName = new MaterialAboutTitleItem(getString(R.string.app_name), ContextCompat.getDrawable(this, R.mipmap.ic_launcher));
+        MaterialAboutTitleItem itemAppName = new MaterialAboutTitleItem(getString(R.string.app_name), ContextCompat.getDrawable(this, R.drawable.logo160));
         MaterialAboutActionItem itemAppVersion = new MaterialAboutActionItem(
                 getString(R.string.app_version_title),
                 getString(R.string.app_version_sub),
