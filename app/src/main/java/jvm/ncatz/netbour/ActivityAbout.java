@@ -2,6 +2,7 @@ package jvm.ncatz.netbour;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,10 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.danielstone.materialaboutlibrary.MaterialAboutActivity;
 import com.danielstone.materialaboutlibrary.items.MaterialAboutActionItem;
@@ -18,6 +23,14 @@ import com.danielstone.materialaboutlibrary.model.MaterialAboutCard;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+
+import info.hoang8f.widget.FButton;
 
 public class ActivityAbout extends MaterialAboutActivity {
 
@@ -49,6 +62,7 @@ public class ActivityAbout extends MaterialAboutActivity {
 
         IconicsDrawable iconAppVersion = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_info_outline).color(Color.BLACK).sizeDp(20);
         IconicsDrawable iconAppRepository = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_box).color(Color.BLACK).sizeDp(20);
+        IconicsDrawable iconAppLicenses = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_file).color(Color.BLACK).sizeDp(20);
         IconicsDrawable iconAuthorEmail = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_email).color(Color.RED).sizeDp(20);
         IconicsDrawable iconAuthorWeb = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_view_web).color(Color.RED).sizeDp(20);
         IconicsDrawable iconSocialGithub = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_alt).color(Color.BLUE).sizeDp(20);
@@ -81,6 +95,76 @@ public class ActivityAbout extends MaterialAboutActivity {
                     public void onClick(boolean b) {
                         String url = "https://github.com/JMedinilla/Netbour";
                         openUrl(url);
+                    }
+                });
+        MaterialAboutActionItem itemAppLicenses = new MaterialAboutActionItem(
+                getString(R.string.app_licenses_title),
+                getString(R.string.app_licenses_sub),
+                iconAppLicenses,
+                new MaterialAboutItemOnClickListener() {
+                    @Override
+                    public void onClick(boolean b) {
+                        DialogPlus dialogPlus = DialogPlus.newDialog(ActivityAbout.this)
+                                .setGravity(Gravity.BOTTOM)
+                                .setContentHolder(new ViewHolder(R.layout.licenses_dialog))
+                                .setCancelable(true)
+                                .setExpanded(true, 700)
+                                .create();
+
+                        View view = dialogPlus.getHolderView();
+                        FButton apacheButton = (FButton) view.findViewById(R.id.apacheButton);
+                        FButton mitButton = (FButton) view.findViewById(R.id.mitButton);
+                        TextView textView = (TextView) view.findViewById(R.id.licenseText);
+                        apacheButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    AssetManager am = getAssets();
+                                    InputStream is = am.open("apache");
+
+                                    Scanner s = new Scanner(is).useDelimiter("\\A");
+                                    String apache = s.hasNext() ? s.next() : "";
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ActivityAbout.this);
+                                    builder.setTitle(R.string.apache_title);
+                                    builder.setMessage(apache);
+                                    builder.create().show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        mitButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    AssetManager am = getAssets();
+                                    InputStream is = am.open("mit");
+
+                                    Scanner s = new Scanner(is).useDelimiter("\\A");
+                                    String mit = s.hasNext() ? s.next() : "";
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ActivityAbout.this);
+                                    builder.setTitle(R.string.mit_title);
+                                    builder.setMessage(mit);
+                                    builder.create().show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            AssetManager am = getAssets();
+                            InputStream is = am.open("licenses");
+
+                            Scanner s = new Scanner(is).useDelimiter("\\A");
+                            String licenses = s.hasNext() ? s.next() : "";
+
+                            textView.setText(licenses);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        dialogPlus.show();
                     }
                 });
         MaterialAboutTitleItem itemAuthorName = new MaterialAboutTitleItem(
@@ -165,6 +249,7 @@ public class ActivityAbout extends MaterialAboutActivity {
         builderCardApp.addItem(itemAppName);
         builderCardApp.addItem(itemAppVersion);
         builderCardApp.addItem(itemAppRepository);
+        builderCardApp.addItem(itemAppLicenses);
         builderCardAuthor.addItem(itemAuthorName);
         builderCardAuthor.addItem(itemAuthorEmail);
         builderCardAuthor.addItem(itemAuthorWeb);

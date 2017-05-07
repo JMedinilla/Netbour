@@ -168,4 +168,10 @@
     <string name="photo_upload">You have to upload a photo</string>
     <string name="conversion_error">Image conversion error</string>
     <string name="edit_photo">The photo can not be edited</string>
+    <string name="app_licenses_title">Third party licenses</string>
+    <string name="app_licenses_sub">Click to see the Licenses of the thir party libraries included in Netbour</string>
+    <string name="apache_button">Apache license</string>
+    <string name="mit_button">MIT license</string>
+    <string name="apache_title">Apache License V2</string>
+    <string name="mit_title">MIT</string>
 </resources>
