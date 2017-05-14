@@ -30,7 +30,7 @@
     <string name="adapterUsers_txtFlatTitle">Vivienda:</string>
     <string name="adapterUsers_txtNameTitle">Nombre:</string>
     <string name="adapterUsers_txtPhoneTitle">Teléfono:</string>
-    <string name="addedError">Este usuario no se puede añadir</string>
+    <string name="addedError">Este usuario no se puede registrar</string>
     <string name="apache_button">Licencia Apache</string>
     <string name="apache_title">Apache License V2</string>
     <string name="app_licenses_sub">Haz click para ver las licencias usadas por librerías de terceros en Netbour</string>
@@ -67,7 +67,7 @@
     <string name="confirm_province">Provincia:</string>
     <string name="confirm_street">Calle:</string>
     <string name="confirm_title">Título:</string>
-    <string name="conversion_error">Conversión de imagen fallido</string>
+    <string name="conversion_error">Conversión de imagen fallida</string>
     <string name="default_community_code">Tienes que cambiar de código de comunidad</string>
     <string name="deletedUser">Este usuario ha sido eliminado, consúltalo con el administrador</string>
     <string name="dialog_message_close">¿Quieres cerrar la sesión actual?</string>
@@ -102,7 +102,7 @@
     <string name="fragFormLoginRegister">¿No tienes cuenta? Créala</string>
     <string name="fragFormLoginWelcome">¡Bienvenido a Netbour!</string>
     <string name="fragFormMeetingDate">Fecha</string>
-    <string name="fragFormMeetingDescription">Descrición</string>
+    <string name="fragFormMeetingDescription">Descripción</string>
     <string name="fragFormRegister">Registro</string>
     <string name="fragFormSave">Guardar</string>
     <string name="fragFormUserCategoryFirst">Vecino</string>
@@ -139,12 +139,12 @@
     <string name="no_permission">No tienes permisos suficientes</string>
     <string name="nothing_to_show">Nada que mostrar</string>
     <string name="other_bug_sub">Pulsa para enviar un correo</string>
-    <string name="other_bug_subject">Informe de bug</string>
-    <string name="other_bug_title">Informa de bug</string>
+    <string name="other_bug_subject">Informe de error</string>
+    <string name="other_bug_title">Informa de error</string>
     <string name="photo_upload">Tienes que elegir una fotografía</string>
     <string name="pressBack">Pulsa Atrás de nuevo para salir</string>
     <string name="select_code">Elige una comunidad</string>
-    <string name="sendEmailTitle">Enviar correo</string>
+    <string name="sendEmailTitle">Enviar email</string>
     <string name="separator">-</string>
     <string name="snack_undo">Deshacer</string>
     <string name="social_github_sub">https://github.com/JMedinilla</string>
@@ -175,4 +175,12 @@
     <string name="user_deleted">¡Usuario eliminado!</string>
     <string name="user_response_failure">No se ha podido recuperar el usuario</string>
     <string name="wrongUser">Autentificación fallida</string>
+    <string name="report_community">Informar de una comunidad</string>
+    <string name="report_document">Informar de un documento</string>
+    <string name="report_entry">Informar de una entrada</string>
+    <string name="report_incidence">Informar de una incidencia</string>
+    <string name="report_meeting">Informar de una junta</string>
+    <string name="report_user">Informar de un usuario</string>
+    <string name="no_admins_community">No hay administradores en esta comunidad</string>
+    <string name="no_email_admin">Ningún administrador al que informar</string>
 </resources>

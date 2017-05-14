@@ -2,8 +2,8 @@ package jvm.ncatz.netbour.pck_fragment.home.all;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -19,11 +20,13 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpMeeting;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
@@ -46,6 +49,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     }
 
     private AdpMeeting adpMeeting;
+    private AlertDialog loading;
     private FrgBack callbackBack;
     private FrgLists callSnack;
     private ListMeeting callback;
@@ -53,6 +57,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
 
     private int userCategory;
     private String userEmail;
+    private String[] to;
 
     public interface ListMeeting {
 
@@ -75,6 +80,8 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
+        loadingDialogCreate();
+
         List<PoMeeting> list = new ArrayList<>();
         adpMeeting = new AdpMeeting(getActivity(), list);
         presenterMeeting = new PresenterMeetingImpl(null, this);
@@ -84,6 +91,10 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
             userEmail = bundle.getString("userEmail");
             String code = bundle.getString("comcode");
             userCategory = bundle.getInt("userCategory");
+            ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
+            if (arrayList != null) {
+                to = arrayList.toArray(new String[arrayList.size()]);
+            }
             presenterMeeting.instanceFirebase(code);
         }
     }
@@ -109,6 +120,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         super.onStart();
         callbackBack.backFromForm();
         presenterMeeting.attachFirebase();
+        loadingDialogShow();
     }
 
     @Override
@@ -135,6 +147,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         meetingList.setVisibility(View.VISIBLE);
         meetingEmpty.setVisibility(View.GONE);
         updateList(list);
+        loadingDialogHide();
     }
 
     @Override
@@ -143,6 +156,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         meetingEmpty.setVisibility(View.VISIBLE);
         List<PoMeeting> list = new ArrayList<>();
         updateList(list);
+        loadingDialogHide();
     }
 
     private void deleteResponse(int position) {
@@ -150,13 +164,45 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         meetingList.smoothCloseMenu();
     }
 
+    private void loadingDialogCreate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.loading_dialog, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+        loading = builder.create();
+        loading.setCancelable(false);
+        loading.setCanceledOnTouchOutside(false);
+        if (loading.getWindow() != null) {
+            loading.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
+    public void loadingDialogHide() {
+        if (loading != null) {
+            loading.dismiss();
+        }
+    }
+
+    public void loadingDialogShow() {
+        if (loading != null) {
+            loading.show();
+        }
+    }
+
     private void sendEmail() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL, "");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "");
-        intent.putExtra(Intent.EXTRA_TEXT, "");
-        startActivity(Intent.createChooser(intent, getString(R.string.email_report)));
+        if (to != null) {
+            if (to.length > 0) {
+                EmailIntentBuilder.from(getActivity())
+                        .to(Arrays.asList(to))
+                        .subject(getActivity().getString(R.string.report_meeting))
+                        .start();
+            } else {
+                Toast.makeText(getActivity(), R.string.no_email_admin, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getActivity(), R.string.no_email_admin, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showDeleteDialog(PoMeeting meeting, final int position) {
@@ -181,28 +227,28 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
             @Override
             public void create(SwipeMenu menu) {
                 SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.blue_200);
+                editItem.setBackground(R.color.white);
                 editItem.setTitle(getString(R.string.swipeMenuEdit));
                 editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.WHITE);
+                editItem.setTitleColor(Color.BLACK);
                 editItem.setIcon(R.drawable.tooltip_edit);
                 editItem.setWidth(160);
                 menu.addMenuItem(editItem);
 
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.red_200);
+                deleteItem.setBackground(R.color.white);
                 deleteItem.setTitle(getString(R.string.swipeMenuDelete));
                 deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.WHITE);
+                deleteItem.setTitleColor(Color.BLACK);
                 deleteItem.setIcon(R.drawable.delete_empty);
                 deleteItem.setWidth(160);
                 menu.addMenuItem(deleteItem);
 
                 SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.purple_200);
+                reportItem.setBackground(R.color.white);
                 reportItem.setTitle(getString(R.string.swipeMenuReport));
                 reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.WHITE);
+                reportItem.setTitleColor(Color.BLACK);
                 reportItem.setIcon(R.drawable.alert_decagram);
                 reportItem.setWidth(160);
                 menu.addMenuItem(reportItem);

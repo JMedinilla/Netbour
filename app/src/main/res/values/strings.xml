@@ -32,7 +32,7 @@
     <string name="addedError">This user can not be signed in</string>
     <string name="apache_button">Apache license</string>
     <string name="apache_title">Apache License V2</string>
-    <string name="app_licenses_sub">Click to see the Licenses of the thir party libraries included in Netbour</string>
+    <string name="app_licenses_sub">Click to see the Licenses of the third party libraries included in Netbour</string>
     <string name="app_licenses_title">Third party licenses</string>
     <string name="app_name">Netbour</string>
     <string name="app_repository_sub">/JMedinilla/Netbour</string>
@@ -67,7 +67,7 @@
     <string name="confirm_street">Street:</string>
     <string name="confirm_title">Title:</string>
     <string name="conversion_error">Image conversion error</string>
-    <string name="default_community_code">You have to change the actual community code</string>
+    <string name="default_community_code">You have to change the current community code</string>
     <string name="deletedUser">This user was deleted, contact the admin for more information</string>
     <string name="dialog_message_close">Do you want to close the current session?</string>
     <string name="dialog_message_delete">Do yo want to delete</string>
@@ -174,4 +174,12 @@
     <string name="user_deleted">User deleted!</string>
     <string name="user_response_failure">User could not be retrieved</string>
     <string name="wrongUser">Authentication failed</string>
+    <string name="no_admins_community">There are no administrators for this community</string>
+    <string name="report_community">Report community</string>
+    <string name="report_document">Report document</string>
+    <string name="report_entry">Report entry</string>
+    <string name="report_incidence">Report incidence</string>
+    <string name="report_meeting">Report meeting</string>
+    <string name="report_user">Report user</string>
+    <string name="no_email_admin">No admins to inform</string>
 </resources>

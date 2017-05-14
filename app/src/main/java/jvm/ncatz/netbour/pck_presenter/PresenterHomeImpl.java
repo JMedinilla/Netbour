@@ -6,7 +6,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterHome;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
@@ -22,6 +26,32 @@ public class PresenterHomeImpl implements PresenterHome {
 
     public PresenterHomeImpl(PresenterHome.Activity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    public void getAdminEmails() {
+        Query reference = FirebaseDatabase.getInstance().getReference().child("users").orderByChild("category").equalTo(3);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> list = new ArrayList<>();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        PoUser user = snapshot.getValue(PoUser.class);
+                        list.add(user.getEmail());
+                    }
+                    activity.getAdminEmailsResponse(list);
+                }
+                else {
+                    activity.getAdminEmailsResponse(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                activity.getAdminEmailsResponse(null);
+            }
+        });
     }
 
     @Override

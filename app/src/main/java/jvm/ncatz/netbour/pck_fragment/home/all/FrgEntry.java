@@ -2,9 +2,9 @@ package jvm.ncatz.netbour.pck_fragment.home.all;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -27,12 +28,14 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpEntry;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
@@ -55,6 +58,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     }
 
     private AdpEntry adpEntry;
+    private AlertDialog loading;
     private ContextMenuDialogFragment frg;
     private FrgBack callbackBack;
     private FrgLists callSnack;
@@ -67,6 +71,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     private int cat;
     private int userCategory;
     private String userEmail;
+    private String[] to;
 
     public interface ListEntry {
 
@@ -89,6 +94,8 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
+        loadingDialogCreate();
+
         authorSort = false;
         dateSort = false;
         titleSort = false;
@@ -103,6 +110,10 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
             cat = bundle.getInt("category");
             String code = bundle.getString("comcode");
             userCategory = bundle.getInt("userCategory");
+            ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
+            if (arrayList != null) {
+                to = arrayList.toArray(new String[arrayList.size()]);
+            }
             if (cat == PoEntry.CATEGORY_FIRST) {
                 presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
             } else {
@@ -140,6 +151,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
             }
         }
         presenterEntry.attachFirebase();
+        loadingDialogShow();
     }
 
     @Override
@@ -182,6 +194,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         entryList.setVisibility(View.VISIBLE);
         entryEmpty.setVisibility(View.GONE);
         updateList(list);
+        loadingDialogHide();
     }
 
     @Override
@@ -190,6 +203,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         entryEmpty.setVisibility(View.VISIBLE);
         List<PoEntry> list = new ArrayList<>();
         updateList(list);
+        loadingDialogHide();
     }
 
     private void createMenu() {
@@ -258,6 +272,32 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         entryList.smoothCloseMenu();
     }
 
+    private void loadingDialogCreate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.loading_dialog, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+        loading = builder.create();
+        loading.setCancelable(false);
+        loading.setCanceledOnTouchOutside(false);
+        if (loading.getWindow() != null) {
+            loading.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
+    public void loadingDialogHide() {
+        if (loading != null) {
+            loading.dismiss();
+        }
+    }
+
+    public void loadingDialogShow() {
+        if (loading != null) {
+            loading.show();
+        }
+    }
+
     private void resetSort() {
         authorSort = false;
         dateSort = false;
@@ -271,12 +311,18 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     }
 
     private void sendEmail() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL, "");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "");
-        intent.putExtra(Intent.EXTRA_TEXT, "");
-        startActivity(Intent.createChooser(intent, getString(R.string.email_report)));
+        if (to != null) {
+            if (to.length > 0) {
+                EmailIntentBuilder.from(getActivity())
+                        .to(Arrays.asList(to))
+                        .subject(getActivity().getString(R.string.report_entry))
+                        .start();
+            } else {
+                Toast.makeText(getActivity(), R.string.no_email_admin, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getActivity(), R.string.no_email_admin, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showDeleteDialog(PoEntry entry, final int position) {
@@ -358,28 +404,28 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
             @Override
             public void create(SwipeMenu menu) {
                 SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.blue_200);
+                editItem.setBackground(R.color.white);
                 editItem.setTitle(getString(R.string.swipeMenuEdit));
                 editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.WHITE);
+                editItem.setTitleColor(Color.BLACK);
                 editItem.setIcon(R.drawable.tooltip_edit);
                 editItem.setWidth(160);
                 menu.addMenuItem(editItem);
 
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.red_200);
+                deleteItem.setBackground(R.color.white);
                 deleteItem.setTitle(getString(R.string.swipeMenuDelete));
                 deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.WHITE);
+                deleteItem.setTitleColor(Color.BLACK);
                 deleteItem.setIcon(R.drawable.delete_empty);
                 deleteItem.setWidth(160);
                 menu.addMenuItem(deleteItem);
 
                 SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.purple_200);
+                reportItem.setBackground(R.color.white);
                 reportItem.setTitle(getString(R.string.swipeMenuReport));
                 reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.WHITE);
+                reportItem.setTitleColor(Color.BLACK);
                 reportItem.setIcon(R.drawable.alert_decagram);
                 reportItem.setWidth(160);
                 menu.addMenuItem(reportItem);

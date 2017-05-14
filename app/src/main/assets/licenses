@@ -7,7 +7,7 @@ BetterPickers
 >link: https://github.com/code-troopers/android-betterpickers
 
 ButterKnife
->license:a
+>license: Apache License V2
 >link: http://jakewharton.github.io/butterknife/
 
 CircleImageView
@@ -21,6 +21,10 @@ ContextMenu
 DialogPlus
 >license: Apache License V2
 >link: https://github.com/orhanobut/dialogplus
+
+EmailIntentBuilder
+>license: Apache License V2
+>link: https://github.com/cketti/EmailIntentBuilder
 
 FlatButton
 >license: Apache License V2

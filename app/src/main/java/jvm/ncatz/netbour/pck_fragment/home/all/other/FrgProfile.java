@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -75,6 +77,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
     }
 
+    private AlertDialog loading;
     private PresenterProfileImpl presenterProfile;
     private ProfileInterface callback;
     private long key;
@@ -97,6 +100,8 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
+        loadingDialogCreate();
+
         key = 0;
 
         presenterProfile = new PresenterProfileImpl(this);
@@ -115,6 +120,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     public void onStart() {
         super.onStart();
         presenterProfile.attachFirebase();
+        loadingDialogShow();
     }
 
     @Override
@@ -144,28 +150,35 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
 
     @Override
     public void returnProfileUser(final PoUser us) {
-        key = us.getKey();
-        frgProfileEmail.setText(us.getEmail());
-        frgProfileName.setText(us.getName());
-        frgProfilePhone.setText(us.getPhone());
-        frgProfileFloor.setText(us.getFloor());
-        frgProfileDoor.setText(us.getDoor());
-        Glide.with(this)
-                .load(us.getPhoto())
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        imageView.setImageResource(R.drawable.window_close);
-                        return false;
-                    }
+        loadingDialogHide();
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        callback.newImage(us.getPhoto());
-                        return false;
-                    }
-                })
-                .centerCrop().into(imageView);
+        if (us != null) {
+            key = us.getKey();
+            frgProfileEmail.setText(us.getEmail());
+            frgProfileName.setText(us.getName());
+            frgProfilePhone.setText(us.getPhone());
+            frgProfileFloor.setText(us.getFloor());
+            frgProfileDoor.setText(us.getDoor());
+            Glide.with(this)
+                    .load(us.getPhoto())
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            imageView.setImageResource(R.drawable.window_close);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            callback.newImage(us.getPhoto());
+                            return false;
+                        }
+                    })
+                    .centerCrop().into(imageView);
+
+        } else {
+            //
+        }
     }
 
     @Override
@@ -259,5 +272,31 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         AlertDialog dialog = builder.create();
         dialog.setView(img);
         dialog.show();
+    }
+
+    private void loadingDialogCreate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.loading_dialog, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+        loading = builder.create();
+        loading.setCancelable(false);
+        loading.setCanceledOnTouchOutside(false);
+        if (loading.getWindow() != null) {
+            loading.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
+    public void loadingDialogHide() {
+        if (loading != null) {
+            loading.dismiss();
+        }
+    }
+
+    public void loadingDialogShow() {
+        if (loading != null) {
+            loading.show();
+        }
     }
 }

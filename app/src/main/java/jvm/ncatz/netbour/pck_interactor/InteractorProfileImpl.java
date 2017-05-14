@@ -63,7 +63,7 @@ public class InteractorProfileImpl implements InteractorProfile {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    //
+                    listener.returnProfileUser(null);
                 }
             };
         }

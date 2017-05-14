@@ -26,6 +26,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -117,6 +120,8 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     private PresenterHomeImpl presenterHome;
 
+    private List<String> adminEmails;
+
     private boolean doubleBackToExit;
     private boolean form_opened;
     private int actual_category;
@@ -133,6 +138,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        adminEmails = new ArrayList<>();
         doubleBackToExit = false;
         form_opened = false;
         actual_category = 0;
@@ -142,6 +148,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         actual_photo = "";
 
         presenterHome = new PresenterHomeImpl(this);
+        presenterHome.getAdminEmails();
         presenterHome.getCurrentUser();
 
         setNavigationActionBarHeader();
@@ -169,6 +176,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     public void changeCode(String code) {
         actual_code = code;
         showSnackbar(getString(R.string.changed_code) + " " + actual_code, DURATION_LONG);
+        presenterHome.getAdminEmails();
     }
 
     @Override
@@ -255,6 +263,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
+    public void getAdminEmailsResponse(List<String> list) {
+        if (list != null) {
+            adminEmails = list;
+        } else {
+            Toast.makeText(this, R.string.no_admins_community, Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    @Override
     public void getCurrentUserResponseClose() {
         closeSesion();
     }
@@ -285,8 +303,8 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             menu.findItem(R.id.groupOptions_Communities).setVisible(false);
         } else {
             actual_code = "";
-            showCommunities();
             showSnackbar(getString(R.string.select_code), DURATION_SHORT);
+            showCommunities();
         }
     }
 
@@ -645,6 +663,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
             Bundle bundle = new Bundle();
             bundle.putInt("userCategory", actual_category);
+            ArrayList<String> arrayList = new ArrayList<>(adminEmails.size());
+            arrayList.addAll(adminEmails);
+            bundle.putStringArrayList("adminEmails", arrayList);
 
             FrgCommunity frgCommunity = new FrgCommunity();
             frgCommunity.setArguments(bundle);
@@ -671,6 +692,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 bundle.putString("userEmail", actual_email);
                 bundle.putString("comcode", actual_code);
                 bundle.putInt("userCategory", actual_category);
+                ArrayList<String> arrayList = new ArrayList<>(adminEmails.size());
+                arrayList.addAll(adminEmails);
+                bundle.putStringArrayList("adminEmails", arrayList);
 
                 FrgDocument frgDocument = new FrgDocument();
                 frgDocument.setArguments(bundle);
@@ -701,6 +725,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 bundle.putInt("category", PoEntry.CATEGORY_FIRST);
                 bundle.putString("comcode", actual_code);
                 bundle.putInt("userCategory", actual_category);
+                ArrayList<String> arrayList = new ArrayList<>(adminEmails.size());
+                arrayList.addAll(adminEmails);
+                bundle.putStringArrayList("adminEmails", arrayList);
 
                 FrgEntry frgEntry = new FrgEntry();
                 frgEntry.setArguments(bundle);
@@ -727,6 +754,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 bundle.putInt("category", PoEntry.CATEGORY_SECOND);
                 bundle.putString("comcode", actual_code);
                 bundle.putInt("userCategory", actual_category);
+                ArrayList<String> arrayList = new ArrayList<>(adminEmails.size());
+                arrayList.addAll(adminEmails);
+                bundle.putStringArrayList("adminEmails", arrayList);
 
                 FrgEntry frgEntry = new FrgEntry();
                 frgEntry.setArguments(bundle);
@@ -765,6 +795,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 bundle.putString("userEmail", actual_email);
                 bundle.putString("comcode", actual_code);
                 bundle.putInt("userCategory", actual_category);
+                ArrayList<String> arrayList = new ArrayList<>(adminEmails.size());
+                arrayList.addAll(adminEmails);
+                bundle.putStringArrayList("adminEmails", arrayList);
 
                 FrgIncidence frgIncidence = new FrgIncidence();
                 frgIncidence.setArguments(bundle);
@@ -812,6 +845,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 bundle.putString("userEmail", actual_email);
                 bundle.putString("comcode", actual_code);
                 bundle.putInt("userCategory", actual_category);
+                ArrayList<String> arrayList = new ArrayList<>(adminEmails.size());
+                arrayList.addAll(adminEmails);
+                bundle.putStringArrayList("adminEmails", arrayList);
 
                 FrgMeeting frgMeeting = new FrgMeeting();
                 frgMeeting.setArguments(bundle);
@@ -868,6 +904,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 Bundle bundle = new Bundle();
                 bundle.putInt("userCategory", actual_category);
                 bundle.putString("comcode", actual_code);
+                ArrayList<String> arrayList = new ArrayList<>(adminEmails.size());
+                arrayList.addAll(adminEmails);
+                bundle.putStringArrayList("adminEmails", arrayList);
 
                 FrgUser frgUser = new FrgUser();
                 frgUser.setArguments(bundle);

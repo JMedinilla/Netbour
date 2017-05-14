@@ -1,10 +1,13 @@
 package jvm.ncatz.netbour.pck_fragment.login;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +62,7 @@ public class FrgLogin extends Fragment {
         }
     }
 
+    private AlertDialog loading;
     private IFrgLogin callback;
 
     public interface IFrgLogin {
@@ -83,6 +87,8 @@ public class FrgLogin extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
+        loadingDialogCreate();
+
         checkUser();
     }
 
@@ -101,6 +107,8 @@ public class FrgLogin extends Fragment {
     }
 
     private void checkUser() {
+        loadingDialogShow();
+
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
@@ -115,18 +123,47 @@ public class FrgLogin extends Fragment {
                                     FirebaseAuth.getInstance().signOut();
                                     callback.deletedUser();
                                 } else {
+                                    fragFormLoginSave.setEnabled(false);
+                                    fragFormLoginRegister.setEnabled(false);
                                     callback.userIsLogged();
                                 }
                             }
                         }
                     }
+                    loadingDialogHide();
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    //
+                    loadingDialogHide();
                 }
             });
+        }
+    }
+
+    private void loadingDialogCreate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.loading_dialog, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+        loading = builder.create();
+        loading.setCancelable(false);
+        loading.setCanceledOnTouchOutside(false);
+        if (loading.getWindow() != null) {
+            loading.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
+    public void loadingDialogHide() {
+        if (loading != null) {
+            loading.dismiss();
+        }
+    }
+
+    public void loadingDialogShow() {
+        if (loading != null) {
+            loading.show();
         }
     }
 
