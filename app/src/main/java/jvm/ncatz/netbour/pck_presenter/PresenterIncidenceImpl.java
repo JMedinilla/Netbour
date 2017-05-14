@@ -28,6 +28,16 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     }
 
     @Override
+    public void endImagePushError() {
+        viewForm.endImagePushError();
+    }
+
+    @Override
+    public void endImagePushSuccess() {
+        viewForm.endImagePushSuccess();
+    }
+
+    @Override
     public void addedIncidence() {
         viewForm.addedIncidence();
     }
@@ -75,6 +85,11 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
     @Override
     public void returnListEmpty() {
         viewList.returnListEmpty();
+    }
+
+    @Override
+    public void setImageProgress(double progress) {
+        viewForm.setImageProgress(progress);
     }
 
     @Override

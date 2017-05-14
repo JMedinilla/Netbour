@@ -30,7 +30,13 @@ public interface PresenterProfile {
 
     interface View {
 
+        void endImagePushError();
+
+        void endImagePushSuccess();
+
         void returnProfileUser(PoUser us);
+
+        void setImageProgress(double bytesTransferred);
 
         void validateFlatResponse(int errorFloorRmpty, String floor, String door);
 

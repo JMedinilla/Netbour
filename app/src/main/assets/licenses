@@ -50,6 +50,10 @@ PhotoView
 >license: Apache License V2
 >link: https://github.com/chrisbanes/PhotoView
 
+RoundCornerProgressBar
+>license: Apache License V2
+>link: https://github.com/akexorcist/Android-RoundCornerProgressBar
+
 SwipeMenuListView
 >license: MIT
 >link: https://github.com/baoyongzhang/SwipeMenuListView

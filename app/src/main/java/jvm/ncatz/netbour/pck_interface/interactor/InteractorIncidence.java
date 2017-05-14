@@ -22,6 +22,10 @@ public interface InteractorIncidence {
 
     interface Listener {
 
+        void endImagePushError();
+
+        void endImagePushSuccess();
+
         void addedIncidence();
 
         void deletedIncidence(PoIncidence item);
@@ -31,5 +35,7 @@ public interface InteractorIncidence {
         void returnList(List<PoIncidence> list);
 
         void returnListEmpty();
+
+        void setImageProgress(double progress);
     }
 }

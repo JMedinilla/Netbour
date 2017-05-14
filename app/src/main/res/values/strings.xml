@@ -182,4 +182,6 @@
     <string name="report_meeting">Report meeting</string>
     <string name="report_user">Report user</string>
     <string name="no_email_admin">No admins to inform</string>
+    <string name="upload_fail">Image could not be uploaded</string>
+    <string name="upload_success">Image uploaded</string>
 </resources>

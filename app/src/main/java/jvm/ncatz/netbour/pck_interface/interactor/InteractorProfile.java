@@ -18,7 +18,13 @@ public interface InteractorProfile {
 
     interface Listener {
 
+        void endImagePushError();
+
+        void endImagePushSuccess();
+
         void returnProfileUser(PoUser us);
+
+        void setImageProgress(double bytesTransferred);
 
         void updatedImage();
 

@@ -44,8 +44,23 @@ public class PresenterProfileImpl implements PresenterProfile, InteractorProfile
     }
 
     @Override
+    public void endImagePushError() {
+        view.endImagePushError();
+    }
+
+    @Override
+    public void endImagePushSuccess() {
+        view.endImagePushSuccess();
+    }
+
+    @Override
     public void returnProfileUser(PoUser us) {
         view.returnProfileUser(us);
+    }
+
+    @Override
+    public void setImageProgress(double bytesTransferred) {
+        view.setImageProgress(bytesTransferred);
     }
 
     @Override

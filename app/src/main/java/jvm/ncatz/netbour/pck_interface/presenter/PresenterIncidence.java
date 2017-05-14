@@ -46,6 +46,12 @@ public interface PresenterIncidence {
 
         void editedIncidence();
 
+        void endImagePushError();
+
+        void endImagePushSuccess();
+
+        void setImageProgress(double progress);
+
         void validationResponse(PoIncidence incidence, int error);
     }
 }

@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -77,7 +78,9 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
     }
 
+    private RoundCornerProgressBar progressBar;
     private AlertDialog loading;
+    private AlertDialog loadingImage;
     private PresenterProfileImpl presenterProfile;
     private ProfileInterface callback;
     private long key;
@@ -149,6 +152,17 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     }
 
     @Override
+    public void endImagePushError() {
+        loadingImageDialogHide();
+        Toast.makeText(getActivity(), R.string.upload_fail, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void endImagePushSuccess() {
+        loadingImageDialogHide();
+    }
+
+    @Override
     public void returnProfileUser(final PoUser us) {
         loadingDialogHide();
 
@@ -179,6 +193,11 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         } else {
             //
         }
+    }
+
+    @Override
+    public void setImageProgress(double bytesTransferred) {
+        loadingImageDialogProgress(bytesTransferred);
     }
 
     @Override
@@ -265,6 +284,8 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                loadingImageDialogCreate();
+                loadingImageDialogShow();
                 presenterProfile.pushImage(key, uri);
             }
         });
@@ -298,5 +319,38 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         if (loading != null) {
             loading.show();
         }
+    }
+
+    private void loadingImageDialogCreate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.loading_image, null);
+        progressBar = (RoundCornerProgressBar) view.findViewById(R.id.img_load);
+        progressBar.setMax(100);
+        builder.setView(view);
+        builder.setCancelable(false);
+        loadingImage = builder.create();
+        loadingImage.setCancelable(false);
+        loadingImage.setCanceledOnTouchOutside(false);
+        if (loadingImage.getWindow() != null) {
+            loadingImage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
+    public void loadingImageDialogHide() {
+        if (loadingImage != null) {
+            loadingImage.dismiss();
+        }
+    }
+
+    public void loadingImageDialogShow() {
+        if (loadingImage != null) {
+            loadingImage.show();
+        }
+    }
+
+    public void loadingImageDialogProgress(double prg) {
+        progressBar.setProgress((float) prg);
+        progressBar.setSecondaryProgress((float) (prg + 4));
     }
 }

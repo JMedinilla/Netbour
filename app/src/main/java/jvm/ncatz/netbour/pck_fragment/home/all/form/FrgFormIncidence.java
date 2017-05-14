@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
 
 import java.io.IOException;
@@ -66,6 +69,8 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         }
     }
 
+    private RoundCornerProgressBar progressBar;
+    private AlertDialog loadingImage;
     private PresenterForm callback;
     private PresenterIncidenceImpl presenterIncidence;
     private PoIncidence original;
@@ -153,18 +158,15 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
             case PHOTO_PICKER:
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
-                    Bitmap bmp;
-                    try {
-                        photo = true;
 
-                        bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                        fragFormIncidenceImage.setImageBitmap(bmp);
-                        photoUri = uri;
-                    } catch (IOException e) {
-                        photo = false;
+                    photo = true;
+                    photoUri = uri;
 
-                        Toast.makeText(getActivity(), R.string.conversion_error, Toast.LENGTH_SHORT).show();
-                    }
+                    Glide.with(getActivity())
+                            .load(uri.toString())
+                            .asBitmap()
+                            .centerCrop()
+                            .into(fragFormIncidenceImage);
                 }
                 break;
         }
@@ -181,14 +183,31 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     }
 
     @Override
+    public void endImagePushError() {
+        loadingImageDialogHide();
+        Toast.makeText(getActivity(), R.string.upload_fail, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void endImagePushSuccess() {
+        loadingImageDialogHide();
+    }
+
+    @Override
+    public void setImageProgress(double progress) {
+        loadingImageDialogProgress(progress);
+    }
+
+    @Override
     public void validationResponse(PoIncidence incidence, int error) {
         switch (error) {
             case PresenterIncidence.SUCCESS:
                 if (photo) {
                     if (updateMode) {
                         showEditDialog(incidence);
-                    }
-                    else {
+                    } else {
+                        loadingImageDialogCreate();
+                        loadingImageDialogShow();
                         presenterIncidence.addIncidence(incidence, code, photoUri);
                     }
                 } else {
@@ -221,6 +240,39 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         updateItem.setTitle(incidence.getTitle());
         updateItem.setDescription(incidence.getDescription());
         presenterIncidence.editIncidence(updateItem, code);
+    }
+
+    private void loadingImageDialogCreate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.loading_image, null);
+        progressBar = (RoundCornerProgressBar) view.findViewById(R.id.img_load);
+        progressBar.setMax(100);
+        builder.setView(view);
+        builder.setCancelable(false);
+        loadingImage = builder.create();
+        loadingImage.setCancelable(false);
+        loadingImage.setCanceledOnTouchOutside(false);
+        if (loadingImage.getWindow() != null) {
+            loadingImage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
+    public void loadingImageDialogHide() {
+        if (loadingImage != null) {
+            loadingImage.dismiss();
+        }
+    }
+
+    public void loadingImageDialogShow() {
+        if (loadingImage != null) {
+            loadingImage.show();
+        }
+    }
+
+    public void loadingImageDialogProgress(double prg) {
+        progressBar.setProgress((float) prg);
+        progressBar.setSecondaryProgress((float) (prg + 4));
     }
 
     private void showEditDialog(final PoIncidence incidence) {

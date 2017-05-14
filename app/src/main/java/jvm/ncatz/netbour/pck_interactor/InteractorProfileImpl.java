@@ -80,18 +80,20 @@ public class InteractorProfileImpl implements InteractorProfile {
                         if (u != null) {
                             setImage(key, u);
                         }
+                        listener.endImagePushSuccess();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //
+                        listener.endImagePushError();
                     }
                 })
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        //
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        listener.setImageProgress(progress);
                     }
                 });
     }
