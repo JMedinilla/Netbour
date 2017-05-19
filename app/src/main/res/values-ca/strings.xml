@@ -175,4 +175,15 @@
     <string name="user_deleted">Usuari eliminat!</string>
     <string name="user_response_failure">No s\'ha pogut recuperar l\'usuari</string>
     <string name="wrongUser">Autentificació fallida</string>
+    <string name="no_admins_community">No hi ha administradors per a aquesta comunitat</string>
+    <string name="no_email_admin">Cap administrador a qui informar</string>
+    <string name="report_community">Informar d\'una comunitat</string>
+    <string name="report_document">Informar d\'un document</string>
+    <string name="report_entry">Informar d\'una entrada</string>
+    <string name="report_incidence">Informar d\'una incidència</string>
+    <string name="report_meeting">Informar d\'una junta</string>
+    <string name="report_user">Informar d\'un usuari</string>
+    <string name="tlf_abrv">Tlf.</string>
+    <string name="upload_success">Imatge enviada</string>
+    <string name="upload_fail">No s\'ha pogut enviar la imatge</string>
 </resources>

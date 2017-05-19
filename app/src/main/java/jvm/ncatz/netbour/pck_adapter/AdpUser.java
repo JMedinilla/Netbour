@@ -89,7 +89,7 @@ public class AdpUser extends ArrayAdapter<PoUser> {
             }).into(holder.adapterUsersImgPhoto);
             holder.adapterUsersTxtName.setText(user.getName());
             holder.adapterUsersTxtEmail.setText(user.getEmail());
-            holder.adapterUsersTxtPhone.setText(user.getPhone());
+            holder.adapterUsersTxtPhone.setText("Tlf. " + user.getPhone());
             holder.adapterUsersTxtFlat.setText(user.getFloor() + " - " + user.getDoor());
             switch (user.getCategory()) {
                 case PoUser.GROUP_NEIGHBOUR:

@@ -183,4 +183,7 @@
     <string name="report_user">Informar de un usuario</string>
     <string name="no_admins_community">No hay administradores en esta comunidad</string>
     <string name="no_email_admin">Ningún administrador al que informar</string>
+    <string name="tlf_abrv">Tlf.</string>
+    <string name="upload_fail">No se ha podido enviar la imagen</string>
+    <string name="upload_success">Imagen enviada</string>
 </resources>
