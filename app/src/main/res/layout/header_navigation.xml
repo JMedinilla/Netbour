@@ -7,8 +7,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/header_circle_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_marginTop="26dp"
         android:src="@mipmap/ic_launcher"
         app:civ_border_color="#FFFFFF"
@@ -19,8 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="8dp"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 </FrameLayout>
