@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     public static final int PHOTO_PICKER = 100;
 
     @BindView(R.id.imageView)
-    CircleImageView imageView;
+    ImageView imageView;
     @BindView(R.id.frgProfileEmail)
     EditText frgProfileEmail;
     @BindView(R.id.frgProfileName)
@@ -122,8 +123,8 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     @Override
     public void onStart() {
         super.onStart();
-        presenterProfile.attachFirebase();
         loadingDialogShow();
+        presenterProfile.attachFirebase();
     }
 
     @Override
