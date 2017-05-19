@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
+import de.cketti.mailto.EmailIntentBuilder;
 import info.hoang8f.widget.FButton;
 
 public class ActivityAbout extends MaterialAboutActivity {
@@ -302,11 +303,9 @@ public class ActivityAbout extends MaterialAboutActivity {
     }
 
     private void sendEmail(String subj) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, "javimedinilla@gmail.com");
-        intent.putExtra(Intent.EXTRA_SUBJECT, subj);
-        intent.putExtra(Intent.EXTRA_TEXT, "");
-        startActivity(Intent.createChooser(intent, getString(R.string.email_report)));
+        EmailIntentBuilder.from(ActivityAbout.this)
+                .to("javimedinilla@gmail.com")
+                .subject(subj)
+                .start();
     }
 }
