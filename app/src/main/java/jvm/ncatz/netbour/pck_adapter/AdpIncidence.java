@@ -11,9 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +30,8 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
     private Context context;
 
     static class ViewHolder {
+        @BindView(R.id.adapterIncidence_imgLoading)
+        AVLoadingIndicatorView adapterIncidenceImgLoading;
         @BindView(R.id.adapterIncidence_imgPhoto)
         ImageView adapterIncidenceImgPhoto;
         @BindView(R.id.adapterIncidence_txtTitle)
@@ -45,6 +48,8 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
         }
     }
 
+    private ViewHolder holder;
+
     public AdpIncidence(@NonNull Context context, List<PoIncidence> list) {
         super(context, R.layout.adapter_incidence, list);
         this.context = context;
@@ -59,7 +64,6 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -70,7 +74,19 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
         PoIncidence incidence = getItem(position);
         if (incidence != null) {
             Glide.with(context).load(incidence.getPhoto()).centerCrop()
-                    .error(R.drawable.glide_error).into(holder.adapterIncidenceImgPhoto);
+                    .error(R.drawable.glide_error).listener(new RequestListener<String, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    holder.adapterIncidenceImgLoading.setVisibility(View.GONE);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    holder.adapterIncidenceImgLoading.setVisibility(View.GONE);
+                    return false;
+                }
+            }).into(holder.adapterIncidenceImgPhoto);
 
             Date date = new Date(incidence.getDate());
             Calendar calendar = Calendar.getInstance();

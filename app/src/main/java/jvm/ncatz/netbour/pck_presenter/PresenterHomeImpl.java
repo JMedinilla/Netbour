@@ -41,8 +41,7 @@ public class PresenterHomeImpl implements PresenterHome {
                         list.add(user.getEmail());
                     }
                     activity.getAdminEmailsResponse(list);
-                }
-                else {
+                } else {
                     activity.getAdminEmailsResponse(null);
                 }
             }
@@ -54,8 +53,11 @@ public class PresenterHomeImpl implements PresenterHome {
         });
     }
 
+    private boolean notFound;
+
     @Override
     public void getCurrentUser() {
+        notFound = true;
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
@@ -67,12 +69,16 @@ public class PresenterHomeImpl implements PresenterHome {
                             PoUser us = snapshot.getValue(PoUser.class);
                             if (!us.isDeleted()) {
                                 if (us.getEmail().equals(user.getEmail())) {
+                                    notFound = false;
                                     activity.getCurrentUserResponseUser(us.getCommunity(), us.getName(), us.getPhoto(), us.getEmail(), us.getCategory());
                                 }
-                            } else {
-                                activity.getCurrentUserResponseClose();
                             }
                         }
+                        if (notFound) {
+                            activity.getCurrentUserResponseClose();
+                        }
+                    } else {
+                        activity.getCurrentUserResponseClose();
                     }
                 }
 

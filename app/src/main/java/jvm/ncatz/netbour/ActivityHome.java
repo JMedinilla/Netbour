@@ -152,8 +152,6 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         presenterHome.getCurrentUser();
 
         setNavigationActionBarHeader();
-
-        showHome();
     }
 
     @Override
@@ -274,7 +272,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     @Override
     public void getCurrentUserResponseClose() {
-        closeSesion();
+        closeSesionResponse();
     }
 
     @Override
@@ -301,6 +299,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         if (actual_category != PoUser.GROUP_ADMIN) {
             Menu menu = navigationView.getMenu();
             menu.findItem(R.id.groupOptions_Communities).setVisible(false);
+            showHome();
         } else {
             actual_code = "";
             showSnackbar(getString(R.string.select_code), DURATION_SHORT);

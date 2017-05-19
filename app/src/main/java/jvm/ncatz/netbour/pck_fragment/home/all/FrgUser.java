@@ -334,14 +334,14 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
             adpUser.sort(new Comparator<PoUser>() {
                 @Override
                 public int compare(PoUser o1, PoUser o2) {
-                    return o2.getCategory() - o1.getCategory();
+                    return o1.getCategory() - o2.getCategory();
                 }
             });
         } else {
             adpUser.sort(new Comparator<PoUser>() {
                 @Override
                 public int compare(PoUser o1, PoUser o2) {
-                    return o1.getCategory() - o2.getCategory();
+                    return o2.getCategory() - o1.getCategory();
                 }
             });
         }
