@@ -17,7 +17,7 @@
     <info.hoang8f.widget.FButton
         android:id="@+id/apacheButton"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
@@ -36,7 +36,7 @@
     <info.hoang8f.widget.FButton
         android:id="@+id/mitButton"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
