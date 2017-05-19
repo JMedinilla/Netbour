@@ -13,7 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
+import android.webkit.WebView;
 
 import com.danielstone.materialaboutlibrary.MaterialAboutActivity;
 import com.danielstone.materialaboutlibrary.items.MaterialAboutActionItem;
@@ -26,8 +26,10 @@ import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 import info.hoang8f.widget.FButton;
@@ -108,13 +110,13 @@ public class ActivityAbout extends MaterialAboutActivity {
                                 .setGravity(Gravity.BOTTOM)
                                 .setContentHolder(new ViewHolder(R.layout.licenses_dialog))
                                 .setCancelable(true)
-                                .setExpanded(true, 700)
+                                .setExpanded(true, 600)
                                 .create();
 
                         View view = dialogPlus.getHolderView();
                         FButton apacheButton = (FButton) view.findViewById(R.id.apacheButton);
                         FButton mitButton = (FButton) view.findViewById(R.id.mitButton);
-                        TextView textView = (TextView) view.findViewById(R.id.licenseText);
+                        WebView webView = (WebView) view.findViewById(R.id.licensesWeb);
                         apacheButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -155,12 +157,9 @@ public class ActivityAbout extends MaterialAboutActivity {
                         });
                         try {
                             AssetManager am = getAssets();
-                            InputStream is = am.open("licenses");
+                            InputStream is = am.open("licenses.html");
 
-                            Scanner s = new Scanner(is).useDelimiter("\\A");
-                            String licenses = s.hasNext() ? s.next() : "";
-
-                            textView.setText(licenses);
+                            webView.loadData(inputStreamToString(is), "text/html", "UTF-8");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -266,6 +265,35 @@ public class ActivityAbout extends MaterialAboutActivity {
         builderList.addCard(builderCardOther.build());
 
         return builderList.build();
+    }
+
+    private static String inputStreamToString(InputStream is) {
+
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+        try {
+
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return sb.toString();
+
     }
 
     private void openUrl(String url) {

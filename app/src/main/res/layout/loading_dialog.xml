@@ -13,5 +13,5 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         app:indicatorColor="@color/colorPrimary"
-        app:indicatorName="LineScaleIndicator" />
+        app:indicatorName="CubeTransitionIndicator" />
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,7 +16,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
@@ -25,7 +25,7 @@ public class AdpUser extends ArrayAdapter<PoUser> {
 
     static class ViewHolder {
         @BindView(R.id.adapterUsers_imgPhoto)
-        CircleImageView adapterUsers_imgPhoto;
+        ImageView adapterUsers_imgPhoto;
         @BindView(R.id.adapterUsers_txtName)
         TextView adapterUsersTxtName;
         @BindView(R.id.adapterUsers_txtEmail)

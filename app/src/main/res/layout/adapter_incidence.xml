@@ -13,6 +13,21 @@
         android:layout_height="wrap_content"
         android:padding="4dp">
 
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/adapterIncidence_imgLoading"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/app_name"
+            app:indicatorColor="@color/colorPrimary"
+            app:indicatorName="BallSpinFadeLoaderIndicator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/adapterIncidence_imgPhoto"
             android:layout_width="80dp"
@@ -22,7 +37,6 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/tooltip_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

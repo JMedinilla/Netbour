@@ -138,6 +138,8 @@ public class FrgLogin extends Fragment {
                     loadingDialogHide();
                 }
             });
+        } else {
+            loadingDialogHide();
         }
     }
 

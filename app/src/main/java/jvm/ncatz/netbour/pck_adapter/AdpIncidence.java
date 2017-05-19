@@ -69,10 +69,7 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
         }
         PoIncidence incidence = getItem(position);
         if (incidence != null) {
-            StorageReference storageReference = FirebaseStorage.getInstance()
-                    .getReference().child("incidence_photos").child("inc" + incidence.getKey());
-            Glide.with(context).using(new jvm.ncatz.netbour.FirebaseImageLoader()).load(storageReference)
-                    .centerCrop().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+            Glide.with(context).load(incidence.getPhoto()).centerCrop()
                     .error(R.drawable.glide_error).into(holder.adapterIncidenceImgPhoto);
 
             Date date = new Date(incidence.getDate());
@@ -83,7 +80,6 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             int month = calendar.get(Calendar.MONTH) + 1;
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-            holder.adapterIncidenceImgPhoto.setImageResource(R.drawable.camera);
             holder.adapterIncidenceTxtTitle.setText(incidence.getTitle());
             holder.adapterIncidenceTxtDate.setText(day + "/" + month + "/" + year);
             holder.adapterIncidenceTxtDescription.setText(incidence.getDescription());
