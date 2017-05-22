@@ -2,14 +2,48 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jvm.ncatz.netbour">
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application xmlns:tools="http://schemas.android.com/tools"
+        android:name=".MyApp"
+        android:allowBackup="false"
+        android:icon="@drawable/logo300"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo300"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".ActivityHome"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="jvmedinilla.ncatz.com"
+                    android:path="/netbour/"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ActivityLogin"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeLogin" />
+        <activity
+            android:name=".ActivityAbout"
+            android:theme="@style/AppTheme.MaterialAboutActivity" />
+        <activity
+            android:name=".ActivitySettings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ActivityZoom"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeZoom" />
+        <activity
+            android:name=".ActivitySplashScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomSplashDialog">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,5 +51,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

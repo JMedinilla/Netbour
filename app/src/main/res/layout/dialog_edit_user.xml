@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/editDocumentConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_data"
+            android:textColor="@color/colorEditTitle"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editUserStaticName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_name"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/editDocumentConfirm" />
+
+        <TextView
+            android:id="@+id/editUserStaticPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_phone"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/editUserNameAfter" />
+
+        <TextView
+            android:id="@+id/editUserStaticFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_floor"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/editUserPhoneAfter" />
+
+        <TextView
+            android:id="@+id/editUserStaticDoor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_door"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/editUserFloorAfter" />
+
+        <TextView
+            android:id="@+id/editUserStaticCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_category"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/editUserDoorAfter" />
+
+        <TextView
+            android:id="@+id/editUserNameBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editUserStaticName"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editUserStaticName"
+            tools:text="User name" />
+
+        <TextView
+            android:id="@+id/editUserNameAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editUserNameBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editUserNameBefore"
+            tools:text="User name" />
+
+        <TextView
+            android:id="@+id/editUserPhoneBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editUserStaticPhone"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editUserStaticPhone"
+            tools:text="User phone" />
+
+        <TextView
+            android:id="@+id/editUserPhoneAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editUserPhoneBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editUserPhoneBefore"
+            tools:text="User phone" />
+
+        <TextView
+            android:id="@+id/editUserFloorBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editUserStaticFloor"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editUserStaticFloor"
+            tools:text="User floor" />
+
+        <TextView
+            android:id="@+id/editUserFloorAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editUserFloorBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editUserFloorBefore"
+            tools:text="User floor" />
+
+        <TextView
+            android:id="@+id/editUserDoorBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editUserStaticDoor"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editUserStaticDoor"
+            tools:text="User door" />
+
+        <TextView
+            android:id="@+id/editUserDoorAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editUserDoorBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editUserDoorBefore"
+            tools:text="User door" />
+
+        <TextView
+            android:id="@+id/editUserCategoryBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editUserStaticCategory"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editUserStaticCategory"
+            tools:text="User category" />
+
+        <TextView
+            android:id="@+id/editUserCategoryAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editUserCategoryBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editUserCategoryBefore"
+            tools:text="User category" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.3" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

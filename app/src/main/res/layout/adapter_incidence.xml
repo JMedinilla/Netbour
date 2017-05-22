@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/adapterIncidence_mainCard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/adapterIncidence_mainConstraint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/adapterIncidence_imgLoading"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/app_name"
+            app:indicatorColor="@color/colorPrimary"
+            app:indicatorName="BallSpinFadeLoaderIndicator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/adapterIncidence_imgPhoto"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/adapterIncidence_txtTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/grey_900"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/adapterIncidence_imgPhoto"
+            app:layout_constraintRight_toLeftOf="@+id/adapterIncidence_txtDate"
+            app:layout_constraintTop_toTopOf="@+id/adapterIncidence_imgPhoto" />
+
+        <TextView
+            android:id="@+id/adapterIncidence_txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/grey_500"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/adapterIncidence_imgPhoto" />
+
+        <TextView
+            android:id="@+id/adapterIncidence_txtDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/grey_700"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/adapterIncidence_imgPhoto"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/adapterIncidence_txtTitle" />
+
+        <TextView
+            android:id="@+id/adapterIncidence_txtAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/grey_500"
+            app:layout_constraintBottom_toBottomOf="@+id/adapterIncidence_imgPhoto"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/adapterIncidence_txtDescription"
+            app:layout_goneMarginTop="8dp" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

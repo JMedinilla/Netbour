@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/editDocumentConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_data"
+            android:textColor="@color/colorEditTitle"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editDocumentStaticTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_title"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/editDocumentConfirm" />
+
+        <TextView
+            android:id="@+id/editDocumentStaticLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_link"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/editDocumentTitleAfter" />
+
+        <TextView
+            android:id="@+id/editDocumentStaticDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/confirm_description"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/editDocumentLinkAfter" />
+
+        <TextView
+            android:id="@+id/editDocumentTitleBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editDocumentStaticTitle"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editDocumentStaticTitle"
+            tools:text="Document title" />
+
+        <TextView
+            android:id="@+id/editDocumentTitleAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editDocumentTitleBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editDocumentTitleBefore"
+            tools:text="Document title" />
+
+        <TextView
+            android:id="@+id/editDocumentLinkBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editDocumentStaticLink"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editDocumentStaticLink"
+            tools:text="Document link" />
+
+        <TextView
+            android:id="@+id/editDocumentLinkAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editDocumentLinkBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editDocumentLinkBefore"
+            tools:text="Document link" />
+
+        <TextView
+            android:id="@+id/editDocumentDescriptionBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editDocumentStaticDescription"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editDocumentStaticDescription"
+            tools:text="Document description" />
+
+        <TextView
+            android:id="@+id/editDocumentDescriptionAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editDocumentDescriptionBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editDocumentDescriptionBefore"
+            tools:text="Document description" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.3" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/editDocumentConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_data"
+            android:textColor="@color/colorEditTitle"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editCommunityStaticPostal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_postal"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/editDocumentConfirm" />
+
+        <TextView
+            android:id="@+id/editCommunityStaticProvince"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_province"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityPostalAfter" />
+
+        <TextView
+            android:id="@+id/editCommunityStaticMunicipality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_municipality"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityProvinceAfter" />
+
+        <TextView
+            android:id="@+id/editCommunityStaticNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_number"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityMunicipalityAfter" />
+
+        <TextView
+            android:id="@+id/editCommunityStaticFlats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_flats"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityNumberAfter" />
+
+        <TextView
+            android:id="@+id/editCommunityStaticStreet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/confirm_street"
+            android:textColor="@color/colorEditTitle"
+            app:layout_constraintRight_toLeftOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityFlatsAfter" />
+
+        <TextView
+            android:id="@+id/editCommunityPostalBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/editCommunityStaticPostal"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editCommunityStaticPostal"
+            tools:text="Community postal" />
+
+        <TextView
+            android:id="@+id/editCommunityPostalAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editCommunityPostalBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityPostalBefore"
+            tools:text="Community postal" />
+
+        <TextView
+            android:id="@+id/editCommunityProvinceBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editCommunityStaticProvince"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editCommunityStaticProvince"
+            tools:text="Community province" />
+
+        <TextView
+            android:id="@+id/editCommunityProvinceAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editCommunityProvinceBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityProvinceBefore"
+            tools:text="Community province" />
+
+        <TextView
+            android:id="@+id/editCommunityMunicipalityBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editCommunityStaticMunicipality"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editCommunityStaticMunicipality"
+            tools:text="Community municipality" />
+
+        <TextView
+            android:id="@+id/editCommunityMunicipalityAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editCommunityMunicipalityBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityMunicipalityBefore"
+            tools:text="Community municipality" />
+
+        <TextView
+            android:id="@+id/editCommunityNumberBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editCommunityStaticNumber"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editCommunityStaticNumber"
+            tools:text="Community number" />
+
+        <TextView
+            android:id="@+id/editCommunityNumberAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editCommunityNumberBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityNumberBefore"
+            tools:text="Community number" />
+
+        <TextView
+            android:id="@+id/editCommunityFlatsBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editCommunityStaticFlats"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editCommunityStaticFlats"
+            tools:text="Community flats" />
+
+        <TextView
+            android:id="@+id/editCommunityFlatsAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editCommunityFlatsBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityFlatsBefore"
+            tools:text="Community flats" />
+
+        <TextView
+            android:id="@+id/editCommunityStreetBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorEditBefore"
+            app:layout_constraintLeft_toRightOf="@+id/editCommunityStaticStreet"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editCommunityStaticStreet"
+            tools:text="Community street" />
+
+        <TextView
+            android:id="@+id/editCommunityStreetAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorEditAfter"
+            app:layout_constraintLeft_toLeftOf="@+id/editCommunityStreetBefore"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editCommunityStreetBefore"
+            tools:text="Community street" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.3" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_200"
+    android:gravity="center">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormUserNameFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/form_background"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/fragFormUserName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/face"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/face"
+                android:hint="@string/fragFormUserName"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/fragFormUserPhoneFloat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/form_background"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserNameFloat">
+
+            <EditText
+                android:id="@+id/fragFormUserPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/cellphone_android"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/cellphone_android"
+                android:hint="@string/fragFormUserPhone"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <LinearLayout
+            android:id="@+id/fragFormUserLinear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserPhoneFloat">
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/fragFormUserFloorFloat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="5"
+                android:background="@drawable/form_background"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/fragFormUserFloor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/home_map_marker"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/home_map_marker"
+                    android:hint="@string/fragFormUserFloor"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_600" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/fragFormUserDoorFloat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="5"
+                android:background="@drawable/form_background"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/fragFormUserDoor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/home_map_marker"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/home_map_marker"
+                    android:hint="@string/fragFormUserDoor"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_600" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/fragFormUserCategoryGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/form_background"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserLinear">
+
+            <RadioButton
+                android:id="@+id/fragFormUserCategoryFirst"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/fragFormUserCategoryFirst"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/fragFormUserCategorySecond"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/fragFormUserCategorySecond"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/fragFormUserSave"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="24dp"
+            android:drawableLeft="@drawable/ic_check_white_24dp"
+            android:drawableStart="@drawable/ic_check_white_24dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/fragFormSave"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragFormUserCategoryGroup"
+            fbutton:buttonColor="@color/orange_600"
+            fbutton:cornerRadius="12dp"
+            fbutton:shadowColor="@color/orange_900"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="8dp" />
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>

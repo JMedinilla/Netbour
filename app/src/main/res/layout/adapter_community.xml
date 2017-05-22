@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/adapterCommunity_mainCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/adapterCommunity_mainConstraint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <ImageView
+            android:id="@+id/adapterCommunity_imgPhoto"
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/home_modern"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_txtMunicipality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/grey_700"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_imgPhoto"
+            app:layout_constraintTop_toTopOf="@+id/adapterCommunity_imgPhoto" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_txtProvince"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/grey_700"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_txtMunicipality"
+            app:layout_constraintTop_toTopOf="@+id/adapterCommunity_txtMunicipality" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_txtPostal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/grey_700"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_imgPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/adapterCommunity_txtMunicipality" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_separator_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/separator"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_txtPostal"
+            app:layout_constraintTop_toTopOf="@+id/adapterCommunity_txtPostal" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_txtStreet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/grey_700"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_separator_one"
+            app:layout_constraintTop_toTopOf="@+id/adapterCommunity_separator_one" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_separator_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/separator"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_txtStreet"
+            app:layout_constraintTop_toTopOf="@+id/adapterCommunity_txtStreet" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_txtNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/grey_700"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_separator_two"
+            app:layout_constraintTop_toTopOf="@+id/adapterCommunity_separator_two" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_txtFlatsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/adapterCommunity_txtFlatsTitle"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/adapterCommunity_imgPhoto"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_imgPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/adapterCommunity_txtPostal" />
+
+        <TextView
+            android:id="@+id/adapterCommunity_Flats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/grey_700"
+            app:layout_constraintBottom_toBottomOf="@+id/adapterCommunity_txtFlatsTitle"
+            app:layout_constraintLeft_toRightOf="@+id/adapterCommunity_txtFlatsTitle" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
