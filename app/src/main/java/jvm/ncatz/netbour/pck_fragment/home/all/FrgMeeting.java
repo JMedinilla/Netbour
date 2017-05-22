@@ -118,15 +118,16 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     @Override
     public void onStart() {
         super.onStart();
+        loadingDialogShow();
         callbackBack.backFromForm();
         presenterMeeting.attachFirebase();
-        loadingDialogShow();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenterMeeting.dettachFirebase();
+        loadingDialogHide();
     }
 
     @Override
@@ -146,8 +147,8 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     public void returnList(List<PoMeeting> list) {
         meetingList.setVisibility(View.VISIBLE);
         meetingEmpty.setVisibility(View.GONE);
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     @Override
@@ -155,8 +156,8 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         meetingList.setVisibility(View.GONE);
         meetingEmpty.setVisibility(View.VISIBLE);
         List<PoMeeting> list = new ArrayList<>();
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     private void deleteResponse(int position) {

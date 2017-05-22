@@ -48,7 +48,9 @@
             android:drawableStart="@drawable/email"
             android:enabled="false"
             android:hint="@string/fragFormUserEmail"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey_600" />
     </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
     <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -75,7 +77,9 @@
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/face"
             android:hint="@string/fragFormUserName"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey_600" />
     </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
     <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -102,7 +106,9 @@
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/cellphone_android"
             android:hint="@string/fragFormUserPhone"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey_600" />
     </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
     <LinearLayout
@@ -137,7 +143,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/home_map_marker"
                 android:hint="@string/fragFormUserFloor"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -159,7 +167,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/home_map_marker"
                 android:hint="@string/fragFormUserDoor"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
     </LinearLayout>
 
@@ -177,5 +187,4 @@
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/frgProfileNameFloat" />
-
 </android.support.constraint.ConstraintLayout>

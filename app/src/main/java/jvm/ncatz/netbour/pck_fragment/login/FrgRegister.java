@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -88,7 +87,6 @@ public class FrgRegister extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        showEmailDialog();
     }
 
     @Override
@@ -105,15 +103,6 @@ public class FrgRegister extends Fragment {
                         callback.userCreated(task.isSuccessful(), user);
                     }
                 });
-    }
-
-    private void showEmailDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_title_email);
-        builder.setMessage(R.string.dialog_message_email);
-        builder.setPositiveButton(android.R.string.ok, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private void validateUser(PoUser user, String pass) {

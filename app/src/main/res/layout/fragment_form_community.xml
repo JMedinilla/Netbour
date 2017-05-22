@@ -39,7 +39,9 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/key"
                     android:hint="@string/fragFormCommunityCode"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_600" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -61,7 +63,9 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/sign_direction"
                     android:hint="@string/fragFormCommunityPostal"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_600" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
         </LinearLayout>
 
@@ -87,7 +91,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/map_marker"
                 android:hint="@string/fragFormCommunityProvince"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -112,7 +118,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/map_marker"
                 android:hint="@string/fragFormCommunityMunicipality"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <LinearLayout
@@ -143,7 +151,9 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/numeric"
                     android:hint="@string/fragFormCommunityNumber"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_600" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -165,7 +175,9 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/account_multiple_outline"
                     android:hint="@string/fragFormCommunityFlats"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_600" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
         </LinearLayout>
 
@@ -191,7 +203,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/directions_fork"
                 android:hint="@string/fragFormCommunityStreet"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <info.hoang8f.widget.FButton

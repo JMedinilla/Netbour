@@ -48,10 +48,13 @@ public class FrgLogin extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.fragFormLoginSave:
+                deactivateButton();
+
                 String em = fragFormLoginEmail.getText().toString();
                 String pa = fragFormLoginPin.getText().toString();
                 if ("".equals(em) || "".equals(pa)) {
                     Toast.makeText(getActivity(), R.string.loginFieldEmpty, Toast.LENGTH_SHORT).show();
+                    activateButton();
                 } else {
                     logUser(em, pa);
                 }
@@ -88,8 +91,6 @@ public class FrgLogin extends Fragment {
         setRetainInstance(true);
 
         loadingDialogCreate();
-
-        checkUser();
     }
 
     @Nullable
@@ -97,6 +98,9 @@ public class FrgLogin extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frg_login, container, false);
         ButterKnife.bind(this, view);
+
+        checkUser();
+
         return view;
     }
 
@@ -104,6 +108,10 @@ public class FrgLogin extends Fragment {
     public void onDetach() {
         super.onDetach();
         callback = null;
+    }
+
+    private void activateButton() {
+        fragFormLoginSave.setEnabled(true);
     }
 
     private void checkUser() {
@@ -131,16 +139,23 @@ public class FrgLogin extends Fragment {
                         }
                     }
                     loadingDialogHide();
+                    activateButton();
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     loadingDialogHide();
+                    activateButton();
                 }
             });
         } else {
             loadingDialogHide();
+            activateButton();
         }
+    }
+
+    private void deactivateButton() {
+        fragFormLoginSave.setEnabled(false);
     }
 
     private void loadingDialogCreate() {
@@ -178,6 +193,7 @@ public class FrgLogin extends Fragment {
                             checkUser();
                         } else {
                             callback.logFail();
+                            activateButton();
                         }
                     }
                 });

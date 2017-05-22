@@ -144,15 +144,16 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     @Override
     public void onStart() {
         super.onStart();
+        loadingDialogShow();
         callbackBack.backFromForm();
         presenterIncidence.attachFirebase();
-        loadingDialogShow();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenterIncidence.dettachFirebase();
+        loadingDialogHide();
     }
 
     @Override
@@ -188,8 +189,8 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     public void returnList(List<PoIncidence> list) {
         incidenceList.setVisibility(View.VISIBLE);
         incidenceEmpty.setVisibility(View.GONE);
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     @Override
@@ -197,8 +198,8 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         incidenceList.setVisibility(View.GONE);
         incidenceEmpty.setVisibility(View.VISIBLE);
         List<PoIncidence> list = new ArrayList<>();
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     private void createMenu() {
@@ -236,6 +237,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         menuParams.setClosableOutside(true);
         menuParams.setFitsSystemWindow(true);
         menuParams.setClipToPadding(false);
+        menuParams.setAnimationDuration(50);
 
         frg = ContextMenuDialogFragment.newInstance(menuParams);
         frg.setItemClickListener(new OnMenuItemClickListener() {

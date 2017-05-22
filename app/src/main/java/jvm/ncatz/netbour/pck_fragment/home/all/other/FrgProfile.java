@@ -1,16 +1,20 @@
 package jvm.ncatz.netbour.pck_fragment.home.all.other;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -41,7 +45,8 @@ import jvm.ncatz.netbour.pck_presenter.PresenterProfileImpl;
 
 public class FrgProfile extends Fragment implements PresenterProfile.View {
 
-    public static final int PHOTO_PICKER = 100;
+    private static final int GALLERY_REQUEST = 100;
+    private static final int PHOTO_PICKER = 200;
 
     @BindView(R.id.imageView)
     ImageView imageView;
@@ -73,10 +78,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
 
     @OnClick(R.id.imageView)
     public void onViewClicked() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/jpeg");
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
+        requestGalleryPermission();
     }
 
     private RoundCornerProgressBar progressBar;
@@ -131,6 +133,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     public void onStop() {
         super.onStop();
         presenterProfile.dettachFirebase();
+        loadingDialogHide();
     }
 
     @Override
@@ -147,6 +150,30 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
                     imageConfirmation(uri);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case GALLERY_REQUEST:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    requestImage();
+                } else {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.gallery_grant_title)
+                                .setMessage(R.string.gallery_grant_message)
+                                .create().show();
+                    } else {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.gallery_denied_title)
+                                .setMessage(R.string.gallery_denied_message)
+                                .create().show();
+                    }
                 }
                 break;
         }
@@ -192,7 +219,10 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
                     .centerCrop().into(imageView);
 
         } else {
-            //
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.no_profile_title)
+                    .setMessage(R.string.no_profile_message)
+                    .create().show();
         }
     }
 
@@ -353,5 +383,21 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     public void loadingImageDialogProgress(double prg) {
         progressBar.setProgress((float) prg);
         progressBar.setSecondaryProgress((float) (prg + 4));
+    }
+
+    private void requestImage() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/jpeg");
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
+    }
+
+    private void requestGalleryPermission() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST);
+        } else {
+            requestImage();
+        }
     }
 }

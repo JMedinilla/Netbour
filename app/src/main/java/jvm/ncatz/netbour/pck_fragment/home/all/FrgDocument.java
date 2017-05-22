@@ -133,17 +133,18 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     @Override
     public void onStart() {
         super.onStart();
+        loadingDialogShow();
         if (userCategory == PoUser.GROUP_ADMIN || userCategory == PoUser.GROUP_PRESIDENT) {
             callbackBack.backFromForm();
         }
         presenterDocument.attachFirebase();
-        loadingDialogShow();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenterDocument.dettachFirebase();
+        loadingDialogHide();
     }
 
     @Override
@@ -179,8 +180,8 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     public void returnList(List<PoDocument> list) {
         documentList.setVisibility(View.VISIBLE);
         documentEmpty.setVisibility(View.GONE);
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     @Override
@@ -188,8 +189,8 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         documentList.setVisibility(View.GONE);
         documentEmpty.setVisibility(View.VISIBLE);
         List<PoDocument> list = new ArrayList<>();
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     private void createMenu() {
@@ -219,6 +220,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         menuParams.setClosableOutside(true);
         menuParams.setFitsSystemWindow(true);
         menuParams.setClipToPadding(false);
+        menuParams.setAnimationDuration(50);
 
         frg = ContextMenuDialogFragment.newInstance(menuParams);
         frg.setItemClickListener(new OnMenuItemClickListener() {

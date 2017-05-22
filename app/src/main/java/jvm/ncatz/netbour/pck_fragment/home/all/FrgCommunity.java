@@ -138,15 +138,16 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     @Override
     public void onStart() {
         super.onStart();
+        loadingDialogShow();
         callbackBack.backFromForm();
         presenterCommunity.attachFirebase();
-        loadingDialogShow();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenterCommunity.dettachFirebase();
+        loadingDialogHide();
     }
 
     @Override
@@ -182,8 +183,8 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     public void returnList(List<PoCommunity> list) {
         communityList.setVisibility(View.VISIBLE);
         communityEmpty.setVisibility(View.GONE);
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     @Override
@@ -191,8 +192,8 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         communityList.setVisibility(View.GONE);
         communityEmpty.setVisibility(View.VISIBLE);
         List<PoCommunity> list = new ArrayList<>();
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     private void createMenu() {
@@ -222,6 +223,7 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         menuParams.setClosableOutside(true);
         menuParams.setFitsSystemWindow(true);
         menuParams.setClipToPadding(false);
+        menuParams.setAnimationDuration(50);
 
         frg = ContextMenuDialogFragment.newInstance(menuParams);
         frg.setItemClickListener(new OnMenuItemClickListener() {

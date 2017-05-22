@@ -1,17 +1,19 @@
 package jvm.ncatz.netbour.pck_fragment.home.all.form;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -26,8 +28,6 @@ import android.widget.Toast;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,7 +40,8 @@ import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
 
 public class FrgFormIncidence extends Fragment implements PresenterIncidence.ViewForm {
 
-    public static final int PHOTO_PICKER = 100;
+    private static final int GALLERY_REQUEST = 100;
+    private static final int PHOTO_PICKER = 200;
 
     @BindView(R.id.fragFormIncidenceImage)
     ImageView fragFormIncidenceImage;
@@ -55,6 +56,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.fragFormIncidenceImage:
+                requestGalleryPermission();
                 break;
             case R.id.fragFormIncidenceSave:
                 long currentTime = System.currentTimeMillis();
@@ -128,20 +130,6 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
             Glide.with(this).load(updateItem.getPhoto()).into(fragFormIncidenceImage);
         }
 
-        fragFormIncidenceImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!updateMode) {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("image/jpeg");
-                    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                    startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
-                } else {
-                    Toast.makeText(getActivity(), R.string.edit_photo, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
         return view;
     }
 
@@ -167,6 +155,30 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                             .asBitmap()
                             .centerCrop()
                             .into(fragFormIncidenceImage);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case GALLERY_REQUEST:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    requestImage();
+                } else {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.gallery_grant_title)
+                                .setMessage(R.string.gallery_grant_message)
+                                .create().show();
+                    } else {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.gallery_denied_title)
+                                .setMessage(R.string.gallery_denied_message)
+                                .create().show();
+                    }
                 }
                 break;
         }
@@ -273,6 +285,26 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     public void loadingImageDialogProgress(double prg) {
         progressBar.setProgress((float) prg);
         progressBar.setSecondaryProgress((float) (prg + 4));
+    }
+
+    private void requestImage() {
+        if (!updateMode) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/jpeg");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
+        } else {
+            Toast.makeText(getActivity(), R.string.edit_photo, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void requestGalleryPermission() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST);
+        } else {
+            requestImage();
+        }
     }
 
     private void showEditDialog(final PoIncidence incidence) {

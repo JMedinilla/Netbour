@@ -31,7 +31,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/format_title"
                 android:hint="@string/fragFormDocumentTitle"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -54,7 +56,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/link_variant"
                 android:hint="@string/fragFormDocumentLink"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -82,7 +86,9 @@
                 android:lines="6"
                 android:maxLines="6"
                 android:minLines="6"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <info.hoang8f.widget.FButton

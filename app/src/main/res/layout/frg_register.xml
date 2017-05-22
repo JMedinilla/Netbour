@@ -33,7 +33,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/home_modern"
                 android:hint="@string/fragFormUserCode"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -56,7 +58,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/email"
                 android:hint="@string/fragFormUserEmail"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -79,7 +83,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/face"
                 android:hint="@string/fragFormUserName"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -102,7 +108,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/cellphone_android"
                 android:hint="@string/fragFormUserPhone"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <LinearLayout
@@ -133,7 +141,9 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/home_map_marker"
                     android:hint="@string/fragFormUserFloor"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_600" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -155,7 +165,9 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/home_map_marker"
                     android:hint="@string/fragFormUserDoor"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_600" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
         </LinearLayout>
 
@@ -179,7 +191,9 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/numeric"
                 android:hint="@string/fragFormUserPin"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <info.hoang8f.widget.FButton

@@ -86,7 +86,6 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
     public void editIncidence(PoIncidence incidence, String code) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("incidences").child(String.valueOf(incidence.getKey()));
         databaseReference.child("description").setValue(incidence.getDescription());
-        databaseReference.child("photo").setValue(incidence.getPhoto());
         databaseReference.child("title").setValue(incidence.getTitle());
         listener.editedIncidence();
     }

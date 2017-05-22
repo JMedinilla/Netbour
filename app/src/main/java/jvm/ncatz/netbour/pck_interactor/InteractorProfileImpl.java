@@ -58,6 +58,8 @@ public class InteractorProfileImpl implements InteractorProfile {
                             PoUser us = snapshot.getValue(PoUser.class);
                             listener.returnProfileUser(us);
                         }
+                    } else {
+                        listener.returnProfileUser(null);
                     }
                 }
 
@@ -66,6 +68,8 @@ public class InteractorProfileImpl implements InteractorProfile {
                     listener.returnProfileUser(null);
                 }
             };
+        } else {
+            listener.returnProfileUser(null);
         }
     }
 

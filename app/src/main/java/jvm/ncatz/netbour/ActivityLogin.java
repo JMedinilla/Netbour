@@ -63,12 +63,21 @@ public class ActivityLogin extends AppCompatActivity implements FrgLogin.IFrgLog
         if (successful) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(us.getKey()));
+                DatabaseReference reference = FirebaseDatabase.getInstance()
+                        .getReference().child("users").child(String.valueOf(us.getKey()));
                 reference.setValue(us);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 showHome();
+            } else {
+                FirebaseAuth.getInstance().signOut();
             }
         } else {
             Snackbar.make(activityLoginCoordinator, R.string.invalidUser, Snackbar.LENGTH_LONG).show();
+            FirebaseAuth.getInstance().signOut();
         }
     }
 

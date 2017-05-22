@@ -143,6 +143,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     @Override
     public void onStart() {
         super.onStart();
+        loadingDialogShow();
         if (cat == PoEntry.CATEGORY_SECOND) {
             callbackBack.backFromForm();
         } else {
@@ -151,13 +152,13 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
             }
         }
         presenterEntry.attachFirebase();
-        loadingDialogShow();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenterEntry.dettachFirebase();
+        loadingDialogHide();
     }
 
     @Override
@@ -193,8 +194,8 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     public void returnList(List<PoEntry> list) {
         entryList.setVisibility(View.VISIBLE);
         entryEmpty.setVisibility(View.GONE);
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     @Override
@@ -202,8 +203,8 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         entryList.setVisibility(View.GONE);
         entryEmpty.setVisibility(View.VISIBLE);
         List<PoEntry> list = new ArrayList<>();
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     private void createMenu() {
@@ -241,6 +242,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         menuParams.setClosableOutside(true);
         menuParams.setFitsSystemWindow(true);
         menuParams.setClipToPadding(false);
+        menuParams.setAnimationDuration(50);
 
         frg = ContextMenuDialogFragment.newInstance(menuParams);
         frg.setItemClickListener(new OnMenuItemClickListener() {

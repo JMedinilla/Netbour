@@ -36,7 +36,9 @@
                 android:drawableStart="@drawable/calendar"
                 android:enabled="false"
                 android:hint="@string/fragFormMeetingDate"
-                android:inputType="date" />
+                android:inputType="date"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <ImageButton
@@ -74,7 +76,9 @@
                 android:lines="6"
                 android:maxLines="6"
                 android:minLines="6"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_600" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <info.hoang8f.widget.FButton

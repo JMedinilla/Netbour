@@ -138,14 +138,15 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     @Override
     public void onStart() {
         super.onStart();
-        presenterUser.attachFirebase();
         loadingDialogShow();
+        presenterUser.attachFirebase();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenterUser.dettachFirebase();
+        loadingDialogHide();
     }
 
     @Override
@@ -180,8 +181,8 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     public void returnList(List<PoUser> list) {
         userList.setVisibility(View.VISIBLE);
         userEmpty.setVisibility(View.GONE);
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     @Override
@@ -189,8 +190,8 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         userList.setVisibility(View.GONE);
         userEmpty.setVisibility(View.VISIBLE);
         List<PoUser> list = new ArrayList<>();
-        updateList(list);
         loadingDialogHide();
+        updateList(list);
     }
 
     private void createMenu() {
@@ -228,6 +229,7 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         menuParams.setClosableOutside(true);
         menuParams.setFitsSystemWindow(true);
         menuParams.setClipToPadding(false);
+        menuParams.setAnimationDuration(50);
 
         frg = ContextMenuDialogFragment.newInstance(menuParams);
         frg.setItemClickListener(new OnMenuItemClickListener() {

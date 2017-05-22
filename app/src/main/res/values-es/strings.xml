@@ -175,15 +175,21 @@
     <string name="user_deleted">¡Usuario eliminado!</string>
     <string name="user_response_failure">No se ha podido recuperar el usuario</string>
     <string name="wrongUser">Autentificación fallida</string>
+    <string name="no_admins_community">No hay administradores en esta comunidad</string>
     <string name="report_community">Informar de una comunidad</string>
     <string name="report_document">Informar de un documento</string>
     <string name="report_entry">Informar de una entrada</string>
     <string name="report_incidence">Informar de una incidencia</string>
     <string name="report_meeting">Informar de una junta</string>
     <string name="report_user">Informar de un usuario</string>
-    <string name="no_admins_community">No hay administradores en esta comunidad</string>
     <string name="no_email_admin">Ningún administrador al que informar</string>
     <string name="tlf_abrv">Tlf.</string>
     <string name="upload_fail">No se ha podido enviar la imagen</string>
     <string name="upload_success">Imagen enviada</string>
+    <string name="gallery_grant_title">Conceder el permiso de lectura de almacenamiento</string>
+    <string name="gallery_grant_message">Esta funcionalidad necesita leer el almacenamiento externo del teléfono para seleccionar una imagen, por favor, concédelo</string>
+    <string name="gallery_denied_title">Permiso denegado</string>
+    <string name="gallery_denied_message">El permiso para leer el almacenamiento ha sido denegado, por lo que esta funcionalidad está desactivada. Para cambiar esto ve a los ajustes del teléfono, sección de aplicaciones, y elige Netbour para conceder el permiso desde ahí</string>
+    <string name="no_profile_title">Error</string>
+    <string name="no_profile_message">No se ha podido encontrar el perfil, vuelve a intentarlo en unos momentos</string>
 </resources>
