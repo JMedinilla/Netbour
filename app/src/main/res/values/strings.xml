@@ -38,7 +38,7 @@
     <string name="app_name">Netbour</string>
     <string name="app_repository_sub">/JMedinilla/Netbour</string>
     <string name="app_repository_title">Netbour</string>
-    <string name="app_version_sub">0.1</string>
+    <string name="app_version_sub">0.8</string>
     <string name="app_version_title">Version</string>
     <string name="author_email_sub">Click to send an email</string>
     <string name="author_email_subject">Tell me something</string>

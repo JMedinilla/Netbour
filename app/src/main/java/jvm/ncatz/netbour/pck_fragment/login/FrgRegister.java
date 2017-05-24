@@ -45,19 +45,25 @@ public class FrgRegister extends Fragment {
 
     @OnClick(R.id.fragFormRegisterSave)
     public void onViewClicked() {
-        long currentTime = System.currentTimeMillis();
-        PoUser user = new PoUser(
-                false, PoUser.GROUP_NEIGHBOUR,
-                currentTime, fragFormRegisterCode.getText().toString(),
-                fragFormRegisterDoor.getText().toString(), fragFormRegisterEmail.getText().toString(),
-                fragFormRegisterFloor.getText().toString(), fragFormRegisterName.getText().toString(),
-                fragFormRegisterPhone.getText().toString(),
-                "https://firebasestorage.googleapis.com/v0/b/netbour-8e8a7.appspot.com/o/default_image.png?alt=media&token=c0b560e2-ed91-474c-ba8e-d9d41125aaf0"
-        );
-        validateUser(user, fragFormRegisterPin.getText().toString());
+        if (canClick) {
+            deactivateButton();
+
+            long currentTime = System.currentTimeMillis();
+            PoUser user = new PoUser(
+                    false, PoUser.GROUP_NEIGHBOUR,
+                    currentTime, fragFormRegisterCode.getText().toString(),
+                    fragFormRegisterDoor.getText().toString(), fragFormRegisterEmail.getText().toString(),
+                    fragFormRegisterFloor.getText().toString(), fragFormRegisterName.getText().toString(),
+                    fragFormRegisterPhone.getText().toString(),
+                    "https://firebasestorage.googleapis.com/v0/b/netbour-8e8a7.appspot.com/o/default_image.png?alt=media&token=c0b560e2-ed91-474c-ba8e-d9d41125aaf0"
+            );
+            validateUser(user, fragFormRegisterPin.getText().toString());
+        }
     }
 
     private IFrgRegister callback;
+
+    private boolean canClick;
 
     public interface IFrgRegister {
 
@@ -74,6 +80,7 @@ public class FrgRegister extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        canClick = false;
     }
 
     @Nullable
@@ -95,6 +102,10 @@ public class FrgRegister extends Fragment {
         callback = null;
     }
 
+    private void activateButton() {
+        canClick = true;
+    }
+
     private void createUser(final PoUser user, String pass) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(user.getEmail(), pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -103,6 +114,10 @@ public class FrgRegister extends Fragment {
                         callback.userCreated(task.isSuccessful(), user);
                     }
                 });
+    }
+
+    private void deactivateButton() {
+        canClick = false;
     }
 
     private void validateUser(PoUser user, String pass) {
@@ -157,6 +172,8 @@ public class FrgRegister extends Fragment {
 
         if (!error) {
             createUser(user, pass);
+        } else {
+            activateButton();
         }
     }
 }

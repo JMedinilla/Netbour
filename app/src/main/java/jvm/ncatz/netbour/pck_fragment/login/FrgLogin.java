@@ -48,15 +48,17 @@ public class FrgLogin extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.fragFormLoginSave:
-                deactivateButton();
+                if (canClick) {
+                    deactivateButton();
 
-                String em = fragFormLoginEmail.getText().toString();
-                String pa = fragFormLoginPin.getText().toString();
-                if ("".equals(em) || "".equals(pa)) {
-                    Toast.makeText(getActivity(), R.string.loginFieldEmpty, Toast.LENGTH_SHORT).show();
-                    activateButton();
-                } else {
-                    logUser(em, pa);
+                    String em = fragFormLoginEmail.getText().toString();
+                    String pa = fragFormLoginPin.getText().toString();
+                    if ("".equals(em) || "".equals(pa)) {
+                        Toast.makeText(getActivity(), R.string.loginFieldEmpty, Toast.LENGTH_SHORT).show();
+                        activateButton();
+                    } else {
+                        logUser(em, pa);
+                    }
                 }
                 break;
             case R.id.fragFormLoginRegister:
@@ -67,6 +69,8 @@ public class FrgLogin extends Fragment {
 
     private AlertDialog loading;
     private IFrgLogin callback;
+
+    private boolean canClick;
 
     public interface IFrgLogin {
 
@@ -89,6 +93,7 @@ public class FrgLogin extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        canClick = true;
 
         loadingDialogCreate();
     }
@@ -111,7 +116,7 @@ public class FrgLogin extends Fragment {
     }
 
     private void activateButton() {
-        fragFormLoginSave.setEnabled(true);
+        canClick = true;
     }
 
     private void checkUser() {
@@ -155,7 +160,7 @@ public class FrgLogin extends Fragment {
     }
 
     private void deactivateButton() {
-        fragFormLoginSave.setEnabled(false);
+        canClick = false;
     }
 
     private void loadingDialogCreate() {
