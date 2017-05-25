@@ -1,6 +1,7 @@
 package jvm.ncatz.netbour.pck_adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -73,20 +73,20 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
         }
         PoIncidence incidence = getItem(position);
         if (incidence != null) {
-            Glide.with(context).load(incidence.getPhoto()).centerCrop()
-                    .error(R.drawable.glide_error).listener(new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    holder.adapterIncidenceImgLoading.setVisibility(View.GONE);
-                    return false;
-                }
+            Glide.with(context).load(incidence.getPhoto()).asBitmap().error(R.drawable.glide_error)
+                    .listener(new RequestListener<String, Bitmap>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                            holder.adapterIncidenceImgLoading.setVisibility(View.GONE);
+                            return false;
+                        }
 
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    holder.adapterIncidenceImgLoading.setVisibility(View.GONE);
-                    return false;
-                }
-            }).into(holder.adapterIncidenceImgPhoto);
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.adapterIncidenceImgLoading.setVisibility(View.GONE);
+                            return false;
+                        }
+                    }).into(holder.adapterIncidenceImgPhoto);
 
             Date date = new Date(incidence.getDate());
             Calendar calendar = Calendar.getInstance();

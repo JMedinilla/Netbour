@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -289,10 +290,8 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
 
     private void requestImage() {
         if (!updateMode) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, PHOTO_PICKER);
         } else {
             Toast.makeText(getActivity(), R.string.edit_photo, Toast.LENGTH_SHORT).show();
         }

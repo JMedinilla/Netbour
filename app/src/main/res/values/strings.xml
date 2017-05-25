@@ -193,4 +193,6 @@
     <string name="gallery_denied_message">The storage permission is denied, that is why this feature is disabled. To change that, go to the phone settings, applications section and choose Netbour to grant the permission there</string>
     <string name="no_profile_title">Error</string>
     <string name="no_profile_message">Profile could not be found, please try again in a while</string>
+    <string name="phone_abv">Tlf.</string>
+    <string name="groupOptions_Menu">Main menu</string>
 </resources>

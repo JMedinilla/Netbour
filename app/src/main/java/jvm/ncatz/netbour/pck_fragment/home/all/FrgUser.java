@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,11 +55,13 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     TextView userEmpty;
 
     @OnItemClick(R.id.fragListUsers_list)
-    public void itemClick(int position) {
+    public void itemClick(int position, View view) {
         PoUser us = adpUser.getItem(position);
         if (us != null) {
+            ImageView imv = (ImageView) view.findViewById(R.id.adapterUsers_imgPhoto);
+
             Intent intent = new Intent(getActivity(), ActivityZoom.class);
-            intent.putExtra("photoZoom", us.getPhoto());
+            intent.putExtra("photoZoom", ((BitmapDrawable) imv.getDrawable()).getBitmap());
             startActivity(intent);
         }
     }

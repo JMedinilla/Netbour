@@ -17,7 +17,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -60,7 +59,7 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterHomeImpl;
 
-public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser, FrgBack, FrgLists,
+public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInterface, FrgUser.ListUser, FrgBack, FrgLists,
         FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry, FrgProfile.ProfileInterface,
         FrgDocument.ListDocument, FrgCommunity.ListCommunity, PresenterForm, PresenterHome.Activity {
 
@@ -124,6 +123,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     private boolean doubleBackToExit;
     private boolean form_opened;
+    private boolean in_home;
     private int actual_category;
     private int fragment_opened;
     private String actual_code;
@@ -141,6 +141,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         adminEmails = new ArrayList<>();
         doubleBackToExit = false;
         form_opened = false;
+        in_home = false;
         actual_category = 0;
         actual_code = "";
         actual_email = "";
@@ -162,6 +163,14 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            checkSelectedItem();
+        }
     }
 
     @Override
@@ -261,6 +270,57 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
+    public void fromHome(int to) {
+        switch (to) {
+            case FrgHome.TO_INCIDENTS:
+                if (!actual_code.equals("default")) {
+                    showIncidents();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_BOARD:
+                if (!actual_code.equals("default")) {
+                    showEntryFirst();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_COMBOARD:
+                if (!actual_code.equals("default")) {
+                    showEntrySecond();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_DOCUMENTS:
+                if (!actual_code.equals("default")) {
+                    showDocuments();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_MEETINGS:
+                if (!actual_code.equals("default")) {
+                    showMeetings();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_USERS:
+                if (!actual_code.equals("default")) {
+                    showUsers();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_COMMUNITIES:
+                showCommunities();
+                break;
+        }
+    }
+
+    @Override
     public void getAdminEmailsResponse(List<String> list) {
         if (list != null) {
             adminEmails = list;
@@ -297,13 +357,11 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         profile_name.setText(actual_name);
 
         if (actual_category != PoUser.GROUP_ADMIN) {
-            Menu menu = navigationView.getMenu();
-            menu.findItem(R.id.groupOptions_Communities).setVisible(false);
             showHome();
         } else {
             actual_code = "";
-            showSnackbar(getString(R.string.select_code), DURATION_SHORT);
             showCommunities();
+            showSnackbar(getString(R.string.select_code), DURATION_SHORT);
         }
     }
 
@@ -326,17 +384,21 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             drawerLayout.closeDrawers();
         } else {
             if (!form_opened) {
-                if (doubleBackToExit) {
-                    super.onBackPressed();
-                }
-                this.doubleBackToExit = true;
-                showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleBackToExit = false;
+                if (in_home) {
+                    if (doubleBackToExit) {
+                        super.onBackPressed();
                     }
-                }, 2000);
+                    this.doubleBackToExit = true;
+                    showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleBackToExit = false;
+                        }
+                    }, 2000);
+                } else {
+                    showHome();
+                }
             } else {
                 super.onBackPressed();
             }
@@ -392,6 +454,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         toolbar.setTitle(title);
     }
 
+    private void checkSelectedItem() {
+        if (fragment_opened == FRAGMENT_HOME) {
+            navigationView.setCheckedItem(R.id.groupOptions_Menu);
+        } else if (fragment_opened == FRAGMENT_PROFILE) {
+            navigationView.setCheckedItem(R.id.groupOptions_Profile);
+        } else if (fragment_opened == FRAGMENT_INFORMATION) {
+            navigationView.setCheckedItem(R.id.groupOthers_Information);
+        }
+    }
+
     private void clearFragmentStack() {
         FragmentManager manager = getSupportFragmentManager();
         for (int i = 0; i < manager.getBackStackEntryCount(); i++) {
@@ -416,7 +488,12 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 closeSesionResponse();
             }
         });
-        builder.setNegativeButton(android.R.string.no, null);
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                checkSelectedItem();
+            }
+        });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -536,77 +613,19 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 boolean transaction = false;
 
                 switch (item.getItemId()) {
-                    case R.id.groupOptions_Incidences:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showIncidents();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Board:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showEntryFirst();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_ComBoard:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showEntrySecond();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Documents:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showDocuments();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Meetings:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showMeetings();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Users:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showUsers();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Communities:
+                    case R.id.groupOptions_Menu:
                         clearFragmentStack();
-                        showCommunities();
-                        transaction = true;
+                        showHome();
                         break;
                     case R.id.groupOptions_Profile:
-                        clearFragmentStack();
                         showProfile();
                         transaction = true;
                         break;
                     case R.id.groupOthers_Settings:
-                        clearFragmentStack();
                         showSettings();
                         transaction = true;
                         break;
                     case R.id.groupOthers_Information:
-                        clearFragmentStack();
                         showInformation();
                         transaction = true;
                         break;
@@ -652,7 +671,8 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     private void showAbout() {
         Intent intent = new Intent(this, ActivityAbout.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
+
     }
 
     private void showCommunities() {
@@ -674,6 +694,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             transaction.commit();
 
             fragment_opened = FRAGMENT_LIST_COMMUNITY;
+            in_home = false;
         }
     }
 
@@ -703,6 +724,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_DOCUMENT;
+                in_home = false;
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -736,6 +758,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_ENTRYF;
+                in_home = false;
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -765,6 +788,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_ENTRYS;
+                in_home = false;
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -781,6 +805,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         transaction.commit();
 
         fragment_opened = FRAGMENT_HOME;
+        in_home = true;
+        navigationView.setCheckedItem(R.id.groupOptions_Menu);
+
         changeActionTitle(getString(R.string.app_name));
     }
 
@@ -806,6 +833,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_INCIDENCE;
+                in_home = false;
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -828,6 +856,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_INFORMATION;
+                in_home = false;
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -856,6 +885,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_MEETING;
+                in_home = false;
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -873,6 +903,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             transaction.commit();
 
             fragment_opened = FRAGMENT_PROFILE;
+            in_home = false;
         }
     }
 
@@ -915,6 +946,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_USER;
+                in_home = false;
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
