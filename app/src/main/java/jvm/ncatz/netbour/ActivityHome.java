@@ -455,7 +455,7 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
     }
 
     private void checkSelectedItem() {
-        if (fragment_opened == FRAGMENT_HOME) {
+        if (in_home || fragment_opened == FRAGMENT_HOME) {
             navigationView.setCheckedItem(R.id.groupOptions_Menu);
         } else if (fragment_opened == FRAGMENT_PROFILE) {
             navigationView.setCheckedItem(R.id.groupOptions_Profile);

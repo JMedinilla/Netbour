@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nightonke.boommenu.BoomMenuButton;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jvm.ncatz.netbour.R;
@@ -22,6 +25,15 @@ public class FrgHome extends Fragment {
     public static final int TO_USERS = 60;
     public static final int TO_COMMUNITIES = 70;
 
+    @BindView(R.id.homeBoomMenu)
+    BoomMenuButton homeBoomMenu;
+
+    @OnClick(R.id.homeBoomMenu)
+    public void onViewClicked() {
+        //
+    }
+
+    /*
     @OnClick({R.id.home_incidence, R.id.home_board, R.id.home_comboard, R.id.home_meetings, R.id.home_users, R.id.home_documents, R.id.home_communities})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -48,6 +60,7 @@ public class FrgHome extends Fragment {
                 break;
         }
     }
+    */
 
     public interface HomeInterface {
 
@@ -74,6 +87,12 @@ public class FrgHome extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        homeBoomMenu.performClick();
     }
 
     @Override
