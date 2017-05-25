@@ -253,7 +253,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
                 frgProfileName.setError(getString(R.string.ERROR_SHORT_3));
                 break;
             case PresenterProfile.ERROR_NAME_LONG:
-                frgProfileName.setError(getString(R.string.ERROR_LONG_16));
+                frgProfileName.setError(getString(R.string.ERROR_LONG_24));
                 break;
         }
     }

@@ -80,7 +80,7 @@ public class FrgRegister extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        canClick = false;
+        canClick = true;
     }
 
     @Nullable
@@ -140,9 +140,9 @@ public class FrgRegister extends Fragment {
         } else if (user.getName().length() < 3) {
             error = true;
             fragFormRegisterName.setError(getString(R.string.ERROR_SHORT_3));
-        } else if (user.getName().length() > 16) {
+        } else if (user.getName().length() > 24) {
             error = true;
-            fragFormRegisterName.setError(getString(R.string.ERROR_LONG_16));
+            fragFormRegisterName.setError(getString(R.string.ERROR_LONG_24));
         }
         if (TextUtils.equals("", user.getPhone())) {
             error = true;

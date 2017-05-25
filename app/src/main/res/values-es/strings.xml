@@ -192,4 +192,5 @@
     <string name="gallery_denied_message">El permiso para leer el almacenamiento ha sido denegado, por lo que esta funcionalidad está desactivada. Para cambiar esto ve a los ajustes del teléfono, sección de aplicaciones, y elige Netbour para conceder el permiso desde ahí</string>
     <string name="no_profile_title">Error</string>
     <string name="no_profile_message">No se ha podido encontrar el perfil, vuelve a intentarlo en unos momentos</string>
+    <string name="ERROR_LONG_36">Demasiado largo (máx 36)</string>
 </resources>

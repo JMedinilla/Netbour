@@ -148,7 +148,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 fragFormUserName.setError(getString(R.string.ERROR_SHORT_3));
                 break;
             case PresenterUser.ERROR_NAME_LONG:
-                fragFormUserName.setError(getString(R.string.ERROR_LONG_16));
+                fragFormUserName.setError(getString(R.string.ERROR_LONG_24));
                 break;
             case PresenterUser.ERROR_PHONE_EMPTY:
                 fragFormUserPhone.setError(getString(R.string.ERROR_EMPTY));

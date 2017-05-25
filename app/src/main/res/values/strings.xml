@@ -5,6 +5,7 @@
     <string name="ERROR_LONG_16">Too long (max 16)</string>
     <string name="ERROR_LONG_20">Too long (max 20)</string>
     <string name="ERROR_LONG_24">Too long (max 24)</string>
+    <string name="ERROR_LONG_36">Too long (max 36)</string>
     <string name="ERROR_LONG_255">Too long (max 255)</string>
     <string name="ERROR_LONG_400">Too long (max 400)</string>
     <string name="ERROR_LONG_5">Too long (max 5)</string>

@@ -233,7 +233,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 fragFormIncidenceTitle.setError(getString(R.string.ERROR_SHORT_6));
                 break;
             case PresenterIncidence.ERROR_TITLE_LONG:
-                fragFormIncidenceTitle.setError(getString(R.string.ERROR_LONG_20));
+                fragFormIncidenceTitle.setError(getString(R.string.ERROR_LONG_36));
                 break;
             case PresenterIncidence.ERROR_DESCRIPTION_EMPTY:
                 fragFormIncidenceDescription.setError(getString(R.string.ERROR_EMPTY));
