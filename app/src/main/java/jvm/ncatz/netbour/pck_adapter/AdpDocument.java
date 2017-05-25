@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,6 +30,8 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
         TextView adapterDocumentTxtTitle;
         @BindView(R.id.adapterDocument_txtDescription)
         TextView adapterDocumentTxtDescription;
+        @BindView(R.id.adapterDocument_Menu)
+        BoomMenuButton boomMenuButton;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -57,6 +64,11 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
         if (document != null) {
             holder.adapterDocumentTxtTitle.setText(document.getTitle());
             holder.adapterDocumentTxtDescription.setText(document.getDescription());
+            holder.boomMenuButton.clearBuilders();
+            holder.boomMenuButton.setNormalColor(R.color.colorPrimary);
+            holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
+            holder.boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
+            holder.boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
         }
         return convertView;
     }

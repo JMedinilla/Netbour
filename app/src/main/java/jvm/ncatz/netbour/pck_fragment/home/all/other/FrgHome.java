@@ -1,6 +1,7 @@
 package jvm.ncatz.netbour.pck_fragment.home.all.other;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton;
 import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
+import com.nightonke.boommenu.Util;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import jvm.ncatz.netbour.R;
 
 public class FrgHome extends Fragment {
@@ -24,43 +28,6 @@ public class FrgHome extends Fragment {
     public static final int TO_MEETINGS = 50;
     public static final int TO_USERS = 60;
     public static final int TO_COMMUNITIES = 70;
-
-    @BindView(R.id.homeBoomMenu)
-    BoomMenuButton homeBoomMenu;
-
-    @OnClick(R.id.homeBoomMenu)
-    public void onViewClicked() {
-        //
-    }
-
-    /*
-    @OnClick({R.id.home_incidence, R.id.home_board, R.id.home_comboard, R.id.home_meetings, R.id.home_users, R.id.home_documents, R.id.home_communities})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.home_incidence:
-                callback.fromHome(TO_INCIDENTS);
-                break;
-            case R.id.home_board:
-                callback.fromHome(TO_BOARD);
-                break;
-            case R.id.home_comboard:
-                callback.fromHome(TO_COMBOARD);
-                break;
-            case R.id.home_meetings:
-                callback.fromHome(TO_MEETINGS);
-                break;
-            case R.id.home_users:
-                callback.fromHome(TO_USERS);
-                break;
-            case R.id.home_documents:
-                callback.fromHome(TO_DOCUMENTS);
-                break;
-            case R.id.home_communities:
-                callback.fromHome(TO_COMMUNITIES);
-                break;
-        }
-    }
-    */
 
     public interface HomeInterface {
 
@@ -85,14 +52,90 @@ public class FrgHome extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.bind(this, view);
-        return view;
-    }
+        BoomMenuButton homeBoomMenu = (BoomMenuButton) view.findViewById(R.id.homeBoomMenu);
+        homeBoomMenu.setNormalColor(R.color.colorPrimary);
+        homeBoomMenu.setButtonEnum(ButtonEnum.TextOutsideCircle);
+        homeBoomMenu.setPiecePlaceEnum(PiecePlaceEnum.DOT_7_4);
+        homeBoomMenu.setButtonPlaceEnum(ButtonPlaceEnum.SC_7_4);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        homeBoomMenu.performClick();
+        TextOutsideCircleButton.Builder builderIncidences = new TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_tooltip_image_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
+                .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Incidences)
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        callback.fromHome(TO_INCIDENTS);
+                    }
+                });
+        TextOutsideCircleButton.Builder builderBoard = new TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_clipboard_alert_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
+                .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Board)
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        callback.fromHome(TO_BOARD);
+                    }
+                });
+        TextOutsideCircleButton.Builder builderComBoard = new TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_clipboard_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
+                .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_ComBoard)
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        callback.fromHome(TO_COMBOARD);
+                    }
+                });
+        TextOutsideCircleButton.Builder builderDocuments = new TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_file_document_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
+                .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Documents)
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        callback.fromHome(TO_DOCUMENTS);
+                    }
+                });
+        TextOutsideCircleButton.Builder builderMeetings = new TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_timetable_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
+                .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Meetings)
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        callback.fromHome(TO_MEETINGS);
+                    }
+                });
+        TextOutsideCircleButton.Builder builderUsers = new TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_account_multiple_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
+                .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Users)
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        callback.fromHome(TO_USERS);
+                    }
+                });
+        TextOutsideCircleButton.Builder builderCommunities = new TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_home_modern_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
+                .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Communities)
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        callback.fromHome(TO_COMMUNITIES);
+                    }
+                });
+        homeBoomMenu.addBuilder(builderIncidences);
+        homeBoomMenu.addBuilder(builderComBoard);
+        homeBoomMenu.addBuilder(builderDocuments);
+        homeBoomMenu.addBuilder(builderCommunities);
+        homeBoomMenu.addBuilder(builderUsers);
+        homeBoomMenu.addBuilder(builderBoard);
+        homeBoomMenu.addBuilder(builderMeetings);
+        return view;
     }
 
     @Override

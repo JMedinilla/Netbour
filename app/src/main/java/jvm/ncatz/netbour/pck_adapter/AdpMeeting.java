@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,6 +30,8 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
         TextView adapterMeetingTxtDate;
         @BindView(R.id.adapterMeeting_txtDescription)
         TextView adapterMeetingTxtDescription;
+        @BindView(R.id.adapterMeeting_Menu)
+        BoomMenuButton boomMenuButton;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -57,6 +64,11 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
         if (meeting != null) {
             holder.adapterMeetingTxtDate.setText(meeting.getDate());
             holder.adapterMeetingTxtDescription.setText(meeting.getDescription());
+            holder.boomMenuButton.clearBuilders();
+            holder.boomMenuButton.setNormalColor(R.color.colorPrimary);
+            holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
+            holder.boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
+            holder.boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
         }
         return convertView;
     }

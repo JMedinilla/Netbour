@@ -14,6 +14,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Calendar;
@@ -42,6 +46,8 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
         TextView adapterIncidenceTxtDescription;
         @BindView(R.id.adapterIncidence_txtAuthor)
         TextView adapterIncidenceTxtAuthor;
+        @BindView(R.id.adapterIncidence_Menu)
+        BoomMenuButton boomMenuButton;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -100,6 +106,11 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             holder.adapterIncidenceTxtDate.setText(day + "/" + month + "/" + year);
             holder.adapterIncidenceTxtDescription.setText(incidence.getDescription());
             holder.adapterIncidenceTxtAuthor.setText(incidence.getAuthorName());
+            holder.boomMenuButton.clearBuilders();
+            holder.boomMenuButton.setNormalColor(R.color.colorPrimary);
+            holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
+            holder.boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
+            holder.boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
         }
         return convertView;
     }

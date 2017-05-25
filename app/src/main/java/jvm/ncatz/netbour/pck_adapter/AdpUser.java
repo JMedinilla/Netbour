@@ -2,6 +2,7 @@ package jvm.ncatz.netbour.pck_adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,6 +15,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
+import com.nightonke.boommenu.Util;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.List;
@@ -42,6 +50,8 @@ public class AdpUser extends ArrayAdapter<PoUser> {
         TextView adapterUsersTxtPhone;
         @BindView(R.id.adapterUsers_txtFlat)
         TextView adapterUsersTxtFlat;
+        @BindView(R.id.adapterUsers_Menu)
+        BoomMenuButton boomMenuButton;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -103,6 +113,11 @@ public class AdpUser extends ArrayAdapter<PoUser> {
                     holder.adapterUsersImgPresident.setImageResource(R.drawable.star);
                     break;
             }
+            holder.boomMenuButton.clearBuilders();
+            holder.boomMenuButton.setNormalColor(R.color.colorPrimary);
+            holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
+            holder.boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
+            holder.boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
         }
         return convertView;
     }

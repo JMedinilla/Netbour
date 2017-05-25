@@ -2,6 +2,7 @@ package jvm.ncatz.netbour;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,21 +32,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgHome;
-import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgInfo;
-import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgProfile;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormCommunity;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormDocument;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormEntry;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormIncidence;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormMeeting;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormUser;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgCommunity;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgDocument;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgEntry;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgIncidence;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgMeeting;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgUser;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormCommunity;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormDocument;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormEntry;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormIncidence;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormMeeting;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormUser;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgHome;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgInfo;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgProfile;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
@@ -120,7 +120,6 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
     private PresenterHomeImpl presenterHome;
 
     private List<String> adminEmails;
-
     private boolean doubleBackToExit;
     private boolean form_opened;
     private boolean in_home;
@@ -138,15 +137,29 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        adminEmails = new ArrayList<>();
-        doubleBackToExit = false;
-        form_opened = false;
-        in_home = false;
-        actual_category = 0;
-        actual_code = "";
-        actual_email = "";
-        actual_name = "";
-        actual_photo = "";
+        if (savedInstanceState != null) {
+            adminEmails = savedInstanceState.getStringArrayList("adminEmails");
+            doubleBackToExit = savedInstanceState.getBoolean("doubleBackToExit");
+            form_opened = savedInstanceState.getBoolean("form_opened");
+            in_home = savedInstanceState.getBoolean("in_home");
+            actual_category = savedInstanceState.getInt("actual_category");
+            fragment_opened = savedInstanceState.getInt("fragment_opened");
+            actual_code = savedInstanceState.getString("actual_code");
+            actual_email = savedInstanceState.getString("actual_email");
+            actual_name = savedInstanceState.getString("actual_name");
+            actual_photo = savedInstanceState.getString("actual_photo");
+            showHome();
+        } else {
+            adminEmails = new ArrayList<>();
+            doubleBackToExit = false;
+            form_opened = false;
+            in_home = false;
+            actual_category = 0;
+            actual_code = "";
+            actual_email = "";
+            actual_name = "";
+            actual_photo = "";
+        }
 
         presenterHome = new PresenterHomeImpl(this);
         presenterHome.getAdminEmails();
@@ -170,6 +183,48 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
             checkSelectedItem();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("adminEmails", (ArrayList<String>) adminEmails);
+        outState.putBoolean("doubleBackToExit", doubleBackToExit);
+        outState.putBoolean("form_opened", form_opened);
+        outState.putBoolean("in_home", in_home);
+        outState.putInt("actual_category", actual_category);
+        outState.putInt("fragment_opened", fragment_opened);
+        outState.putString("actual_code", actual_code);
+        outState.putString("actual_email", actual_email);
+        outState.putString("actual_name", actual_name);
+        outState.putString("actual_photo", actual_photo);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        } else {
+            if (!form_opened) {
+                if (in_home) {
+                    if (doubleBackToExit) {
+                        super.onBackPressed();
+                    }
+                    this.doubleBackToExit = true;
+                    showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleBackToExit = false;
+                        }
+                    }, 2000);
+                } else {
+                    showHome();
+                }
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -376,33 +431,6 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
     @Override
     public void nothingChanged() {
         showSnackbar(getString(R.string.no_edit_changes), DURATION_SHORT);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers();
-        } else {
-            if (!form_opened) {
-                if (in_home) {
-                    if (doubleBackToExit) {
-                        super.onBackPressed();
-                    }
-                    this.doubleBackToExit = true;
-                    showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            doubleBackToExit = false;
-                        }
-                    }, 2000);
-                } else {
-                    showHome();
-                }
-            } else {
-                super.onBackPressed();
-            }
-        }
     }
 
     @Override
@@ -614,8 +642,13 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
                 switch (item.getItemId()) {
                     case R.id.groupOptions_Menu:
-                        clearFragmentStack();
-                        showHome();
+                        if (!"".equals(actual_code)) {
+                            clearFragmentStack();
+                            showHome();
+                        } else {
+                            showCommunities();
+                            showSnackbar(getString(R.string.select_code), DURATION_SHORT);
+                        }
                         break;
                     case R.id.groupOptions_Profile:
                         showProfile();

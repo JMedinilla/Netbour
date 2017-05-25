@@ -15,13 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -48,13 +45,13 @@ import jvm.ncatz.netbour.pck_presenter.PresenterEntryImpl;
 public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
 
     @BindView(R.id.fragListEntry_list)
-    SwipeMenuListView entryList;
+    ListView entryList;
     @BindView(R.id.fragListEntry_empty)
     TextView entryEmpty;
 
     @OnItemClick(R.id.fragListEntry_list)
     public void itemClick(int position) {
-        //
+        showOptionsMenu(position);
     }
 
     private AdpEntry adpEntry;
@@ -129,7 +126,6 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_entry, container, false);
         ButterKnife.bind(this, view);
-        swipeMenuInstance();
         return view;
     }
 
@@ -271,7 +267,6 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
 
     private void deleteResponse(int position) {
         presenterEntry.deleteEntry(adpEntry.getItem(position));
-        entryList.smoothCloseMenu();
     }
 
     private void loadingDialogCreate() {
@@ -344,6 +339,31 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         dialog.show();
     }
 
+    private void showOptionsMenu(int position) {
+        /*
+                        if (entry != null) {
+                            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                                callback.sendEntry(entry);
+                                entryList.smoothCloseMenu();
+                            } else {
+                                callSnack.sendSnack(getString(R.string.no_permission));
+                            }
+                        }
+         */
+        /*
+                        if (entry != null) {
+                            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                                showDeleteDialog(entry, position);
+                            } else {
+                                callSnack.sendSnack(getString(R.string.no_permission));
+                            }
+                        }
+         */
+        /*
+                        sendEmail();
+         */
+    }
+
     private void sortAuthor(boolean authorSort) {
         if (authorSort) {
             adpEntry.sort(new Comparator<PoEntry>() {
@@ -399,73 +419,6 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
             });
         }
         this.titleSort = !titleSort;
-    }
-
-    private void swipeMenuInstance() {
-        SwipeMenuCreator menuCreator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.white);
-                editItem.setTitle(getString(R.string.swipeMenuEdit));
-                editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.BLACK);
-                editItem.setIcon(R.drawable.tooltip_edit);
-                editItem.setWidth(160);
-                menu.addMenuItem(editItem);
-
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.white);
-                deleteItem.setTitle(getString(R.string.swipeMenuDelete));
-                deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.BLACK);
-                deleteItem.setIcon(R.drawable.delete_empty);
-                deleteItem.setWidth(160);
-                menu.addMenuItem(deleteItem);
-
-                SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.white);
-                reportItem.setTitle(getString(R.string.swipeMenuReport));
-                reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.BLACK);
-                reportItem.setIcon(R.drawable.alert_decagram);
-                reportItem.setWidth(160);
-                menu.addMenuItem(reportItem);
-            }
-        };
-        entryList.setMenuCreator(menuCreator);
-        entryList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        entryList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
-                PoEntry entry = adpEntry.getItem(position);
-                switch (index) {
-                    case 0:
-                        if (entry != null) {
-                            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                callback.sendEntry(entry);
-                                entryList.smoothCloseMenu();
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 1:
-                        if (entry != null) {
-                            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(entry, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 2:
-                        sendEmail();
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     private void updateList(List<PoEntry> list) {

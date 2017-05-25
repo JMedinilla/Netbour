@@ -15,13 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.nightonke.boommenu.BoomMenuButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -48,16 +46,16 @@ import jvm.ncatz.netbour.pck_presenter.PresenterCommunityImpl;
 public class FrgCommunity extends Fragment implements PresenterCommunity.ViewList {
 
     @BindView(R.id.fragListCommunity_list)
-    SwipeMenuListView communityList;
+    ListView communityList;
     @BindView(R.id.fragListCommunity_empty)
     TextView communityEmpty;
 
     @OnItemClick(R.id.fragListCommunity_list)
-    public void itemClick(int position) {
-        PoCommunity com = adpCommunity.getItem(position);
-        if (com != null) {
-            callback.changeCode(com.getCode());
-        }
+    public void itemClick(int position, View view) {
+        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterCommunity_Menu);
+        bmb.boom();
+
+        showOptionsMenu(position);
     }
 
     private AdpCommunity adpCommunity;
@@ -124,7 +122,6 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_community, container, false);
         ButterKnife.bind(this, view);
-        swipeMenuInstance();
         return view;
     }
 
@@ -246,7 +243,6 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
 
     private void deleteResponse(int position) {
         presenterCommunity.deleteCommunity(adpCommunity.getItem(position));
-        communityList.smoothCloseMenu();
     }
 
     private void loadingDialogCreate() {
@@ -307,6 +303,36 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         dialog.show();
     }
 
+    private void showOptionsMenu(int position) {
+        /*
+                        PoCommunity com = adpCommunity.getItem(position);
+                        if (com != null) {
+                            callback.changeCode(com.getCode());
+                        }
+        */
+        /*
+                        if (userCategory == PoUser.GROUP_ADMIN) {
+                            callback.sendCommunity(community);
+                            communityList.smoothCloseMenu();
+                        } else {
+                            callSnack.sendSnack(getString(R.string.no_permission));
+                        }
+                        break;
+         */
+        /*
+                        if (community != null) {
+                            if (userCategory == PoUser.GROUP_ADMIN) {
+                                showDeleteDialog(community, position);
+                            } else {
+                                callSnack.sendSnack(getString(R.string.no_permission));
+                            }
+                        }
+         */
+        /*
+                        sendEmail();
+         */
+    }
+
     private void sortFlats(boolean flatsSort) {
         if (flatsSort) {
             adpCommunity.sort(new Comparator<PoCommunity>() {
@@ -343,71 +369,6 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
             });
         }
         this.postalSort = !postalSort;
-    }
-
-    private void swipeMenuInstance() {
-        SwipeMenuCreator menuCreator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.white);
-                editItem.setTitle(getString(R.string.swipeMenuEdit));
-                editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.BLACK);
-                editItem.setIcon(R.drawable.tooltip_edit);
-                editItem.setWidth(160);
-                menu.addMenuItem(editItem);
-
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.white);
-                deleteItem.setTitle(getString(R.string.swipeMenuDelete));
-                deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.BLACK);
-                deleteItem.setIcon(R.drawable.delete_empty);
-                deleteItem.setWidth(160);
-                menu.addMenuItem(deleteItem);
-
-                SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.white);
-                reportItem.setTitle(getString(R.string.swipeMenuReport));
-                reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.BLACK);
-                reportItem.setIcon(R.drawable.alert_decagram);
-                reportItem.setWidth(160);
-                menu.addMenuItem(reportItem);
-            }
-        };
-        communityList.setMenuCreator(menuCreator);
-        communityList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        communityList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
-                PoCommunity community = adpCommunity.getItem(position);
-                switch (index) {
-                    case 0:
-                        if (userCategory == PoUser.GROUP_ADMIN) {
-                            callback.sendCommunity(community);
-                            communityList.smoothCloseMenu();
-                        } else {
-                            callSnack.sendSnack(getString(R.string.no_permission));
-                        }
-                        break;
-                    case 1:
-                        if (community != null) {
-                            if (userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(community, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 2:
-                        sendEmail();
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     private void updateList(List<PoCommunity> list) {

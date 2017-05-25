@@ -11,13 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,13 +35,13 @@ import jvm.ncatz.netbour.pck_presenter.PresenterMeetingImpl;
 public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
 
     @BindView(R.id.fragListMeeting_list)
-    SwipeMenuListView meetingList;
+    ListView meetingList;
     @BindView(R.id.fragListMeeting_empty)
     TextView meetingEmpty;
 
     @OnItemClick(R.id.fragListMeeting_list)
     public void itemClick(int position) {
-        //
+        showOptionsMenu(position);
     }
 
     private AdpMeeting adpMeeting;
@@ -104,7 +100,6 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
         ButterKnife.bind(this, view);
-        swipeMenuInstance();
         return view;
     }
 
@@ -162,7 +157,6 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
 
     private void deleteResponse(int position) {
         presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
-        meetingList.smoothCloseMenu();
     }
 
     private void loadingDialogCreate() {
@@ -223,46 +217,8 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         dialog.show();
     }
 
-    private void swipeMenuInstance() {
-        SwipeMenuCreator menuCreator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.white);
-                editItem.setTitle(getString(R.string.swipeMenuEdit));
-                editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.BLACK);
-                editItem.setIcon(R.drawable.tooltip_edit);
-                editItem.setWidth(160);
-                menu.addMenuItem(editItem);
-
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.white);
-                deleteItem.setTitle(getString(R.string.swipeMenuDelete));
-                deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.BLACK);
-                deleteItem.setIcon(R.drawable.delete_empty);
-                deleteItem.setWidth(160);
-                menu.addMenuItem(deleteItem);
-
-                SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.white);
-                reportItem.setTitle(getString(R.string.swipeMenuReport));
-                reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.BLACK);
-                reportItem.setIcon(R.drawable.alert_decagram);
-                reportItem.setWidth(160);
-                menu.addMenuItem(reportItem);
-            }
-        };
-        meetingList.setMenuCreator(menuCreator);
-        meetingList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        meetingList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
-                PoMeeting meeting = adpMeeting.getItem(position);
-                switch (index) {
-                    case 0:
+    private void showOptionsMenu(int position) {
+        /*
                         if (meeting != null) {
                             if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 callback.sendMeeting(meeting);
@@ -271,8 +227,8 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
                                 callSnack.sendSnack(getString(R.string.no_permission));
                             }
                         }
-                        break;
-                    case 1:
+         */
+        /*
                         if (meeting != null) {
                             if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                                 showDeleteDialog(meeting, position);
@@ -280,14 +236,10 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
                                 callSnack.sendSnack(getString(R.string.no_permission));
                             }
                         }
-                        break;
-                    case 2:
+         */
+        /*
                         sendEmail();
-                        break;
-                }
-                return false;
-            }
-        });
+         */
     }
 
     private void updateList(List<PoMeeting> list) {

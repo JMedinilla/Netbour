@@ -37,8 +37,9 @@
             android:textColor="@color/grey_900"
             android:textSize="14sp"
             android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/adapterDocument_imgPhoto"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/adapterDocument_Menu"
             app:layout_constraintTop_toTopOf="@+id/adapterDocument_imgPhoto" />
 
         <TextView
@@ -51,9 +52,17 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/grey_700"
             app:layout_constraintBottom_toBottomOf="@+id/adapterDocument_imgPhoto"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/adapterDocument_imgPhoto"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/adapterDocument_Menu"
             app:layout_constraintTop_toBottomOf="@+id/adapterDocument_txtTitle" />
+
+        <com.nightonke.boommenu.BoomMenuButton
+            android:id="@+id/adapterDocument_Menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bmb_inList="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
