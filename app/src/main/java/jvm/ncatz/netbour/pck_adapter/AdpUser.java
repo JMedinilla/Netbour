@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceAlignmentEnum;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
@@ -32,6 +33,12 @@ import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public class AdpUser extends ArrayAdapter<PoUser> {
+
+    private static String instance;
+
+    private IAdapter callAdapter;
+    private IAdapter.IUser callUser;
+    private IAdapter.IZoom callZoom;
 
     private Context context;
 
@@ -60,9 +67,13 @@ public class AdpUser extends ArrayAdapter<PoUser> {
 
     private ViewHolder holder;
 
-    public AdpUser(@NonNull Context context, List<PoUser> list) {
+    public AdpUser(@NonNull Context context, List<PoUser> list, IAdapter callAdapter, IAdapter.IUser callUser, IAdapter.IZoom callZoom) {
         super(context, R.layout.adapter_user, list);
         this.context = context;
+        this.callAdapter = callAdapter;
+        this.callUser = callUser;
+        this.callZoom = callZoom;
+        instance = context.getString(R.string.use_instance);
     }
 
     @Nullable
@@ -73,7 +84,7 @@ public class AdpUser extends ArrayAdapter<PoUser> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -118,6 +129,52 @@ public class AdpUser extends ArrayAdapter<PoUser> {
             holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
             holder.boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
             holder.boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
+            holder.boomMenuButton.setButtonPlaceAlignmentEnum(ButtonPlaceAlignmentEnum.Center);
+
+            HamButton.Builder builderZoom = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
+                    .normalImageRes(R.drawable.ic_camera_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                    .normalColorRes(R.color.blue_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuZoom).subNormalText(context.getString(R.string.swipeMenuZoomSub))
+                    .listener(new OnBMClickListener() {
+                        @Override
+                        public void onBoomButtonClick(int index) {
+                            callZoom.zoomImage(position);
+                        }
+                    });
+            HamButton.Builder builderEdit = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
+                    .normalImageRes(R.drawable.ic_tooltip_edit_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                    .normalColorRes(R.color.green_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuEdit).subNormalText(context.getString(R.string.swipeMenuEditSub) + " " + instance)
+                    .listener(new OnBMClickListener() {
+                        @Override
+                        public void onBoomButtonClick(int index) {
+                            callUser.editElement(getItem(position));
+                        }
+                    });
+            HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
+                    .normalImageRes(R.drawable.ic_delete_empty_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                    .normalColorRes(R.color.red_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuDelete).subNormalText(context.getString(R.string.swipeMenuDeleteSub) + " " + instance)
+                    .listener(new OnBMClickListener() {
+                        @Override
+                        public void onBoomButtonClick(int index) {
+                            callUser.deleteElement(getItem(position), position);
+                        }
+                    });
+            HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
+                    .normalImageRes(R.drawable.ic_alert_decagram_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                    .normalColorRes(R.color.purple_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuReport).subNormalText(context.getString(R.string.swipeMenuReportSub))
+                    .listener(new OnBMClickListener() {
+                        @Override
+                        public void onBoomButtonClick(int index) {
+                            callAdapter.reportElement();
+                        }
+                    });
+            holder.boomMenuButton.addBuilder(builderZoom);
+            holder.boomMenuButton.addBuilder(builderEdit);
+            holder.boomMenuButton.addBuilder(builderDelete);
+            holder.boomMenuButton.addBuilder(builderReport);
         }
         return convertView;
     }

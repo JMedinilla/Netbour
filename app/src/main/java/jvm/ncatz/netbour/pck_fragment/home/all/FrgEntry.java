@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nightonke.boommenu.BoomMenuButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -35,6 +36,7 @@ import butterknife.OnItemClick;
 import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpEntry;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterEntry;
@@ -42,7 +44,7 @@ import jvm.ncatz.netbour.pck_pojo.PoEntry;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterEntryImpl;
 
-public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
+public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdapter, IAdapter.IEntry {
 
     @BindView(R.id.fragListEntry_list)
     ListView entryList;
@@ -50,8 +52,9 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     TextView entryEmpty;
 
     @OnItemClick(R.id.fragListEntry_list)
-    public void itemClick(int position) {
-        showOptionsMenu(position);
+    public void itemClick(View view) {
+        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterEntry_Menu);
+        bmb.boom();
     }
 
     private AdpEntry adpEntry;
@@ -98,7 +101,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         titleSort = false;
 
         List<PoEntry> list = new ArrayList<>();
-        adpEntry = new AdpEntry(getActivity(), list);
+        adpEntry = new AdpEntry(getActivity(), list, this, this);
         presenterEntry = new PresenterEntryImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -182,8 +185,35 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
     }
 
     @Override
+    public void deleteElement(PoEntry entry, int position) {
+        if (entry != null) {
+            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                showDeleteDialog(entry, position);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
     public void deletedEntry(PoEntry item) {
         callback.deletedEntry(item);
+    }
+
+    @Override
+    public void editElement(PoEntry entry) {
+        if (entry != null) {
+            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                callback.sendEntry(entry);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -337,31 +367,6 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList {
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void showOptionsMenu(int position) {
-        /*
-                        if (entry != null) {
-                            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                callback.sendEntry(entry);
-                                entryList.smoothCloseMenu();
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        if (entry != null) {
-                            if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(entry, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        sendEmail();
-         */
     }
 
     private void sortAuthor(boolean authorSort) {

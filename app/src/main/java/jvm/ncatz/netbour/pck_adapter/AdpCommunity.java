@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceAlignmentEnum;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
@@ -26,6 +27,12 @@ import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 
 public class AdpCommunity extends ArrayAdapter<PoCommunity> {
+
+    private static String instance;
+
+    private IAdapter callAdapter;
+    private IAdapter.ICommunity callCommunity;
+    private IAdapter.ICode callCode;
 
     private Context context;
 
@@ -50,9 +57,13 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
         }
     }
 
-    public AdpCommunity(@NonNull Context context, List<PoCommunity> list) {
+    public AdpCommunity(@NonNull Context context, List<PoCommunity> list, IAdapter callAdapter, IAdapter.ICommunity callCommunity, IAdapter.ICode callCode) {
         super(context, R.layout.adapter_community, list);
         this.context = context;
+        this.callAdapter = callAdapter;
+        this.callCommunity = callCommunity;
+        this.callCode = callCode;
+        instance = context.getString(R.string.com_instance);
     }
 
     @Nullable
@@ -63,7 +74,7 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
@@ -85,44 +96,46 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
             holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
             holder.boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
             holder.boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
-            HamButton.Builder builderCode = new HamButton.Builder()
+            holder.boomMenuButton.setButtonPlaceAlignmentEnum(ButtonPlaceAlignmentEnum.Center);
+
+            HamButton.Builder builderCode = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
                     .normalImageRes(R.drawable.ic_home_modern_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
-                    .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.black).textSize(20)
-                    .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.app_name)
+                    .normalColorRes(R.color.blue_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuCode).subNormalText(context.getString(R.string.swipeMenuCodeSub) + " " + community.getCode())
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            //
+                            callCode.selectCode(position);
                         }
                     });
-            HamButton.Builder builderEdit = new HamButton.Builder()
+            HamButton.Builder builderEdit = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
                     .normalImageRes(R.drawable.ic_tooltip_edit_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
-                    .normalColorRes(R.color.green_500).highlightedColorRes(R.color.black).textSize(20)
-                    .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuEdit)
+                    .normalColorRes(R.color.green_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuEdit).subNormalText(context.getString(R.string.swipeMenuEditSub) + " " + instance)
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            //
+                            callCommunity.editElement(getItem(position));
                         }
                     });
-            HamButton.Builder builderDelete = new HamButton.Builder()
+            HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
                     .normalImageRes(R.drawable.ic_delete_empty_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
-                    .normalColorRes(R.color.red_500).highlightedColorRes(R.color.black).textSize(20)
-                    .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuDelete)
+                    .normalColorRes(R.color.red_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuDelete).subNormalText(context.getString(R.string.swipeMenuDeleteSub) + " " + instance)
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            //
+                            callCommunity.deleteElement(getItem(position), position);
                         }
                     });
-            HamButton.Builder builderReport = new HamButton.Builder()
+            HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
                     .normalImageRes(R.drawable.ic_alert_decagram_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
-                    .normalColorRes(R.color.purple_500).highlightedColorRes(R.color.black).textSize(20)
-                    .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuReport)
+                    .normalColorRes(R.color.purple_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuReport).subNormalText(context.getString(R.string.swipeMenuReportSub))
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            //
+                            callAdapter.reportElement();
                         }
                     });
             holder.boomMenuButton.addBuilder(builderCode);

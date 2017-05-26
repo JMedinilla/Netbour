@@ -36,6 +36,7 @@ import butterknife.OnItemClick;
 import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpCommunity;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
@@ -43,7 +44,7 @@ import jvm.ncatz.netbour.pck_pojo.PoCommunity;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterCommunityImpl;
 
-public class FrgCommunity extends Fragment implements PresenterCommunity.ViewList {
+public class FrgCommunity extends Fragment implements PresenterCommunity.ViewList, IAdapter, IAdapter.ICommunity, IAdapter.ICode {
 
     @BindView(R.id.fragListCommunity_list)
     ListView communityList;
@@ -51,11 +52,9 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     TextView communityEmpty;
 
     @OnItemClick(R.id.fragListCommunity_list)
-    public void itemClick(int position, View view) {
+    public void itemClick(View view) {
         BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterCommunity_Menu);
         bmb.boom();
-
-        showOptionsMenu(position);
     }
 
     private AdpCommunity adpCommunity;
@@ -100,7 +99,7 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         postalSort = false;
 
         List<PoCommunity> list = new ArrayList<>();
-        adpCommunity = new AdpCommunity(getActivity(), list);
+        adpCommunity = new AdpCommunity(getActivity(), list, this, this, this);
         presenterCommunity = new PresenterCommunityImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -172,8 +171,33 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     }
 
     @Override
+    public void deleteElement(PoCommunity community, int position) {
+        if (community != null) {
+            if (userCategory == PoUser.GROUP_ADMIN) {
+                showDeleteDialog(community, position);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
     public void deletedCommunity(PoCommunity item) {
         callback.deletedCommunity(item);
+    }
+
+    @Override
+    public void editElement(PoCommunity community) {
+        if (userCategory == PoUser.GROUP_ADMIN) {
+            callback.sendCommunity(community);
+        } else {
+            callSnack.sendSnack(getString(R.string.no_permission));
+        }
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -191,6 +215,14 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         List<PoCommunity> list = new ArrayList<>();
         loadingDialogHide();
         updateList(list);
+    }
+
+    @Override
+    public void selectCode(int position) {
+        PoCommunity com = adpCommunity.getItem(position);
+        if (com != null) {
+            callback.changeCode(com.getCode());
+        }
     }
 
     private void createMenu() {
@@ -301,36 +333,6 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void showOptionsMenu(int position) {
-        /*
-                        PoCommunity com = adpCommunity.getItem(position);
-                        if (com != null) {
-                            callback.changeCode(com.getCode());
-                        }
-        */
-        /*
-                        if (userCategory == PoUser.GROUP_ADMIN) {
-                            callback.sendCommunity(community);
-                            communityList.smoothCloseMenu();
-                        } else {
-                            callSnack.sendSnack(getString(R.string.no_permission));
-                        }
-                        break;
-         */
-        /*
-                        if (community != null) {
-                            if (userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(community, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        sendEmail();
-         */
     }
 
     private void sortFlats(boolean flatsSort) {

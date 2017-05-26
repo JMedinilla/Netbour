@@ -103,9 +103,6 @@ public class FrgLogin extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frg_login, container, false);
         ButterKnife.bind(this, view);
-
-        checkUser();
-
         return view;
     }
 

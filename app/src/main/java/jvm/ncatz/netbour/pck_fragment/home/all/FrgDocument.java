@@ -2,9 +2,11 @@ package jvm.ncatz.netbour.pck_fragment.home.all;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nightonke.boommenu.BoomMenuButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -35,6 +38,7 @@ import butterknife.OnItemClick;
 import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpDocument;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
@@ -42,7 +46,7 @@ import jvm.ncatz.netbour.pck_pojo.PoDocument;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterDocumentImpl;
 
-public class FrgDocument extends Fragment implements PresenterDocument.ViewList {
+public class FrgDocument extends Fragment implements PresenterDocument.ViewList, IAdapter, IAdapter.IDocument, IAdapter.IWeb {
 
     @BindView(R.id.fragListDocument_list)
     ListView documentList;
@@ -50,8 +54,9 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     TextView documentEmpty;
 
     @OnItemClick(R.id.fragListDocument_list)
-    public void itemClick(int position) {
-        showOptionsMenu(position);
+    public void itemClick(View view) {
+        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterDocument_Menu);
+        bmb.boom();
     }
 
     private AdpDocument adpDocument;
@@ -93,7 +98,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         titleSort = false;
 
         List<PoDocument> list = new ArrayList<>();
-        adpDocument = new AdpDocument(getActivity(), list);
+        adpDocument = new AdpDocument(getActivity(), list, this, this, this);
         presenterDocument = new PresenterDocumentImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -168,8 +173,43 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     }
 
     @Override
+    public void deleteElement(PoDocument document, int position) {
+        if (document != null) {
+            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                showDeleteDialog(document, position);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
     public void deletedDocument(PoDocument item) {
         callback.deletedDocument(item);
+    }
+
+    @Override
+    public void editElement(PoDocument document) {
+        if (document != null) {
+            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                callback.sendDocument(document);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
+    public void openLink(String link) {
+        if (!link.startsWith("http://") && !link.startsWith("https://"))
+            link = "http://" + link;
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        startActivity(browserIntent);
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -307,34 +347,6 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void showOptionsMenu(int position) {
-        /*
-        ver link
-         */
-        /*
-                        if (document != null) {
-                            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                callback.sendDocument(document);
-                                documentList.smoothCloseMenu();
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        if (document != null) {
-                            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(document, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        sendEmail();
-         */
     }
 
     private void sortTitle(boolean titleSort) {

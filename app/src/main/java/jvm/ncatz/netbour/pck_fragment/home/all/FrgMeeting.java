@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nightonke.boommenu.BoomMenuButton;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,7 @@ import butterknife.OnItemClick;
 import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpMeeting;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
@@ -32,7 +35,7 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterMeetingImpl;
 
-public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
+public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, IAdapter, IAdapter.IMeeting {
 
     @BindView(R.id.fragListMeeting_list)
     ListView meetingList;
@@ -40,8 +43,9 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     TextView meetingEmpty;
 
     @OnItemClick(R.id.fragListMeeting_list)
-    public void itemClick(int position) {
-        showOptionsMenu(position);
+    public void itemClick(View view) {
+        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterMeeting_Menu);
+        bmb.boom();
     }
 
     private AdpMeeting adpMeeting;
@@ -79,7 +83,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         loadingDialogCreate();
 
         List<PoMeeting> list = new ArrayList<>();
-        adpMeeting = new AdpMeeting(getActivity(), list);
+        adpMeeting = new AdpMeeting(getActivity(), list, this, this);
         presenterMeeting = new PresenterMeetingImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -134,8 +138,35 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     }
 
     @Override
+    public void deleteElement(PoMeeting meeting, int position) {
+        if (meeting != null) {
+            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                showDeleteDialog(meeting, position);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
     public void deletedMeeting(PoMeeting item) {
         callback.deletedMeeting(item);
+    }
+
+    @Override
+    public void editElement(PoMeeting meeting) {
+        if (meeting != null) {
+            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                callback.sendMeeting(meeting);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -215,31 +246,6 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void showOptionsMenu(int position) {
-        /*
-                        if (meeting != null) {
-                            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                callback.sendMeeting(meeting);
-                                meetingList.smoothCloseMenu();
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        if (meeting != null) {
-                            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(meeting, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        sendEmail();
-         */
     }
 
     private void updateList(List<PoMeeting> list) {

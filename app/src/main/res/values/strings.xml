@@ -195,4 +195,19 @@
     <string name="no_profile_message">Profile could not be found, please try again in a while</string>
     <string name="phone_abv">Tlf.</string>
     <string name="groupOptions_Menu">Main menu</string>
+    <string name="swipeMenuCode">Choose code</string>
+    <string name="swipeMenuCodeSub">Change the code to:</string>
+    <string name="com_instance">community</string>
+    <string name="doc_instance">document</string>
+    <string name="ent_instance">entry</string>
+    <string name="inc_instance">incidence</string>
+    <string name="mee_instance">meeting</string>
+    <string name="use_instance">user</string>
+    <string name="swipeMenuEditSub">Edit the information of this</string>
+    <string name="swipeMenuDeleteSub">Delete this</string>
+    <string name="swipeMenuReportSub">Report this to the admins</string>
+    <string name="swipeMenuZoom">Zoom</string>
+    <string name="swipeMenuZoomSub">Click this element to zoom the image</string>
+    <string name="swipeMenuCodeOpen">Click this element to open the document</string>
+    <string name="swipeMenuOpen">Open document</string>
 </resources>

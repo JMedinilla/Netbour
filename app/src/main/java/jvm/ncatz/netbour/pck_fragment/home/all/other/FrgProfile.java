@@ -17,6 +17,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +39,6 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterProfile;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
@@ -289,12 +290,22 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     }
 
     private void imageConfirmation(final Uri uri) {
+        boolean error = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        CircleImageView img = new CircleImageView(getActivity());
-        LinearLayout.LayoutParams params =
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        img.setLayoutParams(params);
-        img.setPadding(40, 60, 40, 20);
+
+        ImageView img = new ImageView(getActivity());
+        LinearLayout layout = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams layoutParamsL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layout.setLayoutParams(layoutParamsL);
+        layout.setGravity(Gravity.CENTER);
+        int w = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
+        int h = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(w, h);
+        img.setLayoutParams(layoutParams);
+        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        layout.setPadding(0, 20, 0, 0);
+        layout.addView(img);
+
         try {
             Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
 
@@ -307,6 +318,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
             img.invalidate();
         } catch (IOException e) {
             e.printStackTrace();
+            error = true;
             img.setImageResource(R.drawable.window_close);
             Toast.makeText(getActivity(), R.string.uri_to_bitmap, Toast.LENGTH_SHORT).show();
         }
@@ -322,8 +334,11 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         });
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
-        dialog.setView(img);
+        dialog.setView(layout);
         dialog.show();
+        if (error) {
+            dialog.dismiss();
+        }
     }
 
     private void loadingDialogCreate() {

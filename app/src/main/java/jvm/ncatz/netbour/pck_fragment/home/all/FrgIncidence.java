@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,11 +18,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nightonke.boommenu.BoomMenuButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -39,6 +40,7 @@ import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.ActivityZoom;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpIncidence;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
@@ -46,7 +48,7 @@ import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
 
-public class FrgIncidence extends Fragment implements PresenterIncidence.ViewList {
+public class FrgIncidence extends Fragment implements PresenterIncidence.ViewList, IAdapter, IAdapter.IIncidence, IAdapter.IZoom {
 
     @BindView(R.id.fragListIncidence_list)
     ListView incidenceList;
@@ -54,8 +56,9 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     TextView incidenceEmpty;
 
     @OnItemClick(R.id.fragListIncidence_list)
-    public void itemClick(int position, View view) {
-        showOptionsMenu(position, view);
+    public void itemClick(View view) {
+        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterIncidence_Menu);
+        bmb.boom();
     }
 
     private AdpIncidence adpIncidence;
@@ -101,7 +104,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         titleSort = false;
 
         List<PoIncidence> list = new ArrayList<>();
-        adpIncidence = new AdpIncidence(getActivity(), list);
+        adpIncidence = new AdpIncidence(getActivity(), list, this, this, this);
         presenterIncidence = new PresenterIncidenceImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -121,7 +124,8 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_incidence, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -174,8 +178,35 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     }
 
     @Override
+    public void deleteElement(PoIncidence incidence, int position) {
+        if (incidence != null) {
+            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                showDeleteDialog(incidence, position);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
     public void deletedIncidence(PoIncidence item) {
         callback.deletedIncidence(item);
+    }
+
+    @Override
+    public void editElement(PoIncidence incidence) {
+        if (incidence != null) {
+            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                callback.sendIncidence(incidence);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -193,6 +224,16 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         List<PoIncidence> list = new ArrayList<>();
         loadingDialogHide();
         updateList(list);
+    }
+
+    @Override
+    public void zoomImage(final int position) {
+        PoIncidence incidence = adpIncidence.getItem(position);
+        if (incidence != null) {
+            Intent intent = new Intent(getActivity(), ActivityZoom.class);
+            intent.putExtra("photoZoom", incidence.getPhoto());
+            startActivity(intent);
+        }
     }
 
     private void createMenu() {
@@ -280,6 +321,19 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         }
     }
 
+    private Bitmap resizeBitmap(Bitmap image) {
+        int w = image.getWidth();
+        int h = image.getHeight();
+        float scaleW = ((float) 500) / w;
+        float scaleH = ((float) 500) / h;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleW, scaleH);
+
+        Bitmap newBitmap = Bitmap.createBitmap(image, 0, 0, w, h, matrix, false);
+        image.recycle();
+        return newBitmap;
+    }
+
     private void sendEmail() {
         if (to != null) {
             if (to.length > 0) {
@@ -310,41 +364,6 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void showOptionsMenu(int position, View view) {
-        /*
-        PoIncidence incidence = adpIncidence.getItem(position);
-        if (incidence != null) {
-            ImageView imv = (ImageView) view.findViewById(R.id.adapterIncidence_imgPhoto);
-
-            Intent intent = new Intent(getActivity(), ActivityZoom.class);
-            intent.putExtra("photoZoom", ((BitmapDrawable) imv.getDrawable()).getBitmap());
-            startActivity(intent);
-        }
-         */
-        /*
-                        if (incidence != null) {
-                            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                callback.sendIncidence(incidence);
-                                incidenceList.smoothCloseMenu();
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        if (incidence != null) {
-                            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(incidence, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-         */
-        /*
-                        sendEmail();
-         */
     }
 
     private void sortAuthor(boolean authorSort) {

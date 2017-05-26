@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,11 +16,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nightonke.boommenu.BoomMenuButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -39,12 +38,13 @@ import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.ActivityZoom;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpUser;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterUserImpl;
 
-public class FrgUser extends Fragment implements PresenterUser.ViewList {
+public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapter, IAdapter.IUser, IAdapter.IZoom {
 
     @BindView(R.id.fragListUsers_list)
     ListView userList;
@@ -52,8 +52,9 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     TextView userEmpty;
 
     @OnItemClick(R.id.fragListUsers_list)
-    public void itemClick(int position, View view) {
-        showOptionsMenu(position, view);
+    public void itemClick(View view) {
+        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterUsers_Menu);
+        bmb.boom();
     }
 
     private AdpUser adpUser;
@@ -96,7 +97,7 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         phoneSort = false;
 
         List<PoUser> list = new ArrayList<>();
-        adpUser = new AdpUser(getActivity(), list);
+        adpUser = new AdpUser(getActivity(), list, this, this, this);
         presenterUser = new PresenterUserImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -115,7 +116,8 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_user, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -166,8 +168,33 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     }
 
     @Override
+    public void deleteElement(PoUser user, int position) {
+        if (userCategory == PoUser.GROUP_ADMIN) {
+            if (user != null) {
+                showDeleteDialog(user, position);
+            }
+        } else {
+            callSnack.sendSnack(getString(R.string.no_permission));
+        }
+    }
+
+    @Override
     public void deletedUser(PoUser item) {
         callback.deletedUser(item);
+    }
+
+    @Override
+    public void editElement(PoUser user) {
+        if (userCategory == PoUser.GROUP_ADMIN) {
+            callback.sendUser(user);
+        } else {
+            callSnack.sendSnack(getString(R.string.no_permission));
+        }
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -185,6 +212,16 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         List<PoUser> list = new ArrayList<>();
         loadingDialogHide();
         updateList(list);
+    }
+
+    @Override
+    public void zoomImage(int position) {
+        PoUser user = adpUser.getItem(position);
+        if (user != null) {
+            Intent intent = new Intent(getActivity(), ActivityZoom.class);
+            intent.putExtra("photoZoom", user.getPhoto());
+            startActivity(intent);
+        }
     }
 
     private void createMenu() {
@@ -321,39 +358,6 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void showOptionsMenu(int position, View view) {
-        /*
-        PoUser us = adpUser.getItem(position);
-        if (us != null) {
-            ImageView imv = (ImageView) view.findViewById(R.id.adapterUsers_imgPhoto);
-
-            Intent intent = new Intent(getActivity(), ActivityZoom.class);
-            intent.putExtra("photoZoom", ((BitmapDrawable) imv.getDrawable()).getBitmap());
-            startActivity(intent);
-        }
-         */
-        /*
-                        if (userCategory == PoUser.GROUP_ADMIN) {
-                            callback.sendUser(user);
-                            userList.smoothCloseMenu();
-                        } else {
-                            callSnack.sendSnack(getString(R.string.no_permission));
-                        }
-         */
-        /*
-                        if (userCategory == PoUser.GROUP_ADMIN) {
-                            if (user != null) {
-                                showDeleteDialog(user, position);
-                            }
-                        } else {
-                            callSnack.sendSnack(getString(R.string.no_permission));
-                        }
-         */
-        /*
-                        sendEmail();
-         */
     }
 
     private void sortCategory(boolean categorySort) {

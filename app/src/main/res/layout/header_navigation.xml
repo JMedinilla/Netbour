@@ -17,10 +17,10 @@
     <me.grantland.widget.AutofitTextView
         android:id="@+id/header_txtName"
         android:layout_width="340dp"
-        android:layout_height="26dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:maxLines="1"
         android:textColor="#FFFFFF"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 </FrameLayout>
