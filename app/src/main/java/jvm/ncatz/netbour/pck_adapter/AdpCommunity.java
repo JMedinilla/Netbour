@@ -99,7 +99,7 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
             holder.boomMenuButton.setButtonPlaceAlignmentEnum(ButtonPlaceAlignmentEnum.Center);
 
             HamButton.Builder builderCode = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
-                    .normalImageRes(R.drawable.ic_home_modern_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                    .normalImageRes(R.drawable.home_modern_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                     .normalColorRes(R.color.blue_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
                     .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuCode).subNormalText(context.getString(R.string.swipeMenuCodeSub) + " " + community.getCode())
                     .listener(new OnBMClickListener() {
@@ -109,7 +109,7 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
                         }
                     });
             HamButton.Builder builderEdit = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
-                    .normalImageRes(R.drawable.ic_tooltip_edit_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                    .normalImageRes(R.drawable.tooltip_edit_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                     .normalColorRes(R.color.green_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
                     .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuEdit).subNormalText(context.getString(R.string.swipeMenuEditSub) + " " + instance)
                     .listener(new OnBMClickListener() {
@@ -119,7 +119,7 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
                         }
                     });
             HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
-                    .normalImageRes(R.drawable.ic_delete_empty_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                    .normalImageRes(R.drawable.delete_empty_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                     .normalColorRes(R.color.red_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
                     .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuDelete).subNormalText(context.getString(R.string.swipeMenuDeleteSub) + " " + instance)
                     .listener(new OnBMClickListener() {
@@ -129,7 +129,7 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
                         }
                     });
             HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
-                    .normalImageRes(R.drawable.ic_alert_decagram_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                    .normalImageRes(R.drawable.alert_decagram_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                     .normalColorRes(R.color.purple_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
                     .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuReport).subNormalText(context.getString(R.string.swipeMenuReportSub))
                     .listener(new OnBMClickListener() {

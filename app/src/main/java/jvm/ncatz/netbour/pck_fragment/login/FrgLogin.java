@@ -37,7 +37,7 @@ public class FrgLogin extends Fragment {
 
     @BindView(R.id.fragFormLoginEmail)
     EditText fragFormLoginEmail;
-    @BindView(R.id.fragFormLoginPin)
+    @BindView(R.id.fragFormLoginPassword)
     EditText fragFormLoginPin;
     @BindView(R.id.fragFormLoginSave)
     FButton fragFormLoginSave;

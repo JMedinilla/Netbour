@@ -10,7 +10,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="26dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/default_image"
         app:civ_border_color="#FFFFFF"
         app:civ_border_width="1dp" />
 

@@ -59,7 +59,7 @@ public class FrgHome extends Fragment {
         homeBoomMenu.setButtonPlaceEnum(ButtonPlaceEnum.SC_7_4);
 
         TextOutsideCircleButton.Builder builderIncidences = new TextOutsideCircleButton.Builder()
-                .normalImageRes(R.drawable.ic_tooltip_image_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalImageRes(R.drawable.tooltip_image_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                 .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
                 .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Incidences)
                 .listener(new OnBMClickListener() {
@@ -69,7 +69,7 @@ public class FrgHome extends Fragment {
                     }
                 });
         TextOutsideCircleButton.Builder builderBoard = new TextOutsideCircleButton.Builder()
-                .normalImageRes(R.drawable.ic_clipboard_alert_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalImageRes(R.drawable.clipboard_alert_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                 .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
                 .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Board)
                 .listener(new OnBMClickListener() {
@@ -79,7 +79,7 @@ public class FrgHome extends Fragment {
                     }
                 });
         TextOutsideCircleButton.Builder builderComBoard = new TextOutsideCircleButton.Builder()
-                .normalImageRes(R.drawable.ic_clipboard_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalImageRes(R.drawable.clipboard_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                 .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
                 .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_ComBoard)
                 .listener(new OnBMClickListener() {
@@ -89,7 +89,7 @@ public class FrgHome extends Fragment {
                     }
                 });
         TextOutsideCircleButton.Builder builderDocuments = new TextOutsideCircleButton.Builder()
-                .normalImageRes(R.drawable.ic_file_document_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalImageRes(R.drawable.file_document_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                 .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
                 .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Documents)
                 .listener(new OnBMClickListener() {
@@ -99,7 +99,7 @@ public class FrgHome extends Fragment {
                     }
                 });
         TextOutsideCircleButton.Builder builderMeetings = new TextOutsideCircleButton.Builder()
-                .normalImageRes(R.drawable.ic_timetable_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalImageRes(R.drawable.timetable_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                 .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
                 .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Meetings)
                 .listener(new OnBMClickListener() {
@@ -109,7 +109,7 @@ public class FrgHome extends Fragment {
                     }
                 });
         TextOutsideCircleButton.Builder builderUsers = new TextOutsideCircleButton.Builder()
-                .normalImageRes(R.drawable.ic_account_multiple_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalImageRes(R.drawable.account_multiple_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                 .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
                 .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Users)
                 .listener(new OnBMClickListener() {
@@ -119,7 +119,7 @@ public class FrgHome extends Fragment {
                     }
                 });
         TextOutsideCircleButton.Builder builderCommunities = new TextOutsideCircleButton.Builder()
-                .normalImageRes(R.drawable.ic_home_modern_white_48dp).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
+                .normalImageRes(R.drawable.home_modern_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
                 .normalColorRes(R.color.colorPrimary).highlightedColorRes(R.color.colorPrimaryDark).isRound(false).textSize(12).rotateText(true)
                 .normalTextColorRes(R.color.white).highlightedTextColorRes(R.color.white).normalTextRes(R.string.groupOptions_Communities)
                 .listener(new OnBMClickListener() {

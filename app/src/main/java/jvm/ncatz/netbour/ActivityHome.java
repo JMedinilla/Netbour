@@ -683,7 +683,7 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_white);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -711,7 +711,7 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
     private void showCommunities() {
         if (fragment_opened != FRAGMENT_LIST_COMMUNITY) {
             actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+            actionButton.setImageResource(R.drawable.plus);
 
             Bundle bundle = new Bundle();
             bundle.putInt("userCategory", actual_category);
@@ -736,7 +736,7 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
             if (fragment_opened != FRAGMENT_LIST_DOCUMENT) {
                 if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
                     actionButton.setVisibility(View.VISIBLE);
-                    actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                    actionButton.setImageResource(R.drawable.plus);
                 } else {
                     actionButton.setVisibility(View.INVISIBLE);
                 }
@@ -769,7 +769,7 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
             if (fragment_opened != FRAGMENT_LIST_ENTRYF) {
                 if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
                     actionButton.setVisibility(View.VISIBLE);
-                    actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                    actionButton.setImageResource(R.drawable.plus);
                 } else {
                     actionButton.setVisibility(View.INVISIBLE);
                 }
@@ -802,7 +802,7 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
         if (!"".equals(actual_code)) {
             if (fragment_opened != FRAGMENT_LIST_ENTRYS) {
                 actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                actionButton.setImageResource(R.drawable.plus);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);
@@ -848,7 +848,7 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
         if (!"".equals(actual_code)) {
             if (fragment_opened != FRAGMENT_LIST_INCIDENCE) {
                 actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                actionButton.setImageResource(R.drawable.plus);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);
@@ -900,7 +900,7 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
         if (!"".equals(actual_code)) {
             if (fragment_opened != FRAGMENT_LIST_MEETING) {
                 actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                actionButton.setImageResource(R.drawable.plus);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);

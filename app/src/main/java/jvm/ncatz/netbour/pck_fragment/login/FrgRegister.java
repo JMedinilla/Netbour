@@ -38,7 +38,7 @@ public class FrgRegister extends Fragment {
     EditText fragFormRegisterFloor;
     @BindView(R.id.fragFormRegisterDoor)
     EditText fragFormRegisterDoor;
-    @BindView(R.id.fragFormRegisterPin)
+    @BindView(R.id.fragFormRegisterPassword)
     EditText fragFormRegisterPin;
     @BindView(R.id.fragFormRegisterSave)
     FButton fragFormRegisterSave;
