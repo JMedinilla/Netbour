@@ -42,7 +42,8 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                         false, category,
                         currentTime, currentTime,
                         email, name,
-                        fragFormEntryDescription.getText().toString(), fragFormEntryTitle.getText().toString()
+                        fragFormEntryDescription.getText().toString().replaceAll("\\s+", " ").trim(),
+                        fragFormEntryTitle.getText().toString().replaceAll("\\s+", " ").trim()
                 );
                 presenterEntry.validateEntry(entry);
                 break;

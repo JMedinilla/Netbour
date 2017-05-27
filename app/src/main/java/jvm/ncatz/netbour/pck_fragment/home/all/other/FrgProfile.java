@@ -68,10 +68,10 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnSave:
-                String name = frgProfileName.getText().toString();
-                String phone = frgProfilePhone.getText().toString();
-                String floor = frgProfileFloor.getText().toString();
-                String door = frgProfileDoor.getText().toString();
+                String name = frgProfileName.getText().toString().replaceAll("\\s+", " ").trim();
+                String phone = frgProfilePhone.getText().toString().replaceAll("\\s+", " ").trim();
+                String floor = frgProfileFloor.getText().toString().replaceAll("\\s+", " ").trim();
+                String door = frgProfileDoor.getText().toString().replaceAll("\\s+", " ").trim();
                 presenterProfile.validateValues(name, phone, floor, door);
                 break;
         }

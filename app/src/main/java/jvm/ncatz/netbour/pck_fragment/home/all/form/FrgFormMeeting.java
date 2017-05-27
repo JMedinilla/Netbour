@@ -48,8 +48,8 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
             case R.id.fragFormMeetingSave:
                 PoMeeting meeting = new PoMeeting(
                         false, System.currentTimeMillis(),
-                        email, fragFormMeetingDate.getText().toString(),
-                        fragFormMeetingDescription.getText().toString()
+                        email, fragFormMeetingDate.getText().toString().replaceAll("\\s+", " ").trim(),
+                        fragFormMeetingDescription.getText().toString().replaceAll("\\s+", " ").trim()
                 );
                 presenterMeeting.validateMeeting(meeting);
                 break;

@@ -39,8 +39,9 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
     public void onViewClicked() {
         PoDocument document = new PoDocument(
                 false, System.currentTimeMillis(),
-                email, fragFormDocumentDescription.getText().toString(),
-                fragFormDocumentLink.getText().toString(), fragFormDocumentTitle.getText().toString()
+                email, fragFormDocumentDescription.getText().toString().trim(),
+                fragFormDocumentLink.getText().toString().replaceAll("\\s+", " ").trim(),
+                fragFormDocumentTitle.getText().toString().replaceAll("\\s+", " ").trim()
         );
         presenterDocument.validateDocument(document);
     }

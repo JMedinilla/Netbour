@@ -51,9 +51,12 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
         }
         PoCommunity community = new PoCommunity(
                 false, flats,
-                fragFormCommunityCode.getText().toString(), fragFormCommunityMunicipality.getText().toString(),
-                fragFormCommunityNumber.getText().toString(), fragFormCommunityPostal.getText().toString(),
-                fragFormCommunityProvince.getText().toString(), fragFormCommunityStreet.getText().toString()
+                fragFormCommunityCode.getText().toString().replaceAll("\\s+", " ").trim(),
+                fragFormCommunityMunicipality.getText().toString().replaceAll("\\s+", " ").trim(),
+                fragFormCommunityNumber.getText().toString().replaceAll("\\s+", " ").trim(),
+                fragFormCommunityPostal.getText().toString().replaceAll("\\s+", " ").trim(),
+                fragFormCommunityProvince.getText().toString().replaceAll("\\s+", " ").trim(),
+                fragFormCommunityStreet.getText().toString().replaceAll("\\s+", " ").trim()
         );
         presenterCommunity.validateCommunity(community);
     }

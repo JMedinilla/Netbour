@@ -66,13 +66,13 @@ public class ActivityAbout extends MaterialAboutActivity {
         IconicsDrawable iconAppVersion = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_info_outline).color(Color.BLACK).sizeDp(20);
         IconicsDrawable iconAppRepository = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_box).color(Color.BLACK).sizeDp(20);
         IconicsDrawable iconAppLicenses = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_file).color(Color.BLACK).sizeDp(20);
-        IconicsDrawable iconAuthorEmail = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_email).color(Color.RED).sizeDp(20);
-        IconicsDrawable iconAuthorWeb = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_view_web).color(Color.RED).sizeDp(20);
-        IconicsDrawable iconSocialGithub = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_alt).color(Color.BLUE).sizeDp(20);
-        IconicsDrawable iconSocialLinkedin = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_linkedin).color(Color.BLUE).sizeDp(20);
-        IconicsDrawable iconSocialStack = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_stackoverflow).color(Color.BLUE).sizeDp(20);
-        IconicsDrawable iconSocialTwitter = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_twitter).color(Color.BLUE).sizeDp(20);
-        IconicsDrawable iconOtherBugs = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_bug).color(Color.GRAY).sizeDp(20);
+        IconicsDrawable iconAuthorEmail = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_email).color(Color.BLACK).sizeDp(20);
+        IconicsDrawable iconAuthorWeb = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_view_web).color(Color.BLACK).sizeDp(20);
+        IconicsDrawable iconSocialGithub = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_alt).color(Color.BLACK).sizeDp(20);
+        IconicsDrawable iconSocialLinkedin = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_linkedin).color(Color.BLACK).sizeDp(20);
+        IconicsDrawable iconSocialStack = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_stackoverflow).color(Color.BLACK).sizeDp(20);
+        IconicsDrawable iconSocialTwitter = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_twitter).color(Color.BLACK).sizeDp(20);
+        IconicsDrawable iconOtherBugs = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_bug).color(Color.BLACK).sizeDp(20);
 
         MaterialAboutTitleItem itemAppName = new MaterialAboutTitleItem(getString(R.string.app_name), ContextCompat.getDrawable(this, R.drawable.logo160));
         MaterialAboutActionItem itemAppVersion = new MaterialAboutActionItem(

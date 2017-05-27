@@ -64,8 +64,8 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 PoIncidence incidence = new PoIncidence(
                         false, currentTime,
                         currentTime, email,
-                        name, fragFormIncidenceDescription.getText().toString(),
-                        "", fragFormIncidenceTitle.getText().toString()
+                        name, fragFormIncidenceDescription.getText().toString().replaceAll("\\s+", " ").trim(),
+                        "", fragFormIncidenceTitle.getText().toString().replaceAll("\\s+", " ").trim()
                 );
                 presenterIncidence.validateIncidence(incidence);
                 break;
