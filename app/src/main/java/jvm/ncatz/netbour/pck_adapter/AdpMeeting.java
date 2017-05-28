@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceAlignmentEnum;
@@ -36,6 +38,8 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
     private Context context;
 
     static class ViewHolder {
+        @BindView(R.id.adapterMeeting_imgPhoto)
+        ImageView adapterMeetingImgPhoto;
         @BindView(R.id.adapterMeeting_txtDate)
         TextView adapterMeetingTxtDate;
         @BindView(R.id.adapterMeeting_txtDescription)
@@ -47,6 +51,8 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
             ButterKnife.bind(this, view);
         }
     }
+
+    private ViewHolder holder;
 
     public AdpMeeting(@NonNull Context context, List<PoMeeting> list, IAdapter callAdapter, IAdapter.IMeeting callMeeting) {
         super(context, R.layout.adapter_meeting, list);
@@ -65,7 +71,6 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -73,10 +78,12 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }
-        PoMeeting meeting = getItem(position);
+        final PoMeeting meeting = getItem(position);
         if (meeting != null) {
             holder.adapterMeetingTxtDate.setText(meeting.getDate());
             holder.adapterMeetingTxtDescription.setText(meeting.getDescription());
+            holder.adapterMeetingTxtDescription.setMaxLines(2);
+            holder.adapterMeetingTxtDescription.setEllipsize(TextUtils.TruncateAt.END);
             holder.boomMenuButton.clearBuilders();
             holder.boomMenuButton.setNormalColor(R.color.colorPrimary);
             holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
@@ -117,6 +124,13 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
             holder.boomMenuButton.addBuilder(builderEdit);
             holder.boomMenuButton.addBuilder(builderDelete);
             holder.boomMenuButton.addBuilder(builderReport);
+
+            holder.adapterMeetingImgPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.boomMenuButton.boom();
+                }
+            });
         }
         return convertView;
     }

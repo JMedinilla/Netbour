@@ -95,9 +95,6 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
         } else if (document.getLink().length() < 15) {
             error = true;
             viewForm.validationResponse(document, ERROR_LINK_SHORT);
-        } else if (document.getLink().length() > 255) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_LINK_LONG);
         }
         if (TextUtils.equals("", document.getDescription())) {
             error = true;

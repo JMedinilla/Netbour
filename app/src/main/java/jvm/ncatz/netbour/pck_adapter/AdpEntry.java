@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,8 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
         }
     }
 
+    private ViewHolder holder;
+
     public AdpEntry(@NonNull Context context, List<PoEntry> list, IAdapter callAdapter, IAdapter.IEntry callEntry) {
         super(context, R.layout.adapter_entry, list);
         this.context = context;
@@ -74,7 +77,6 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -82,7 +84,7 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }
-        PoEntry entry = getItem(position);
+        final PoEntry entry = getItem(position);
         if (entry != null) {
             Date date = new Date(entry.getDate());
             Calendar calendar = Calendar.getInstance();
@@ -94,6 +96,8 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
 
             holder.adapterEntryTxtTitle.setText(entry.getTitle());
             holder.adapterEntryTxtContent.setText(entry.getContent());
+            holder.adapterEntryTxtContent.setMaxLines(2);
+            holder.adapterEntryTxtContent.setEllipsize(TextUtils.TruncateAt.END);
             holder.adapterEntryTxtAuthor.setText(entry.getAuthorName());
             holder.adapterEntryTxtDate.setText(day + "/" + month + "/" + year);
             if (entry.getCategory() == PoEntry.CATEGORY_FIRST) {
@@ -141,6 +145,13 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
             holder.boomMenuButton.addBuilder(builderEdit);
             holder.boomMenuButton.addBuilder(builderDelete);
             holder.boomMenuButton.addBuilder(builderReport);
+
+            holder.adapterEntryImgPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.boomMenuButton.boom();
+                }
+            });
         }
         return convertView;
     }

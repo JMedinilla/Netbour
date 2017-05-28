@@ -2,7 +2,6 @@ package jvm.ncatz.netbour;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,10 +14,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.PhotoView;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +38,7 @@ public class ActivityZoom extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             String url = intent.getStringExtra("photoZoom");
-            Glide.with(this).load(url).asBitmap().centerCrop().listener(new RequestListener<String, Bitmap>() {
+            Glide.with(this).load(url).asBitmap().listener(new RequestListener<String, Bitmap>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
                     loadingDialogHide();

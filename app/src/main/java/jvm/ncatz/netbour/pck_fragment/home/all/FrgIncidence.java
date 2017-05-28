@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +21,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nightonke.boommenu.BoomMenuButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -56,9 +54,18 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     TextView incidenceEmpty;
 
     @OnItemClick(R.id.fragListIncidence_list)
-    public void itemClick(View view) {
-        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterIncidence_Menu);
-        bmb.boom();
+    public void itemClick(View view, int position) {
+        TextView txv = (TextView) view.findViewById(R.id.adapterEntry_txtContent);
+        PoIncidence incidence = adpIncidence.getItem(position);
+
+        if (txv != null && incidence != null) {
+            String txt = txv.getText().toString();
+            if (txv.getMaxLines() == 2) {
+                openText(txv, txt);
+            } else {
+                closeText(txv);
+            }
+        }
     }
 
     private AdpIncidence adpIncidence;
@@ -236,6 +243,11 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         }
     }
 
+    private void closeText(TextView txv) {
+        txv.setMaxLines(2);
+        txv.setEllipsize(TextUtils.TruncateAt.END);
+    }
+
     private void createMenu() {
         int actionBarHeight;
         TypedArray styledAttributes = getContext().getTheme().obtainStyledAttributes(
@@ -321,17 +333,10 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         }
     }
 
-    private Bitmap resizeBitmap(Bitmap image) {
-        int w = image.getWidth();
-        int h = image.getHeight();
-        float scaleW = ((float) 500) / w;
-        float scaleH = ((float) 500) / h;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleW, scaleH);
-
-        Bitmap newBitmap = Bitmap.createBitmap(image, 0, 0, w, h, matrix, false);
-        image.recycle();
-        return newBitmap;
+    private void openText(TextView txv, String txt) {
+        txv.setMaxLines(10);
+        txv.setEllipsize(null);
+        txv.setText(txt);
     }
 
     private void sendEmail() {

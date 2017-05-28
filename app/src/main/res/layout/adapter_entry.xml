@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/adapterEntry_imgPhoto"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="0dp"
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="0dp"
@@ -32,23 +32,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/view_background"
+            android:gravity="center"
             android:textColor="@color/grey_900"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/adapterEntry_imgPhoto"
-            app:layout_constraintRight_toLeftOf="@+id/adapterEntry_txtDate"
-            app:layout_constraintTop_toTopOf="@+id/adapterEntry_imgPhoto" />
-
-        <TextView
-            android:id="@+id/adapterEntry_txtDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="0dp"
-            android:textColor="@color/grey_500"
             app:layout_constraintRight_toLeftOf="@+id/adapterEntry_Menu"
             app:layout_constraintTop_toTopOf="@+id/adapterEntry_imgPhoto" />
 
@@ -56,9 +46,7 @@
             android:id="@+id/adapterEntry_txtContent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:textColor="@color/grey_700"
@@ -66,23 +54,44 @@
             app:layout_constraintRight_toLeftOf="@+id/adapterEntry_Menu"
             app:layout_constraintTop_toBottomOf="@+id/adapterEntry_txtTitle" />
 
-        <TextView
-            android:id="@+id/adapterEntry_txtAuthor"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/grey_500"
-            app:layout_constraintBottom_toBottomOf="@+id/adapterEntry_imgPhoto"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/adapterEntry_txtContent"
-            app:layout_goneMarginTop="8dp" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintLeft_toLeftOf="@+id/adapterEntry_txtContent"
+            app:layout_constraintRight_toRightOf="@+id/adapterEntry_txtContent"
+            app:layout_constraintTop_toBottomOf="@+id/adapterEntry_txtContent">
+
+            <TextView
+                android:id="@+id/adapterEntry_txtDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textColor="@color/grey_500"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/adapterEntry_txtAuthor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:textColor="@color/grey_500"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <com.nightonke.boommenu.BoomMenuButton
             android:id="@+id/adapterEntry_Menu"
-            android:layout_width="wrap_content"
+            android:layout_width="36dp"
             android:layout_height="wrap_content"
             app:bmb_inList="true"
             app:layout_constraintBottom_toBottomOf="parent"

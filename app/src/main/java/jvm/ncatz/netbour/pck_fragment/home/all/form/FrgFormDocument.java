@@ -138,9 +138,6 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
             case PresenterDocument.ERROR_LINK_SHORT:
                 fragFormDocumentLink.setError(getString(R.string.ERROR_SHORT_15));
                 break;
-            case PresenterDocument.ERROR_LINK_LONG:
-                fragFormDocumentLink.setError(getString(R.string.ERROR_LONG_255));
-                break;
             case PresenterDocument.ERROR_DESCRIPTION_EMPTY:
                 fragFormDocumentDescription.setError(getString(R.string.ERROR_EMPTY));
                 break;

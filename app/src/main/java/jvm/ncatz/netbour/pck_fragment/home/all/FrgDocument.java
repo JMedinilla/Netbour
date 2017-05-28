@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nightonke.boommenu.BoomMenuButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -54,9 +54,18 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
     TextView documentEmpty;
 
     @OnItemClick(R.id.fragListDocument_list)
-    public void itemClick(View view) {
-        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterDocument_Menu);
-        bmb.boom();
+    public void itemClick(View view, int position) {
+        TextView txv = (TextView) view.findViewById(R.id.adapterEntry_txtContent);
+        PoDocument document = adpDocument.getItem(position);
+
+        if (txv != null && document != null) {
+            String txt = txv.getText().toString();
+            if (txv.getMaxLines() == 2) {
+                openText(txv, txt);
+            } else {
+                closeText(txv);
+            }
+        }
     }
 
     private AdpDocument adpDocument;
@@ -229,6 +238,11 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
         updateList(list);
     }
 
+    private void closeText(TextView txv) {
+        txv.setMaxLines(2);
+        txv.setEllipsize(TextUtils.TruncateAt.END);
+    }
+
     private void createMenu() {
         int actionBarHeight;
         TypedArray styledAttributes = getContext().getTheme().obtainStyledAttributes(
@@ -305,6 +319,12 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
         if (loading != null) {
             loading.show();
         }
+    }
+
+    private void openText(TextView txv, String txt) {
+        txv.setMaxLines(10);
+        txv.setEllipsize(null);
+        txv.setText(txt);
     }
 
     private void resetSort() {

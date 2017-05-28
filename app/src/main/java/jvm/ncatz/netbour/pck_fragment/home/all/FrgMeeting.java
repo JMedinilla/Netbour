@@ -8,14 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.nightonke.boommenu.BoomMenuButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,9 +42,18 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
     TextView meetingEmpty;
 
     @OnItemClick(R.id.fragListMeeting_list)
-    public void itemClick(View view) {
-        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterMeeting_Menu);
-        bmb.boom();
+    public void itemClick(View view, int position) {
+        TextView txv = (TextView) view.findViewById(R.id.adapterEntry_txtContent);
+        PoMeeting meeting = adpMeeting.getItem(position);
+
+        if (txv != null && meeting != null) {
+            String txt = txv.getText().toString();
+            if (txv.getMaxLines() == 2) {
+                openText(txv, txt);
+            } else {
+                closeText(txv);
+            }
+        }
     }
 
     private AdpMeeting adpMeeting;
@@ -186,6 +194,11 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
         updateList(list);
     }
 
+    private void closeText(TextView txv) {
+        txv.setMaxLines(2);
+        txv.setEllipsize(TextUtils.TruncateAt.END);
+    }
+
     private void deleteResponse(int position) {
         presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
     }
@@ -214,6 +227,12 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
         if (loading != null) {
             loading.show();
         }
+    }
+
+    private void openText(TextView txv, String txt) {
+        txv.setMaxLines(10);
+        txv.setEllipsize(null);
+        txv.setText(txt);
     }
 
     private void sendEmail() {

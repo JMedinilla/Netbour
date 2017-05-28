@@ -85,7 +85,7 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
         }
         PoCommunity community = getItem(position);
         if (community != null) {
-            holder.adapterCommunityTxtMunicipality.setText(community.getMunicipality());
+            holder.adapterCommunityTxtMunicipality.setText(community.getMunicipality() + ",");
             holder.adapterCommunityTxtProvince.setText(community.getProvince());
             holder.adapterCommunityTxtPostal.setText(community.getPostal());
             holder.adapterCommunityTxtStreet.setText(community.getStreet());

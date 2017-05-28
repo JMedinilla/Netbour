@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceAlignmentEnum;
@@ -37,6 +39,8 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
     private Context context;
 
     static class ViewHolder {
+        @BindView(R.id.adapterDocument_imgPhoto)
+        ImageView adapterDocumentImgPhoto;
         @BindView(R.id.adapterDocument_txtTitle)
         TextView adapterDocumentTxtTitle;
         @BindView(R.id.adapterDocument_txtDescription)
@@ -48,6 +52,8 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
             ButterKnife.bind(this, view);
         }
     }
+
+    private ViewHolder holder;
 
     public AdpDocument(@NonNull Context context, List<PoDocument> list, IAdapter callAdapter, IAdapter.IDocument callDocument, IAdapter.IWeb callWeb) {
         super(context, R.layout.adapter_document, list);
@@ -67,7 +73,6 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -79,6 +84,8 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
         if (document != null) {
             holder.adapterDocumentTxtTitle.setText(document.getTitle());
             holder.adapterDocumentTxtDescription.setText(document.getDescription());
+            holder.adapterDocumentTxtDescription.setMaxLines(2);
+            holder.adapterDocumentTxtDescription.setEllipsize(TextUtils.TruncateAt.END);
             holder.boomMenuButton.clearBuilders();
             holder.boomMenuButton.setNormalColor(R.color.colorPrimary);
             holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
@@ -130,6 +137,13 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
             holder.boomMenuButton.addBuilder(builderEdit);
             holder.boomMenuButton.addBuilder(builderDelete);
             holder.boomMenuButton.addBuilder(builderReport);
+
+            holder.adapterDocumentImgPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.boomMenuButton.boom();
+                }
+            });
         }
         return convertView;
     }

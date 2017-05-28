@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,6 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
         TextView adapterIncidenceTxtDate;
         @BindView(R.id.adapterIncidence_txtDescription)
         TextView adapterIncidenceTxtDescription;
-        @BindView(R.id.adapterIncidence_txtAuthor)
-        TextView adapterIncidenceTxtAuthor;
         @BindView(R.id.adapterIncidence_Menu)
         BoomMenuButton boomMenuButton;
 
@@ -92,7 +91,7 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }
-        PoIncidence incidence = getItem(position);
+        final PoIncidence incidence = getItem(position);
         if (incidence != null) {
             Glide.with(context).load(incidence.getPhoto()).asBitmap().error(R.drawable.glide_error)
                     .listener(new RequestListener<String, Bitmap>() {
@@ -120,7 +119,8 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             holder.adapterIncidenceTxtTitle.setText(incidence.getTitle());
             holder.adapterIncidenceTxtDate.setText(day + "/" + month + "/" + year);
             holder.adapterIncidenceTxtDescription.setText(incidence.getDescription());
-            holder.adapterIncidenceTxtAuthor.setText(incidence.getAuthorName());
+            holder.adapterIncidenceTxtDescription.setMaxLines(2);
+            holder.adapterIncidenceTxtDescription.setEllipsize(TextUtils.TruncateAt.END);
             holder.boomMenuButton.clearBuilders();
             holder.boomMenuButton.setNormalColor(R.color.colorPrimary);
             holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
@@ -172,6 +172,13 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             holder.boomMenuButton.addBuilder(builderEdit);
             holder.boomMenuButton.addBuilder(builderDelete);
             holder.boomMenuButton.addBuilder(builderReport);
+
+            holder.adapterIncidenceImgPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.boomMenuButton.boom();
+                }
+            });
         }
         return convertView;
     }
