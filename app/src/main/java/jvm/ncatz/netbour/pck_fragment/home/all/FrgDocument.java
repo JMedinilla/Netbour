@@ -55,7 +55,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
 
     @OnItemClick(R.id.fragListDocument_list)
     public void itemClick(View view, int position) {
-        TextView txv = (TextView) view.findViewById(R.id.adapterEntry_txtContent);
+        TextView txv = (TextView) view.findViewById(R.id.adapterDocument_txtDescription);
         PoDocument document = adpDocument.getItem(position);
 
         if (txv != null && document != null) {

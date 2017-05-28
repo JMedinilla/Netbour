@@ -55,7 +55,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
 
     @OnItemClick(R.id.fragListIncidence_list)
     public void itemClick(View view, int position) {
-        TextView txv = (TextView) view.findViewById(R.id.adapterEntry_txtContent);
+        TextView txv = (TextView) view.findViewById(R.id.adapterIncidence_txtDescription);
         PoIncidence incidence = adpIncidence.getItem(position);
 
         if (txv != null && incidence != null) {

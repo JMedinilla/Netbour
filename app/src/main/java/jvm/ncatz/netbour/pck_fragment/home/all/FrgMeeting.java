@@ -43,7 +43,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
 
     @OnItemClick(R.id.fragListMeeting_list)
     public void itemClick(View view, int position) {
-        TextView txv = (TextView) view.findViewById(R.id.adapterEntry_txtContent);
+        TextView txv = (TextView) view.findViewById(R.id.adapterMeeting_txtDescription);
         PoMeeting meeting = adpMeeting.getItem(position);
 
         if (txv != null && meeting != null) {
