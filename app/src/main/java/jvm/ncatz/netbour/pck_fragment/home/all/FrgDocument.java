@@ -322,7 +322,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
     }
 
     private void openText(TextView txv, String txt) {
-        txv.setMaxLines(10);
+        txv.setMaxLines(Integer.MAX_VALUE);
         txv.setEllipsize(null);
         txv.setText(txt);
     }

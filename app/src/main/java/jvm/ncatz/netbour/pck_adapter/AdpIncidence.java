@@ -172,13 +172,6 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             holder.boomMenuButton.addBuilder(builderEdit);
             holder.boomMenuButton.addBuilder(builderDelete);
             holder.boomMenuButton.addBuilder(builderReport);
-
-            holder.adapterIncidenceImgPhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.boomMenuButton.boom();
-                }
-            });
         }
         return convertView;
     }

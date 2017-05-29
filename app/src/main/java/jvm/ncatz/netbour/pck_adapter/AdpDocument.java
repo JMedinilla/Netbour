@@ -137,13 +137,6 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
             holder.boomMenuButton.addBuilder(builderEdit);
             holder.boomMenuButton.addBuilder(builderDelete);
             holder.boomMenuButton.addBuilder(builderReport);
-
-            holder.adapterDocumentImgPhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.boomMenuButton.boom();
-                }
-            });
         }
         return convertView;
     }

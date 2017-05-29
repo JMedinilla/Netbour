@@ -340,7 +340,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
     }
 
     private void openText(TextView txv, String txt) {
-        txv.setMaxLines(10);
+        txv.setMaxLines(Integer.MAX_VALUE);
         txv.setEllipsize(null);
         txv.setText(txt);
     }

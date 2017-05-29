@@ -124,13 +124,6 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
             holder.boomMenuButton.addBuilder(builderEdit);
             holder.boomMenuButton.addBuilder(builderDelete);
             holder.boomMenuButton.addBuilder(builderReport);
-
-            holder.adapterMeetingImgPhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.boomMenuButton.boom();
-                }
-            });
         }
         return convertView;
     }

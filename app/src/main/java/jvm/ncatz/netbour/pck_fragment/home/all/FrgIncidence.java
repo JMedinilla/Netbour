@@ -334,7 +334,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     }
 
     private void openText(TextView txv, String txt) {
-        txv.setMaxLines(10);
+        txv.setMaxLines(Integer.MAX_VALUE);
         txv.setEllipsize(null);
         txv.setText(txt);
     }
