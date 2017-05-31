@@ -219,6 +219,8 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
                             doubleBackToExit = false;
                         }
                     }, 2000);
+                } else if ("".equals(actual_code)) {
+                    showCommunities();
                 } else {
                     showHome();
                 }
@@ -660,7 +662,9 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
                         break;
                     case R.id.groupOthers_Information:
                         showInformation();
-                        transaction = true;
+                        if (!"".equals(actual_code)) {
+                            transaction = true;
+                        }
                         break;
                     case R.id.groupOthers_About:
                         showAbout();
@@ -668,7 +672,6 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
                     case R.id.groupClose_Close:
                         clearFragmentStack();
                         closeSesion();
-                        transaction = true;
                         break;
                 }
 
@@ -728,6 +731,8 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
             fragment_opened = FRAGMENT_LIST_COMMUNITY;
             in_home = false;
+
+            changeActionTitle(getString(R.string.groupOptions_Communities));
         }
     }
 
@@ -758,6 +763,8 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
                 fragment_opened = FRAGMENT_LIST_DOCUMENT;
                 in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Documents));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -792,6 +799,8 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
                 fragment_opened = FRAGMENT_LIST_ENTRYF;
                 in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Board));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -822,6 +831,8 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
                 fragment_opened = FRAGMENT_LIST_ENTRYS;
                 in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_ComBoard));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -871,6 +882,8 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
                 fragment_opened = FRAGMENT_LIST_INCIDENCE;
                 in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Incidences));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -923,6 +936,8 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
                 fragment_opened = FRAGMENT_LIST_MEETING;
                 in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Meetings));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -984,6 +999,8 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
 
                 fragment_opened = FRAGMENT_LIST_USER;
                 in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Users));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);

@@ -1,7 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:gravity="center">
 
-</LinearLayout>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/infoImage"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/form_background"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/home_modern"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/infoCodeParent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/form_background"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoImage">
+
+            <EditText
+                android:id="@+id/infoCode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/key"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/key"
+                android:enabled="false"
+                android:hint="@string/fragFormUserCode"
+                android:inputType="none"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_800"
+                android:textSize="14sp" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoCodeParent">
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/infoProvinceParent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="50"
+                android:background="@drawable/form_background"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/infoProvince"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/map_marker"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/map_marker"
+                    android:enabled="false"
+                    android:hint="@string/fragFormCommunityProvince"
+                    android:inputType="none"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_800"
+                    android:textSize="14sp" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/infoMunicipalityParent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:background="@drawable/form_background"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/infoMunicipality"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/map_marker"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/map_marker"
+                    android:enabled="false"
+                    android:hint="@string/fragFormCommunityMunicipality"
+                    android:inputType="none"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_800"
+                    android:textSize="14sp" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/infoPostalParent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:background="@drawable/form_background"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/infoPostal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/sign_direction"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/sign_direction"
+                    android:enabled="false"
+                    android:hint="@string/fragFormCommunityPostal"
+                    android:inputType="none"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_800"
+                    android:textSize="14sp" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:id="@+id/infoNumberParent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="50"
+                android:background="@drawable/form_background"
+                android:padding="2dp">
+
+                <EditText
+                    android:id="@+id/infoNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_holo_light"
+                    android:drawableLeft="@drawable/numeric"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/numeric"
+                    android:enabled="false"
+                    android:hint="@string/fragFormCommunityNumber"
+                    android:inputType="none"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_800"
+                    android:textSize="14sp" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        </LinearLayout>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/infoStreetParent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/form_background"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <EditText
+                android:id="@+id/infoStreet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/directions_fork"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/directions_fork"
+                android:enabled="false"
+                android:hint="@string/fragFormCommunityStreet"
+                android:inputType="none"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_800"
+                android:textSize="14sp" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:id="@+id/infoFlatsParent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/form_background"
+            android:padding="2dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoStreetParent">
+
+            <EditText
+                android:id="@+id/infoFlats"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_holo_light"
+                android:drawableLeft="@drawable/account_multiple_outline"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/account_multiple_outline"
+                android:enabled="false"
+                android:hint="@string/fragFormCommunityFlats"
+                android:inputType="none"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_800"
+                android:textSize="14sp" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>
