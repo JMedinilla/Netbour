@@ -151,7 +151,7 @@
 
         <com.nightonke.boommenu.BoomMenuButton
             android:id="@+id/adapterCommunity_Menu"
-            android:layout_width="36dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             app:bmb_inList="true"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -831,7 +831,11 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
     private void showHome() {
         actionButton.setVisibility(View.INVISIBLE);
 
+        Bundle bundle = new Bundle();
+        bundle.putInt("userCategory", actual_category);
+
         FrgHome frgHome = new FrgHome();
+        frgHome.setArguments(bundle);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgHome, "frgHome");
