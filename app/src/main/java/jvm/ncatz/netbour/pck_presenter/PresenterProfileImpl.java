@@ -91,7 +91,7 @@ public class PresenterProfileImpl implements PresenterProfile, InteractorProfile
         } else if (name.length() < 3) {
             error = true;
             view.validateNameResponse(ERROR_NAME_SHORT, name);
-        } else if (name.length() > 16) {
+        } else if (name.length() > 24) {
             error = true;
             view.validateNameResponse(ERROR_NAME_LONG, name);
         }

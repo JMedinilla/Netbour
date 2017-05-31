@@ -2,26 +2,26 @@ package jvm.ncatz.netbour.pck_fragment.home.all;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -38,6 +38,7 @@ import butterknife.OnItemClick;
 import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpDocument;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
@@ -45,16 +46,26 @@ import jvm.ncatz.netbour.pck_pojo.PoDocument;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterDocumentImpl;
 
-public class FrgDocument extends Fragment implements PresenterDocument.ViewList {
+public class FrgDocument extends Fragment implements PresenterDocument.ViewList, IAdapter, IAdapter.IDocument, IAdapter.IWeb {
 
     @BindView(R.id.fragListDocument_list)
-    SwipeMenuListView documentList;
+    ListView documentList;
     @BindView(R.id.fragListDocument_empty)
     TextView documentEmpty;
 
     @OnItemClick(R.id.fragListDocument_list)
-    public void itemClick(int position) {
-        //
+    public void itemClick(View view, int position) {
+        TextView txv = (TextView) view.findViewById(R.id.adapterDocument_txtDescription);
+        PoDocument document = adpDocument.getItem(position);
+
+        if (txv != null && document != null) {
+            String txt = txv.getText().toString();
+            if (txv.getMaxLines() == 2) {
+                openText(txv, txt);
+            } else {
+                closeText(txv);
+            }
+        }
     }
 
     private AdpDocument adpDocument;
@@ -96,7 +107,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         titleSort = false;
 
         List<PoDocument> list = new ArrayList<>();
-        adpDocument = new AdpDocument(getActivity(), list);
+        adpDocument = new AdpDocument(getActivity(), list, this, this, this);
         presenterDocument = new PresenterDocumentImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -119,7 +130,6 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_document, container, false);
         ButterKnife.bind(this, view);
-        swipeMenuInstance();
         return view;
     }
 
@@ -172,8 +182,43 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
     }
 
     @Override
+    public void deleteElement(PoDocument document, int position) {
+        if (document != null) {
+            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                showDeleteDialog(document, position);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
     public void deletedDocument(PoDocument item) {
         callback.deletedDocument(item);
+    }
+
+    @Override
+    public void editElement(PoDocument document) {
+        if (document != null) {
+            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                callback.sendDocument(document);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
+    public void openLink(String link) {
+        if (!link.startsWith("http://") && !link.startsWith("https://"))
+            link = "http://" + link;
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        startActivity(browserIntent);
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -191,6 +236,11 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         List<PoDocument> list = new ArrayList<>();
         loadingDialogHide();
         updateList(list);
+    }
+
+    private void closeText(TextView txv) {
+        txv.setMaxLines(2);
+        txv.setEllipsize(TextUtils.TruncateAt.END);
     }
 
     private void createMenu() {
@@ -243,7 +293,6 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
 
     private void deleteResponse(int position) {
         presenterDocument.deleteDocument(adpDocument.getItem(position));
-        documentList.smoothCloseMenu();
     }
 
     private void loadingDialogCreate() {
@@ -270,6 +319,12 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
         if (loading != null) {
             loading.show();
         }
+    }
+
+    private void openText(TextView txv, String txt) {
+        txv.setMaxLines(Integer.MAX_VALUE);
+        txv.setEllipsize(null);
+        txv.setText(txt);
     }
 
     private void resetSort() {
@@ -331,73 +386,6 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList 
             });
         }
         this.titleSort = !titleSort;
-    }
-
-    private void swipeMenuInstance() {
-        SwipeMenuCreator menuCreator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.white);
-                editItem.setTitle(getString(R.string.swipeMenuEdit));
-                editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.BLACK);
-                editItem.setIcon(R.drawable.tooltip_edit);
-                editItem.setWidth(160);
-                menu.addMenuItem(editItem);
-
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.white);
-                deleteItem.setTitle(getString(R.string.swipeMenuDelete));
-                deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.BLACK);
-                deleteItem.setIcon(R.drawable.delete_empty);
-                deleteItem.setWidth(160);
-                menu.addMenuItem(deleteItem);
-
-                SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.white);
-                reportItem.setTitle(getString(R.string.swipeMenuReport));
-                reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.BLACK);
-                reportItem.setIcon(R.drawable.alert_decagram);
-                reportItem.setWidth(160);
-                menu.addMenuItem(reportItem);
-            }
-        };
-        documentList.setMenuCreator(menuCreator);
-        documentList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        documentList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
-                PoDocument document = adpDocument.getItem(position);
-                switch (index) {
-                    case 0:
-                        if (document != null) {
-                            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                callback.sendDocument(document);
-                                documentList.smoothCloseMenu();
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 1:
-                        if (document != null) {
-                            if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(document, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 2:
-                        sendEmail();
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     private void updateList(List<PoDocument> list) {

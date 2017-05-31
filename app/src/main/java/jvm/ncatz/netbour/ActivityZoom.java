@@ -1,6 +1,7 @@
 package jvm.ncatz.netbour;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -35,28 +35,25 @@ public class ActivityZoom extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        String url = "";
         Intent intent = getIntent();
         if (intent != null) {
-            url = intent.getStringExtra("photoZoom");
+            String url = intent.getStringExtra("photoZoom");
+            Glide.with(this).load(url).asBitmap().listener(new RequestListener<String, Bitmap>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                    loadingDialogHide();
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    loadingDialogHide();
+                    return false;
+                }
+            }).error(R.drawable.glide_error).into(photoZoom);
+        } else {
+            finish();
         }
-
-        Glide.with(this)
-                .load(url)
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        loadingDialogHide();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        loadingDialogHide();
-                        return false;
-                    }
-                })
-                .into(photoZoom);
     }
 
     private void loadingDialogCreate() {

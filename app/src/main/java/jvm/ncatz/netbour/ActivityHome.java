@@ -2,6 +2,7 @@ package jvm.ncatz.netbour;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,9 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -33,21 +32,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgHome;
-import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgInfo;
-import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgProfile;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormCommunity;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormDocument;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormEntry;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormIncidence;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormMeeting;
-import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormUser;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgCommunity;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgDocument;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgEntry;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgIncidence;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgMeeting;
 import jvm.ncatz.netbour.pck_fragment.home.all.FrgUser;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormCommunity;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormDocument;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormEntry;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormIncidence;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormMeeting;
+import jvm.ncatz.netbour.pck_fragment.home.all.form.FrgFormUser;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgHome;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgInfo;
+import jvm.ncatz.netbour.pck_fragment.home.all.other.FrgProfile;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
@@ -60,7 +59,7 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterHomeImpl;
 
-public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser, FrgBack, FrgLists,
+public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInterface, FrgUser.ListUser, FrgBack, FrgLists,
         FrgMeeting.ListMeeting, FrgIncidence.ListIncidence, FrgEntry.ListEntry, FrgProfile.ProfileInterface,
         FrgDocument.ListDocument, FrgCommunity.ListCommunity, PresenterForm, PresenterHome.Activity {
 
@@ -121,9 +120,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     private PresenterHomeImpl presenterHome;
 
     private List<String> adminEmails;
-
     private boolean doubleBackToExit;
     private boolean form_opened;
+    private boolean in_home;
     private int actual_category;
     private int fragment_opened;
     private String actual_code;
@@ -138,14 +137,29 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        adminEmails = new ArrayList<>();
-        doubleBackToExit = false;
-        form_opened = false;
-        actual_category = 0;
-        actual_code = "";
-        actual_email = "";
-        actual_name = "";
-        actual_photo = "";
+        if (savedInstanceState != null) {
+            adminEmails = savedInstanceState.getStringArrayList("adminEmails");
+            doubleBackToExit = savedInstanceState.getBoolean("doubleBackToExit");
+            form_opened = savedInstanceState.getBoolean("form_opened");
+            in_home = savedInstanceState.getBoolean("in_home");
+            actual_category = savedInstanceState.getInt("actual_category");
+            fragment_opened = savedInstanceState.getInt("fragment_opened");
+            actual_code = savedInstanceState.getString("actual_code");
+            actual_email = savedInstanceState.getString("actual_email");
+            actual_name = savedInstanceState.getString("actual_name");
+            actual_photo = savedInstanceState.getString("actual_photo");
+            showHome();
+        } else {
+            adminEmails = new ArrayList<>();
+            doubleBackToExit = false;
+            form_opened = false;
+            in_home = false;
+            actual_category = 0;
+            actual_code = "";
+            actual_email = "";
+            actual_name = "";
+            actual_photo = "";
+        }
 
         presenterHome = new PresenterHomeImpl(this);
         presenterHome.getAdminEmails();
@@ -162,6 +176,58 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            checkSelectedItem();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("adminEmails", (ArrayList<String>) adminEmails);
+        outState.putBoolean("doubleBackToExit", doubleBackToExit);
+        outState.putBoolean("form_opened", form_opened);
+        outState.putBoolean("in_home", in_home);
+        outState.putInt("actual_category", actual_category);
+        outState.putInt("fragment_opened", fragment_opened);
+        outState.putString("actual_code", actual_code);
+        outState.putString("actual_email", actual_email);
+        outState.putString("actual_name", actual_name);
+        outState.putString("actual_photo", actual_photo);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        } else {
+            if (!form_opened) {
+                if (in_home) {
+                    if (doubleBackToExit) {
+                        super.onBackPressed();
+                    }
+                    this.doubleBackToExit = true;
+                    showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleBackToExit = false;
+                        }
+                    }, 2000);
+                } else if ("".equals(actual_code)) {
+                    showCommunities();
+                } else {
+                    showHome();
+                }
+            } else {
+                super.onBackPressed();
+            }
+        }
     }
 
     @Override
@@ -261,6 +327,57 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     }
 
     @Override
+    public void fromHome(int to) {
+        switch (to) {
+            case FrgHome.TO_INCIDENTS:
+                if (!actual_code.equals("default")) {
+                    showIncidents();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_BOARD:
+                if (!actual_code.equals("default")) {
+                    showEntryFirst();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_COMBOARD:
+                if (!actual_code.equals("default")) {
+                    showEntrySecond();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_DOCUMENTS:
+                if (!actual_code.equals("default")) {
+                    showDocuments();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_MEETINGS:
+                if (!actual_code.equals("default")) {
+                    showMeetings();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_USERS:
+                if (!actual_code.equals("default")) {
+                    showUsers();
+                } else {
+                    showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                }
+                break;
+            case FrgHome.TO_COMMUNITIES:
+                showCommunities();
+                break;
+        }
+    }
+
+    @Override
     public void getAdminEmailsResponse(List<String> list) {
         if (list != null) {
             adminEmails = list;
@@ -297,13 +414,11 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         profile_name.setText(actual_name);
 
         if (actual_category != PoUser.GROUP_ADMIN) {
-            Menu menu = navigationView.getMenu();
-            menu.findItem(R.id.groupOptions_Communities).setVisible(false);
             showHome();
         } else {
             actual_code = "";
-            showSnackbar(getString(R.string.select_code), DURATION_SHORT);
             showCommunities();
+            showSnackbar(getString(R.string.select_code), DURATION_SHORT);
         }
     }
 
@@ -318,29 +433,6 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     @Override
     public void nothingChanged() {
         showSnackbar(getString(R.string.no_edit_changes), DURATION_SHORT);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers();
-        } else {
-            if (!form_opened) {
-                if (doubleBackToExit) {
-                    super.onBackPressed();
-                }
-                this.doubleBackToExit = true;
-                showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleBackToExit = false;
-                    }
-                }, 2000);
-            } else {
-                super.onBackPressed();
-            }
-        }
     }
 
     @Override
@@ -392,6 +484,16 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         toolbar.setTitle(title);
     }
 
+    private void checkSelectedItem() {
+        if (in_home || fragment_opened == FRAGMENT_HOME) {
+            navigationView.setCheckedItem(R.id.groupOptions_Menu);
+        } else if (fragment_opened == FRAGMENT_PROFILE) {
+            navigationView.setCheckedItem(R.id.groupOptions_Profile);
+        } else if (fragment_opened == FRAGMENT_INFORMATION) {
+            navigationView.setCheckedItem(R.id.groupOthers_Information);
+        }
+    }
+
     private void clearFragmentStack() {
         FragmentManager manager = getSupportFragmentManager();
         for (int i = 0; i < manager.getBackStackEntryCount(); i++) {
@@ -416,7 +518,12 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 closeSesionResponse();
             }
         });
-        builder.setNegativeButton(android.R.string.no, null);
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                checkSelectedItem();
+            }
+        });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -536,79 +643,28 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 boolean transaction = false;
 
                 switch (item.getItemId()) {
-                    case R.id.groupOptions_Incidences:
-                        if (!actual_code.equals("default")) {
+                    case R.id.groupOptions_Menu:
+                        if (!"".equals(actual_code)) {
                             clearFragmentStack();
-                            showIncidents();
-                            transaction = true;
+                            showHome();
                         } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
+                            showCommunities();
+                            showSnackbar(getString(R.string.select_code), DURATION_SHORT);
                         }
-                        break;
-                    case R.id.groupOptions_Board:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showEntryFirst();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_ComBoard:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showEntrySecond();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Documents:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showDocuments();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Meetings:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showMeetings();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Users:
-                        if (!actual_code.equals("default")) {
-                            clearFragmentStack();
-                            showUsers();
-                            transaction = true;
-                        } else {
-                            showSnackbar(getString(R.string.default_community_code), DURATION_SHORT);
-                        }
-                        break;
-                    case R.id.groupOptions_Communities:
-                        clearFragmentStack();
-                        showCommunities();
-                        transaction = true;
                         break;
                     case R.id.groupOptions_Profile:
-                        clearFragmentStack();
                         showProfile();
                         transaction = true;
                         break;
                     case R.id.groupOthers_Settings:
-                        clearFragmentStack();
                         showSettings();
                         transaction = true;
                         break;
                     case R.id.groupOthers_Information:
-                        clearFragmentStack();
                         showInformation();
-                        transaction = true;
+                        if (!"".equals(actual_code)) {
+                            transaction = true;
+                        }
                         break;
                     case R.id.groupOthers_About:
                         showAbout();
@@ -616,7 +672,6 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                     case R.id.groupClose_Close:
                         clearFragmentStack();
                         closeSesion();
-                        transaction = true;
                         break;
                 }
 
@@ -631,7 +686,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_white);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -652,13 +707,14 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
 
     private void showAbout() {
         Intent intent = new Intent(this, ActivityAbout.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
+
     }
 
     private void showCommunities() {
         if (fragment_opened != FRAGMENT_LIST_COMMUNITY) {
             actionButton.setVisibility(View.VISIBLE);
-            actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+            actionButton.setImageResource(R.drawable.plus);
 
             Bundle bundle = new Bundle();
             bundle.putInt("userCategory", actual_category);
@@ -674,6 +730,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             transaction.commit();
 
             fragment_opened = FRAGMENT_LIST_COMMUNITY;
+            in_home = false;
+
+            changeActionTitle(getString(R.string.groupOptions_Communities));
         }
     }
 
@@ -682,7 +741,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             if (fragment_opened != FRAGMENT_LIST_DOCUMENT) {
                 if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
                     actionButton.setVisibility(View.VISIBLE);
-                    actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                    actionButton.setImageResource(R.drawable.plus);
                 } else {
                     actionButton.setVisibility(View.INVISIBLE);
                 }
@@ -703,6 +762,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_DOCUMENT;
+                in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Documents));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -714,7 +776,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             if (fragment_opened != FRAGMENT_LIST_ENTRYF) {
                 if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
                     actionButton.setVisibility(View.VISIBLE);
-                    actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                    actionButton.setImageResource(R.drawable.plus);
                 } else {
                     actionButton.setVisibility(View.INVISIBLE);
                 }
@@ -736,6 +798,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_ENTRYF;
+                in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Board));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -746,7 +811,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         if (!"".equals(actual_code)) {
             if (fragment_opened != FRAGMENT_LIST_ENTRYS) {
                 actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                actionButton.setImageResource(R.drawable.plus);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);
@@ -765,6 +830,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_ENTRYS;
+                in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_ComBoard));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -774,13 +842,20 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
     private void showHome() {
         actionButton.setVisibility(View.INVISIBLE);
 
+        Bundle bundle = new Bundle();
+        bundle.putInt("userCategory", actual_category);
+
         FrgHome frgHome = new FrgHome();
+        frgHome.setArguments(bundle);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.activity_main_frame, frgHome, "frgHome");
         transaction.commit();
 
         fragment_opened = FRAGMENT_HOME;
+        in_home = true;
+        navigationView.setCheckedItem(R.id.groupOptions_Menu);
+
         changeActionTitle(getString(R.string.app_name));
     }
 
@@ -788,7 +863,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         if (!"".equals(actual_code)) {
             if (fragment_opened != FRAGMENT_LIST_INCIDENCE) {
                 actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                actionButton.setImageResource(R.drawable.plus);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);
@@ -806,6 +881,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_INCIDENCE;
+                in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Incidences));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -828,6 +906,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_INFORMATION;
+                in_home = false;
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -838,7 +917,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
         if (!"".equals(actual_code)) {
             if (fragment_opened != FRAGMENT_LIST_MEETING) {
                 actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.ic_plus_white_48dp);
+                actionButton.setImageResource(R.drawable.plus);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);
@@ -856,6 +935,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_MEETING;
+                in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Meetings));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);
@@ -873,6 +955,7 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
             transaction.commit();
 
             fragment_opened = FRAGMENT_PROFILE;
+            in_home = false;
         }
     }
 
@@ -915,6 +998,9 @@ public class ActivityHome extends AppCompatActivity implements FrgUser.ListUser,
                 transaction.commit();
 
                 fragment_opened = FRAGMENT_LIST_USER;
+                in_home = false;
+
+                changeActionTitle(getString(R.string.groupOptions_Users));
             }
         } else {
             showSnackbar(getString(R.string.no_code), DURATION_SHORT);

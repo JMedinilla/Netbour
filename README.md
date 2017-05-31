@@ -1,6 +1,7 @@
 # Netbour
 <img src="readme/logo.png" alt="Netbour" style="width: 200px;"/>
-## Javier J. Medinilla Agüera
+
+# Javier J. Medinilla Agüera
 <img src="readme/jmedinilla.png" alt="JMedinilla" style="width: 200px;"/>
 
 ## Índice
@@ -507,8 +508,8 @@ En cuanto al propio código, se ha seguido una estructuración absolutamente est
 8. onCreateOptionsMenu, onCreateItemSelected
 9. onDestroyView, onDestroy, onDetach
 10. onActivityResult, onRequestPermissionsResult
-11. Métodos Override de las interfaces implementadas, ++ordenados alfabéticamente++
-12. Métodos de la propia clase, ++ordenados alfabéticamente++
+11. Métodos Override de las interfaces implementadas, ordenados alfabéticamente
+12. Métodos de la propia clase, ordenados alfabéticamente
 
 En cuanto a las funcionalidades que quedan por implementar, que hubiera apreciado poder incluir, y que quedan en la lista de espera para el futuro, serían las siguientes:
 

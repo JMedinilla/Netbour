@@ -75,7 +75,7 @@ public class PresenterUserImpl implements PresenterUser, InteractorUser.Listener
         } else if (user.getName().length() < 3) {
             error = true;
             viewForm.validationResponse(user, ERROR_NAME_SHORT);
-        } else if (user.getName().length() > 16) {
+        } else if (user.getName().length() > 24) {
             error = true;
             viewForm.validationResponse(user, ERROR_NAME_LONG);
         }

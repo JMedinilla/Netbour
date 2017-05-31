@@ -55,9 +55,12 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 PoUser user = new PoUser(
                         false, category,
                         System.currentTimeMillis(), code,
-                        fragFormUserDoor.getText().toString(), "",
-                        fragFormUserFloor.getText().toString(), fragFormUserName.getText().toString(),
-                        fragFormUserPhone.getText().toString(), ""
+                        fragFormUserDoor.getText().toString().replaceAll("\\s+", " ").trim(),
+                        "",
+                        fragFormUserFloor.getText().toString().replaceAll("\\s+", " ").trim(),
+                        fragFormUserName.getText().toString().replaceAll("\\s+", " ").trim(),
+                        fragFormUserPhone.getText().toString().replaceAll("\\s+", " ").trim(),
+                        ""
                 );
                 presenterUser.validateUser(user, "", updateMode);
                 break;
@@ -148,7 +151,7 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                 fragFormUserName.setError(getString(R.string.ERROR_SHORT_3));
                 break;
             case PresenterUser.ERROR_NAME_LONG:
-                fragFormUserName.setError(getString(R.string.ERROR_LONG_16));
+                fragFormUserName.setError(getString(R.string.ERROR_LONG_24));
                 break;
             case PresenterUser.ERROR_PHONE_EMPTY:
                 fragFormUserPhone.setError(getString(R.string.ERROR_EMPTY));

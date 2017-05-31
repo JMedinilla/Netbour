@@ -14,7 +14,7 @@
         android:textColor="@color/blue_grey_800"
         android:visibility="gone" />
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
+    <ListView
         android:id="@+id/fragListEntry_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

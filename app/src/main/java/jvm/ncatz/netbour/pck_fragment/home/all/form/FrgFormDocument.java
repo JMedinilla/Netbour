@@ -39,8 +39,9 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
     public void onViewClicked() {
         PoDocument document = new PoDocument(
                 false, System.currentTimeMillis(),
-                email, fragFormDocumentDescription.getText().toString(),
-                fragFormDocumentLink.getText().toString(), fragFormDocumentTitle.getText().toString()
+                email, fragFormDocumentDescription.getText().toString().trim(),
+                fragFormDocumentLink.getText().toString().replaceAll("\\s+", " ").trim(),
+                fragFormDocumentTitle.getText().toString().replaceAll("\\s+", " ").trim()
         );
         presenterDocument.validateDocument(document);
     }
@@ -129,16 +130,13 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
                 fragFormDocumentTitle.setError(getString(R.string.ERROR_SHORT_6));
                 break;
             case PresenterDocument.ERROR_TITLE_LONG:
-                fragFormDocumentTitle.setError(getString(R.string.ERROR_LONG_20));
+                fragFormDocumentTitle.setError(getString(R.string.ERROR_LONG_36));
                 break;
             case PresenterDocument.ERROR_LINK_EMPTY:
                 fragFormDocumentLink.setError(getString(R.string.ERROR_EMPTY));
                 break;
             case PresenterDocument.ERROR_LINK_SHORT:
                 fragFormDocumentLink.setError(getString(R.string.ERROR_SHORT_15));
-                break;
-            case PresenterDocument.ERROR_LINK_LONG:
-                fragFormDocumentLink.setError(getString(R.string.ERROR_LONG_255));
                 break;
             case PresenterDocument.ERROR_DESCRIPTION_EMPTY:
                 fragFormDocumentDescription.setError(getString(R.string.ERROR_EMPTY));

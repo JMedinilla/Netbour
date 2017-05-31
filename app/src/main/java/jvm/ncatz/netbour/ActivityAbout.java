@@ -3,7 +3,6 @@ package jvm.ncatz.netbour;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -37,12 +36,9 @@ import info.hoang8f.widget.FButton;
 
 public class ActivityAbout extends MaterialAboutActivity {
 
-    private int cont;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        cont = 0;
     }
 
     @Nullable
@@ -63,32 +59,32 @@ public class ActivityAbout extends MaterialAboutActivity {
         MaterialAboutCard.Builder builderCardOther = new MaterialAboutCard.Builder();
         builderCardOther.title(R.string.aboutOther);
 
-        IconicsDrawable iconAppVersion = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_info_outline).color(Color.BLACK).sizeDp(20);
-        IconicsDrawable iconAppRepository = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_box).color(Color.BLACK).sizeDp(20);
-        IconicsDrawable iconAppLicenses = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_file).color(Color.BLACK).sizeDp(20);
-        IconicsDrawable iconAuthorEmail = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_email).color(Color.RED).sizeDp(20);
-        IconicsDrawable iconAuthorWeb = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_view_web).color(Color.RED).sizeDp(20);
-        IconicsDrawable iconSocialGithub = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_alt).color(Color.BLUE).sizeDp(20);
-        IconicsDrawable iconSocialLinkedin = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_linkedin).color(Color.BLUE).sizeDp(20);
-        IconicsDrawable iconSocialStack = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_stackoverflow).color(Color.BLUE).sizeDp(20);
-        IconicsDrawable iconSocialTwitter = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_twitter).color(Color.BLUE).sizeDp(20);
-        IconicsDrawable iconOtherBugs = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_bug).color(Color.GRAY).sizeDp(20);
+        IconicsDrawable iconAppVersion = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_info_outline)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconAppRepository = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_box)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconAppLicenses = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_file)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconAuthorEmail = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_email)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconAuthorWeb = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_view_web)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconSocialGithub = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_github_alt)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconSocialLinkedin = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_linkedin)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconSocialStack = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_stackoverflow)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconSocialTwitter = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_twitter)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
+        IconicsDrawable iconOtherBugs = new IconicsDrawable(this).icon(MaterialDesignIconic.Icon.gmi_bug)
+                .color(ContextCompat.getColor(this, R.color.grey_800)).sizeDp(20);
 
         MaterialAboutTitleItem itemAppName = new MaterialAboutTitleItem(getString(R.string.app_name), ContextCompat.getDrawable(this, R.drawable.logo160));
         MaterialAboutActionItem itemAppVersion = new MaterialAboutActionItem(
                 getString(R.string.app_version_title),
                 getString(R.string.app_version_sub),
-                iconAppVersion,
-                new MaterialAboutItemOnClickListener() {
-                    @Override
-                    public void onClick(boolean b) {
-                        cont++;
-                        if (cont == 7) {
-                            cont = 0;
-                            //SebastianRunner
-                        }
-                    }
-                });
+                iconAppVersion, null);
         MaterialAboutActionItem itemAppRepository = new MaterialAboutActionItem(
                 getString(R.string.app_repository_title),
                 getString(R.string.app_repository_sub),

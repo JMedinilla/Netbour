@@ -16,13 +16,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.nightonke.boommenu.BoomMenuButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -40,26 +38,23 @@ import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.ActivityZoom;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpUser;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterUserImpl;
 
-public class FrgUser extends Fragment implements PresenterUser.ViewList {
+public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapter, IAdapter.IUser, IAdapter.IZoom {
 
     @BindView(R.id.fragListUsers_list)
-    SwipeMenuListView userList;
+    ListView userList;
     @BindView(R.id.fragListUsers_empty)
     TextView userEmpty;
 
     @OnItemClick(R.id.fragListUsers_list)
-    public void itemClick(int position) {
-        PoUser us = adpUser.getItem(position);
-        if (us != null) {
-            Intent intent = new Intent(getActivity(), ActivityZoom.class);
-            intent.putExtra("photoZoom", us.getPhoto());
-            startActivity(intent);
-        }
+    public void itemClick(View view) {
+        BoomMenuButton bmb = (BoomMenuButton) view.findViewById(R.id.adapterUsers_Menu);
+        bmb.boom();
     }
 
     private AdpUser adpUser;
@@ -102,7 +97,7 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         phoneSort = false;
 
         List<PoUser> list = new ArrayList<>();
-        adpUser = new AdpUser(getActivity(), list);
+        adpUser = new AdpUser(getActivity(), list, this, this, this);
         presenterUser = new PresenterUserImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -121,10 +116,10 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_user, container, false);
         ButterKnife.bind(this, view);
-        swipeMenuInstance();
         return view;
     }
 
@@ -173,8 +168,33 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
     }
 
     @Override
+    public void deleteElement(PoUser user, int position) {
+        if (userCategory == PoUser.GROUP_ADMIN) {
+            if (user != null) {
+                showDeleteDialog(user, position);
+            }
+        } else {
+            callSnack.sendSnack(getString(R.string.no_permission));
+        }
+    }
+
+    @Override
     public void deletedUser(PoUser item) {
         callback.deletedUser(item);
+    }
+
+    @Override
+    public void editElement(PoUser user) {
+        if (userCategory == PoUser.GROUP_ADMIN) {
+            callback.sendUser(user);
+        } else {
+            callSnack.sendSnack(getString(R.string.no_permission));
+        }
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -192,6 +212,16 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
         List<PoUser> list = new ArrayList<>();
         loadingDialogHide();
         updateList(list);
+    }
+
+    @Override
+    public void zoomImage(int position) {
+        PoUser user = adpUser.getItem(position);
+        if (user != null) {
+            Intent intent = new Intent(getActivity(), ActivityZoom.class);
+            intent.putExtra("photoZoom", user.getPhoto());
+            startActivity(intent);
+        }
     }
 
     private void createMenu() {
@@ -258,7 +288,6 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
 
     private void deleteResponse(int position) {
         presenterUser.deleteUser(adpUser.getItem(position));
-        userList.smoothCloseMenu();
     }
 
     private void loadingDialogCreate() {
@@ -386,71 +415,6 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList {
             });
         }
         this.phoneSort = !phoneSort;
-    }
-
-    private void swipeMenuInstance() {
-        SwipeMenuCreator menuCreator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.white);
-                editItem.setTitle(getString(R.string.swipeMenuEdit));
-                editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.BLACK);
-                editItem.setIcon(R.drawable.tooltip_edit);
-                editItem.setWidth(160);
-                menu.addMenuItem(editItem);
-
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.white);
-                deleteItem.setTitle(getString(R.string.swipeMenuDelete));
-                deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.BLACK);
-                deleteItem.setIcon(R.drawable.delete_empty);
-                deleteItem.setWidth(160);
-                menu.addMenuItem(deleteItem);
-
-                SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.white);
-                reportItem.setTitle(getString(R.string.swipeMenuReport));
-                reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.BLACK);
-                reportItem.setIcon(R.drawable.alert_decagram);
-                reportItem.setWidth(160);
-                menu.addMenuItem(reportItem);
-            }
-        };
-        userList.setMenuCreator(menuCreator);
-        userList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        userList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
-                PoUser user = adpUser.getItem(position);
-                switch (index) {
-                    case 0:
-                        if (userCategory == PoUser.GROUP_ADMIN) {
-                            callback.sendUser(user);
-                            userList.smoothCloseMenu();
-                        } else {
-                            callSnack.sendSnack(getString(R.string.no_permission));
-                        }
-                        break;
-                    case 1:
-                        if (userCategory == PoUser.GROUP_ADMIN) {
-                            if (user != null) {
-                                showDeleteDialog(user, position);
-                            }
-                        } else {
-                            callSnack.sendSnack(getString(R.string.no_permission));
-                        }
-                        break;
-                    case 2:
-                        sendEmail();
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     private void updateList(List<PoUser> list) {

@@ -7,8 +7,4 @@
     <color name="colorEditTitle">@color/grey_900</color>
     <color name="colorPrimary">@color/blue_500</color>
     <color name="colorPrimaryDark">@color/blue_700</color>
-
-    <color name="book_loading_background">@color/blue_500</color>
-    <color name="book_loading_book">@color/blue_700</color>
-    <color name="book_loading_page">@color/white</color>
 </resources>

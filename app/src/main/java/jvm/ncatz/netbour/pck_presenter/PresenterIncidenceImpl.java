@@ -101,7 +101,7 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
         } else if (incidence.getTitle().length() < 6) {
             error = true;
             viewForm.validationResponse(incidence, ERROR_TITLE_SHORT);
-        } else if (incidence.getTitle().length() > 20) {
+        } else if (incidence.getTitle().length() > 36) {
             error = true;
             viewForm.validationResponse(incidence, ERROR_TITLE_LONG);
         }

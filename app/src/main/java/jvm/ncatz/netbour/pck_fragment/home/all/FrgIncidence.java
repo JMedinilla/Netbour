@@ -10,19 +10,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -40,6 +38,7 @@ import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.ActivityZoom;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpIncidence;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
@@ -47,20 +46,25 @@ import jvm.ncatz.netbour.pck_pojo.PoIncidence;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterIncidenceImpl;
 
-public class FrgIncidence extends Fragment implements PresenterIncidence.ViewList {
+public class FrgIncidence extends Fragment implements PresenterIncidence.ViewList, IAdapter, IAdapter.IIncidence, IAdapter.IZoom {
 
     @BindView(R.id.fragListIncidence_list)
-    SwipeMenuListView incidenceList;
+    ListView incidenceList;
     @BindView(R.id.fragListIncidence_empty)
     TextView incidenceEmpty;
 
     @OnItemClick(R.id.fragListIncidence_list)
-    public void itemClick(int position) {
+    public void itemClick(View view, int position) {
+        TextView txv = (TextView) view.findViewById(R.id.adapterIncidence_txtDescription);
         PoIncidence incidence = adpIncidence.getItem(position);
-        if (incidence != null) {
-            Intent intent = new Intent(getActivity(), ActivityZoom.class);
-            intent.putExtra("photoZoom", incidence.getPhoto());
-            startActivity(intent);
+
+        if (txv != null && incidence != null) {
+            String txt = txv.getText().toString();
+            if (txv.getMaxLines() == 2) {
+                openText(txv, txt);
+            } else {
+                closeText(txv);
+            }
         }
     }
 
@@ -107,7 +111,7 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         titleSort = false;
 
         List<PoIncidence> list = new ArrayList<>();
-        adpIncidence = new AdpIncidence(getActivity(), list);
+        adpIncidence = new AdpIncidence(getActivity(), list, this, this, this);
         presenterIncidence = new PresenterIncidenceImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -127,10 +131,10 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_incidence, container, false);
         ButterKnife.bind(this, view);
-        swipeMenuInstance();
         return view;
     }
 
@@ -181,8 +185,35 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     }
 
     @Override
+    public void deleteElement(PoIncidence incidence, int position) {
+        if (incidence != null) {
+            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                showDeleteDialog(incidence, position);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
     public void deletedIncidence(PoIncidence item) {
         callback.deletedIncidence(item);
+    }
+
+    @Override
+    public void editElement(PoIncidence incidence) {
+        if (incidence != null) {
+            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                callback.sendIncidence(incidence);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -200,6 +231,21 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         List<PoIncidence> list = new ArrayList<>();
         loadingDialogHide();
         updateList(list);
+    }
+
+    @Override
+    public void zoomImage(final int position) {
+        PoIncidence incidence = adpIncidence.getItem(position);
+        if (incidence != null) {
+            Intent intent = new Intent(getActivity(), ActivityZoom.class);
+            intent.putExtra("photoZoom", incidence.getPhoto());
+            startActivity(intent);
+        }
+    }
+
+    private void closeText(TextView txv) {
+        txv.setMaxLines(2);
+        txv.setEllipsize(TextUtils.TruncateAt.END);
     }
 
     private void createMenu() {
@@ -221,15 +267,11 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         MenuObject author = new MenuObject(getString(R.string.sort_author));
         author.setResource(R.drawable.face);
 
-        MenuObject keys = new MenuObject(getString(R.string.sort_chronologically));
-        keys.setResource(R.drawable.sort);
-
         List<MenuObject> menuObjects = new ArrayList<>();
         menuObjects.add(close);
         menuObjects.add(title);
         menuObjects.add(date);
         menuObjects.add(author);
-        menuObjects.add(keys);
 
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize(actionBarHeight);
@@ -256,9 +298,6 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
                     case 3:
                         sortAuthor(authorSort);
                         break;
-                    case 4:
-                        resetSort();
-                        break;
                 }
             }
         });
@@ -266,7 +305,6 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
 
     private void deleteResponse(int position) {
         presenterIncidence.deleteIncidence(adpIncidence.getItem(position));
-        incidenceList.smoothCloseMenu();
     }
 
     private void loadingDialogCreate() {
@@ -295,16 +333,10 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         }
     }
 
-    private void resetSort() {
-        authorSort = false;
-        dateSort = false;
-        titleSort = false;
-        adpIncidence.sort(new Comparator<PoIncidence>() {
-            @Override
-            public int compare(PoIncidence o1, PoIncidence o2) {
-                return (int) (o1.getKey() - o2.getKey());
-            }
-        });
+    private void openText(TextView txv, String txt) {
+        txv.setMaxLines(Integer.MAX_VALUE);
+        txv.setEllipsize(null);
+        txv.setText(txt);
     }
 
     private void sendEmail() {
@@ -394,73 +426,6 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
             });
         }
         this.titleSort = !titleSort;
-    }
-
-    private void swipeMenuInstance() {
-        SwipeMenuCreator menuCreator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.white);
-                editItem.setTitle(getString(R.string.swipeMenuEdit));
-                editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.BLACK);
-                editItem.setIcon(R.drawable.tooltip_edit);
-                editItem.setWidth(160);
-                menu.addMenuItem(editItem);
-
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.white);
-                deleteItem.setTitle(getString(R.string.swipeMenuDelete));
-                deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.BLACK);
-                deleteItem.setIcon(R.drawable.delete_empty);
-                deleteItem.setWidth(160);
-                menu.addMenuItem(deleteItem);
-
-                SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.white);
-                reportItem.setTitle(getString(R.string.swipeMenuReport));
-                reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.BLACK);
-                reportItem.setIcon(R.drawable.alert_decagram);
-                reportItem.setWidth(160);
-                menu.addMenuItem(reportItem);
-            }
-        };
-        incidenceList.setMenuCreator(menuCreator);
-        incidenceList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        incidenceList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
-                PoIncidence incidence = adpIncidence.getItem(position);
-                switch (index) {
-                    case 0:
-                        if (incidence != null) {
-                            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                callback.sendIncidence(incidence);
-                                incidenceList.smoothCloseMenu();
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 1:
-                        if (incidence != null) {
-                            if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(incidence, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 2:
-                        sendEmail();
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     private void updateList(List<PoIncidence> list) {

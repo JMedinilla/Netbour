@@ -8,16 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +26,7 @@ import butterknife.OnItemClick;
 import de.cketti.mailto.EmailIntentBuilder;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_adapter.AdpMeeting;
+import jvm.ncatz.netbour.pck_adapter.IAdapter;
 import jvm.ncatz.netbour.pck_interface.FrgBack;
 import jvm.ncatz.netbour.pck_interface.FrgLists;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
@@ -36,16 +34,26 @@ import jvm.ncatz.netbour.pck_pojo.PoMeeting;
 import jvm.ncatz.netbour.pck_pojo.PoUser;
 import jvm.ncatz.netbour.pck_presenter.PresenterMeetingImpl;
 
-public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
+public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, IAdapter, IAdapter.IMeeting {
 
     @BindView(R.id.fragListMeeting_list)
-    SwipeMenuListView meetingList;
+    ListView meetingList;
     @BindView(R.id.fragListMeeting_empty)
     TextView meetingEmpty;
 
     @OnItemClick(R.id.fragListMeeting_list)
-    public void itemClick(int position) {
-        //
+    public void itemClick(View view, int position) {
+        TextView txv = (TextView) view.findViewById(R.id.adapterMeeting_txtDescription);
+        PoMeeting meeting = adpMeeting.getItem(position);
+
+        if (txv != null && meeting != null) {
+            String txt = txv.getText().toString();
+            if (txv.getMaxLines() == 2) {
+                openText(txv, txt);
+            } else {
+                closeText(txv);
+            }
+        }
     }
 
     private AdpMeeting adpMeeting;
@@ -83,7 +91,7 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         loadingDialogCreate();
 
         List<PoMeeting> list = new ArrayList<>();
-        adpMeeting = new AdpMeeting(getActivity(), list);
+        adpMeeting = new AdpMeeting(getActivity(), list, this, this);
         presenterMeeting = new PresenterMeetingImpl(null, this);
 
         Bundle bundle = getArguments();
@@ -104,7 +112,6 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
         ButterKnife.bind(this, view);
-        swipeMenuInstance();
         return view;
     }
 
@@ -139,8 +146,35 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
     }
 
     @Override
+    public void deleteElement(PoMeeting meeting, int position) {
+        if (meeting != null) {
+            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                showDeleteDialog(meeting, position);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
     public void deletedMeeting(PoMeeting item) {
         callback.deletedMeeting(item);
+    }
+
+    @Override
+    public void editElement(PoMeeting meeting) {
+        if (meeting != null) {
+            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
+                callback.sendMeeting(meeting);
+            } else {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
+        }
+    }
+
+    @Override
+    public void reportElement() {
+        sendEmail();
     }
 
     @Override
@@ -160,9 +194,13 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         updateList(list);
     }
 
+    private void closeText(TextView txv) {
+        txv.setMaxLines(2);
+        txv.setEllipsize(TextUtils.TruncateAt.END);
+    }
+
     private void deleteResponse(int position) {
         presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
-        meetingList.smoothCloseMenu();
     }
 
     private void loadingDialogCreate() {
@@ -189,6 +227,12 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         if (loading != null) {
             loading.show();
         }
+    }
+
+    private void openText(TextView txv, String txt) {
+        txv.setMaxLines(Integer.MAX_VALUE);
+        txv.setEllipsize(null);
+        txv.setText(txt);
     }
 
     private void sendEmail() {
@@ -221,73 +265,6 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList {
         builder.setNegativeButton(android.R.string.no, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void swipeMenuInstance() {
-        SwipeMenuCreator menuCreator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem editItem = new SwipeMenuItem(getActivity());
-                editItem.setBackground(R.color.white);
-                editItem.setTitle(getString(R.string.swipeMenuEdit));
-                editItem.setTitleSize(16);
-                editItem.setTitleColor(Color.BLACK);
-                editItem.setIcon(R.drawable.tooltip_edit);
-                editItem.setWidth(160);
-                menu.addMenuItem(editItem);
-
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
-                deleteItem.setBackground(R.color.white);
-                deleteItem.setTitle(getString(R.string.swipeMenuDelete));
-                deleteItem.setTitleSize(16);
-                deleteItem.setTitleColor(Color.BLACK);
-                deleteItem.setIcon(R.drawable.delete_empty);
-                deleteItem.setWidth(160);
-                menu.addMenuItem(deleteItem);
-
-                SwipeMenuItem reportItem = new SwipeMenuItem(getActivity());
-                reportItem.setBackground(R.color.white);
-                reportItem.setTitle(getString(R.string.swipeMenuReport));
-                reportItem.setTitleSize(16);
-                reportItem.setTitleColor(Color.BLACK);
-                reportItem.setIcon(R.drawable.alert_decagram);
-                reportItem.setWidth(160);
-                menu.addMenuItem(reportItem);
-            }
-        };
-        meetingList.setMenuCreator(menuCreator);
-        meetingList.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-        meetingList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
-                PoMeeting meeting = adpMeeting.getItem(position);
-                switch (index) {
-                    case 0:
-                        if (meeting != null) {
-                            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                callback.sendMeeting(meeting);
-                                meetingList.smoothCloseMenu();
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 1:
-                        if (meeting != null) {
-                            if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                                showDeleteDialog(meeting, position);
-                            } else {
-                                callSnack.sendSnack(getString(R.string.no_permission));
-                            }
-                        }
-                        break;
-                    case 2:
-                        sendEmail();
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     private void updateList(List<PoMeeting> list) {

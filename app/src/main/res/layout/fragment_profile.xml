@@ -48,7 +48,7 @@
             android:drawableStart="@drawable/email"
             android:enabled="false"
             android:hint="@string/fragFormUserEmail"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:textColor="@color/black"
             android:textColorHint="@color/grey_600" />
     </com.wrapp.floatlabelededittext.FloatLabeledEditText>
@@ -106,7 +106,7 @@
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/cellphone_android"
             android:hint="@string/fragFormUserPhone"
-            android:inputType="text"
+            android:inputType="phone"
             android:textColor="@color/black"
             android:textColorHint="@color/grey_600" />
     </com.wrapp.floatlabelededittext.FloatLabeledEditText>

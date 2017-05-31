@@ -42,7 +42,8 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                         false, category,
                         currentTime, currentTime,
                         email, name,
-                        fragFormEntryDescription.getText().toString(), fragFormEntryTitle.getText().toString()
+                        fragFormEntryDescription.getText().toString().replaceAll("\\s+", " ").trim(),
+                        fragFormEntryTitle.getText().toString().replaceAll("\\s+", " ").trim()
                 );
                 presenterEntry.validateEntry(entry);
                 break;
@@ -139,7 +140,7 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                 fragFormEntryTitle.setError(getString(R.string.ERROR_SHORT_6));
                 break;
             case PresenterEntry.ERROR_TITLE_LONG:
-                fragFormEntryTitle.setError(getString(R.string.ERROR_LONG_20));
+                fragFormEntryTitle.setError(getString(R.string.ERROR_LONG_36));
                 break;
             case PresenterEntry.ERROR_DESCRIPTION_EMPTY:
                 fragFormEntryDescription.setError(getString(R.string.ERROR_EMPTY));

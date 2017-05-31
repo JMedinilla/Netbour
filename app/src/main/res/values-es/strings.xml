@@ -38,7 +38,7 @@
     <string name="app_name">Netbour</string>
     <string name="app_repository_sub">/JMedinilla/Netbour</string>
     <string name="app_repository_title">Netbour</string>
-    <string name="app_version_sub">0.1</string>
+    <string name="app_version_sub">0.8</string>
     <string name="app_version_title">Versión</string>
     <string name="author_email_sub">Haz click para enviar un correo</string>
     <string name="author_email_subject">Cuéntame algo</string>
@@ -192,4 +192,22 @@
     <string name="gallery_denied_message">El permiso para leer el almacenamiento ha sido denegado, por lo que esta funcionalidad está desactivada. Para cambiar esto ve a los ajustes del teléfono, sección de aplicaciones, y elige Netbour para conceder el permiso desde ahí</string>
     <string name="no_profile_title">Error</string>
     <string name="no_profile_message">No se ha podido encontrar el perfil, vuelve a intentarlo en unos momentos</string>
+    <string name="ERROR_LONG_36">Demasiado largo (máx 36)</string>
+    <string name="com_instance">comunidad</string>
+    <string name="doc_instance">documento</string>
+    <string name="ent_instance">entrada</string>
+    <string name="groupOptions_Menu">Menú principal</string>
+    <string name="inc_instance">incidencia</string>
+    <string name="mee_instance">junta</string>
+    <string name="phone_abv">Tlf.</string>
+    <string name="swipeMenuCode">Seleccionar código</string>
+    <string name="swipeMenuCodeOpen">Pulsa este elemento para abrir el documento</string>
+    <string name="swipeMenuCodeSub">Cambiar código a:</string>
+    <string name="swipeMenuDeleteSub">Eliminar</string>
+    <string name="swipeMenuEditSub">Modificar la información de este/a</string>
+    <string name="swipeMenuOpen">Abrir documento</string>
+    <string name="swipeMenuReportSub">Informa de esto a los administradores</string>
+    <string name="swipeMenuZoom">Ampliar</string>
+    <string name="swipeMenuZoomSub">Pulsa este elemento para ampliar la imagen</string>
+    <string name="use_instance">usuario</string>
 </resources>

@@ -85,7 +85,7 @@ public class PresenterEntryImpl implements PresenterEntry, InteractorEntry.Liste
         } else if (entry.getTitle().length() < 6) {
             error = true;
             viewForm.validationResponse(entry, ERROR_TITLE_SHORT);
-        } else if (entry.getTitle().length() > 20) {
+        } else if (entry.getTitle().length() > 36) {
             error = true;
             viewForm.validationResponse(entry, ERROR_TITLE_LONG);
         }

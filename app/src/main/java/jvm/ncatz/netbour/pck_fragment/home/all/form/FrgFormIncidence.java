@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -63,8 +64,8 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 PoIncidence incidence = new PoIncidence(
                         false, currentTime,
                         currentTime, email,
-                        name, fragFormIncidenceDescription.getText().toString(),
-                        "", fragFormIncidenceTitle.getText().toString()
+                        name, fragFormIncidenceDescription.getText().toString().replaceAll("\\s+", " ").trim(),
+                        "", fragFormIncidenceTitle.getText().toString().replaceAll("\\s+", " ").trim()
                 );
                 presenterIncidence.validateIncidence(incidence);
                 break;
@@ -233,7 +234,7 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                 fragFormIncidenceTitle.setError(getString(R.string.ERROR_SHORT_6));
                 break;
             case PresenterIncidence.ERROR_TITLE_LONG:
-                fragFormIncidenceTitle.setError(getString(R.string.ERROR_LONG_20));
+                fragFormIncidenceTitle.setError(getString(R.string.ERROR_LONG_36));
                 break;
             case PresenterIncidence.ERROR_DESCRIPTION_EMPTY:
                 fragFormIncidenceDescription.setError(getString(R.string.ERROR_EMPTY));
@@ -289,10 +290,8 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
 
     private void requestImage() {
         if (!updateMode) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.image_pick)), PHOTO_PICKER);
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, PHOTO_PICKER);
         } else {
             Toast.makeText(getActivity(), R.string.edit_photo, Toast.LENGTH_SHORT).show();
         }
