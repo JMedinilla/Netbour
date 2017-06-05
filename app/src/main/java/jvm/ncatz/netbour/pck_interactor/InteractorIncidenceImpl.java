@@ -45,20 +45,26 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
                         if (u != null) {
                             setIncidence(incidence, code, u);
                         }
-                        listener.endImagePushSuccess();
+                        if (listener != null) {
+                            listener.endImagePushSuccess();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        listener.endImagePushError();
+                        if (listener != null) {
+                            listener.endImagePushError();
+                        }
                     }
                 })
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                        listener.setImageProgress(progress);
+                        if (listener != null) {
+                            listener.setImageProgress(progress);
+                        }
                     }
                 });
     }
@@ -72,7 +78,9 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
     public void deleteIncidence(PoIncidence item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("incidences").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(true);
-        listener.deletedIncidence(item);
+        if (listener != null) {
+            listener.deletedIncidence(item);
+        }
     }
 
     @Override
@@ -87,7 +95,9 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("incidences").child(String.valueOf(incidence.getKey()));
         databaseReference.child("description").setValue(incidence.getDescription());
         databaseReference.child("title").setValue(incidence.getTitle());
-        listener.editedIncidence();
+        if (listener != null) {
+            listener.editedIncidence();
+        }
     }
 
     @Override
@@ -106,18 +116,26 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
                         }
                     }
                     if (list.size() > 0) {
-                        listener.returnList(list);
+                        if (listener != null) {
+                            listener.returnList(list);
+                        }
                     } else {
-                        listener.returnListEmpty();
+                        if (listener != null) {
+                            listener.returnListEmpty();
+                        }
                     }
                 } else {
-                    listener.returnListEmpty();
+                    if (listener != null) {
+                        listener.returnListEmpty();
+                    }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listener.returnListEmpty();
+                if (listener != null) {
+                    listener.returnListEmpty();
+                }
             }
         };
     }
@@ -126,6 +144,8 @@ public class InteractorIncidenceImpl implements InteractorIncidence {
         incidence.setPhoto(u.toString());
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("incidences").child(String.valueOf(incidence.getKey()));
         databaseReference.setValue(incidence);
-        listener.addedIncidence();
+        if (listener != null) {
+            listener.addedIncidence();
+        }
     }
 }

@@ -93,7 +93,8 @@ public class AdpUser extends ArrayAdapter<PoUser> {
             convertView.setTag(holder);
         }
         PoUser user = getItem(position);
-        if (user != null) {
+        if (user != null
+                ) {
             Glide.with(context).load(user.getPhoto()).asBitmap().error(R.drawable.glide_error)
                     .listener(new RequestListener<String, Bitmap>() {
                         @Override
@@ -138,7 +139,9 @@ public class AdpUser extends ArrayAdapter<PoUser> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callZoom.zoomImage(position);
+                            if (callZoom != null) {
+                                callZoom.zoomImage(position);
+                            }
                         }
                     });
             HamButton.Builder builderEdit = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -148,7 +151,9 @@ public class AdpUser extends ArrayAdapter<PoUser> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callUser.editElement(getItem(position));
+                            if (callUser != null) {
+                                callUser.editElement(getItem(position));
+                            }
                         }
                     });
             HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -158,7 +163,9 @@ public class AdpUser extends ArrayAdapter<PoUser> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callUser.deleteElement(getItem(position), position);
+                            if (callUser != null) {
+                                callUser.deleteElement(getItem(position), position);
+                            }
                         }
                     });
             HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -168,7 +175,9 @@ public class AdpUser extends ArrayAdapter<PoUser> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callAdapter.reportElement();
+                            if (callAdapter != null) {
+                                callAdapter.reportElement();
+                            }
                         }
                     });
             holder.boomMenuButton.addBuilder(builderZoom);

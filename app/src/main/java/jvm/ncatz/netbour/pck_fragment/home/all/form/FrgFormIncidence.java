@@ -32,7 +32,6 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterIncidence;
@@ -50,8 +49,6 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
     EditText fragFormIncidenceTitle;
     @BindView(R.id.fragFormIncidenceDescription)
     EditText fragFormIncidenceDescription;
-    @BindView(R.id.fragFormIncidenceSave)
-    FButton fragFormIncidenceSave;
 
     @OnClick({R.id.fragFormIncidenceImage, R.id.fragFormIncidenceSave})
     public void onViewClicked(View view) {
@@ -67,7 +64,9 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                         name, fragFormIncidenceDescription.getText().toString().replaceAll("\\s+", " ").trim(),
                         "", fragFormIncidenceTitle.getText().toString().replaceAll("\\s+", " ").trim()
                 );
-                presenterIncidence.validateIncidence(incidence);
+                if (presenterIncidence != null) {
+                    presenterIncidence.validateIncidence(incidence);
+                }
                 break;
         }
     }
@@ -187,12 +186,16 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
 
     @Override
     public void addedIncidence() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
     public void editedIncidence() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
@@ -221,7 +224,9 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
                     } else {
                         loadingImageDialogCreate();
                         loadingImageDialogShow();
-                        presenterIncidence.addIncidence(incidence, code, photoUri);
+                        if (presenterIncidence != null) {
+                            presenterIncidence.addIncidence(incidence, code, photoUri);
+                        }
                     }
                 } else {
                     Toast.makeText(getActivity(), R.string.photo_upload, Toast.LENGTH_SHORT).show();
@@ -252,7 +257,9 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
         updateItem.setPhoto(incidence.getPhoto());
         updateItem.setTitle(incidence.getTitle());
         updateItem.setDescription(incidence.getDescription());
-        presenterIncidence.editIncidence(updateItem, code);
+        if (presenterIncidence != null) {
+            presenterIncidence.editIncidence(updateItem, code);
+        }
     }
 
     private void loadingImageDialogCreate() {
@@ -352,7 +359,9 @@ public class FrgFormIncidence extends Fragment implements PresenterIncidence.Vie
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            callback.nothingChanged();
+            if (callback != null) {
+                callback.nothingChanged();
+            }
         }
     }
 }

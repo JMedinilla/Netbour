@@ -24,6 +24,8 @@ public class PresenterHomeImpl implements PresenterHome {
 
     private PresenterHome.Activity activity;
 
+    private boolean notFound;
+
     public PresenterHomeImpl(PresenterHome.Activity activity) {
         this.activity = activity;
     }
@@ -40,20 +42,25 @@ public class PresenterHomeImpl implements PresenterHome {
                         PoUser user = snapshot.getValue(PoUser.class);
                         list.add(user.getEmail());
                     }
-                    activity.getAdminEmailsResponse(list);
+                    if (activity != null) {
+                        activity.getAdminEmailsResponse(list);
+                    }
                 } else {
-                    activity.getAdminEmailsResponse(null);
+                    if (activity != null) {
+                        activity.getAdminEmailsResponse(null);
+                    }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                activity.getAdminEmailsResponse(null);
+                if (activity != null) {
+                    activity.getAdminEmailsResponse(null);
+                }
             }
         });
     }
 
-    private boolean notFound;
 
     @Override
     public void getCurrentUser() {
@@ -70,21 +77,29 @@ public class PresenterHomeImpl implements PresenterHome {
                             if (!us.isDeleted()) {
                                 if (us.getEmail().equals(user.getEmail())) {
                                     notFound = false;
-                                    activity.getCurrentUserResponseUser(us.getCommunity(), us.getName(), us.getPhoto(), us.getEmail(), us.getCategory());
+                                    if (activity != null) {
+                                        activity.getCurrentUserResponseUser(us.getCommunity(), us.getName(), us.getPhoto(), us.getEmail(), us.getCategory());
+                                    }
                                 }
                             }
                         }
                         if (notFound) {
-                            activity.getCurrentUserResponseClose();
+                            if (activity != null) {
+                                activity.getCurrentUserResponseClose();
+                            }
                         }
                     } else {
-                        activity.getCurrentUserResponseClose();
+                        if (activity != null) {
+                            activity.getCurrentUserResponseClose();
+                        }
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    activity.getCurrentUserResponseFailure();
+                    if (activity != null) {
+                        activity.getCurrentUserResponseFailure();
+                    }
                 }
             });
         }
@@ -95,7 +110,9 @@ public class PresenterHomeImpl implements PresenterHome {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                 .getReference().child("communities").child(item.getCode());
         databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
+        if (activity != null) {
+            activity.reInsertResponse();
+        }
     }
 
     @Override
@@ -103,7 +120,9 @@ public class PresenterHomeImpl implements PresenterHome {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                 .getReference().child("communities").child(actual_code).child("documents").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
+        if (activity != null) {
+            activity.reInsertResponse();
+        }
     }
 
     @Override
@@ -111,7 +130,9 @@ public class PresenterHomeImpl implements PresenterHome {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                 .getReference().child("communities").child(actual_code).child("entries").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
+        if (activity != null) {
+            activity.reInsertResponse();
+        }
     }
 
     @Override
@@ -119,7 +140,9 @@ public class PresenterHomeImpl implements PresenterHome {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                 .getReference().child("communities").child(actual_code).child("incidences").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
+        if (activity != null) {
+            activity.reInsertResponse();
+        }
     }
 
     @Override
@@ -127,7 +150,9 @@ public class PresenterHomeImpl implements PresenterHome {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                 .getReference().child("communities").child(actual_code).child("meetings").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
+        if (activity != null) {
+            activity.reInsertResponse();
+        }
     }
 
     @Override
@@ -135,6 +160,8 @@ public class PresenterHomeImpl implements PresenterHome {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                 .getReference().child("users").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(false);
-        activity.reInsertResponse();
+        if (activity != null) {
+            activity.reInsertResponse();
+        }
     }
 }

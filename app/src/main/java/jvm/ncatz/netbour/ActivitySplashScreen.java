@@ -20,7 +20,7 @@ import jvm.ncatz.netbour.pck_pojo.PoUser;
 
 public class ActivitySplashScreen extends AppCompatActivity {
 
-    private static final int SPLASH_DELAY = 1000;
+    private static final int SPLASH_DELAY = 600;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

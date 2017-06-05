@@ -115,7 +115,9 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
             String code = bundle.getString("comcode");
             userEmail = bundle.getString("userEmail");
             userCategory = bundle.getInt("userCategory");
-            presenterDocument.instanceFirebase(code);
+            if (presenterDocument != null) {
+                presenterDocument.instanceFirebase(code);
+            }
             ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
@@ -145,15 +147,21 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
         super.onStart();
         loadingDialogShow();
         if (userCategory == PoUser.GROUP_ADMIN || userCategory == PoUser.GROUP_PRESIDENT) {
-            callbackBack.backFromForm();
+            if (callbackBack != null) {
+                callbackBack.backFromForm();
+            }
         }
-        presenterDocument.attachFirebase();
+        if (presenterDocument != null) {
+            presenterDocument.attachFirebase();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterDocument.dettachFirebase();
+        if (presenterDocument != null) {
+            presenterDocument.dettachFirebase();
+        }
         loadingDialogHide();
     }
 
@@ -187,23 +195,31 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
             if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                 showDeleteDialog(document, position);
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
 
     @Override
     public void deletedDocument(PoDocument item) {
-        callback.deletedDocument(item);
+        if (callback != null) {
+            callback.deletedDocument(item);
+        }
     }
 
     @Override
     public void editElement(PoDocument document) {
         if (document != null) {
             if (userEmail.equals(document.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                callback.sendDocument(document);
+                if (callback != null) {
+                    callback.sendDocument(document);
+                }
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
@@ -292,7 +308,9 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
     }
 
     private void deleteResponse(int position) {
-        presenterDocument.deleteDocument(adpDocument.getItem(position));
+        if (presenterDocument != null) {
+            presenterDocument.deleteDocument(adpDocument.getItem(position));
+        }
     }
 
     private void loadingDialogCreate() {

@@ -23,105 +23,129 @@ public class PresenterCommunityImpl implements PresenterCommunity, InteractorCom
 
     @Override
     public void addCommunity(PoCommunity community) {
-        interactorCommunity.addCommunity(community);
+        if (interactorCommunity != null && community != null) {
+            interactorCommunity.addCommunity(community);
+        }
     }
 
     @Override
     public void addedCommunity() {
-        viewForm.addedCommunity();
+        if (viewForm != null) {
+            viewForm.addedCommunity();
+        }
     }
 
     @Override
     public void attachFirebase() {
-        interactorCommunity.attachFirebase();
+        if (interactorCommunity != null) {
+            interactorCommunity.attachFirebase();
+        }
     }
 
     @Override
     public void deleteCommunity(PoCommunity item) {
-        interactorCommunity.deleteCommunity(item);
+        if (interactorCommunity != null && item != null) {
+            interactorCommunity.deleteCommunity(item);
+        }
     }
 
     @Override
     public void deletedCommunity(PoCommunity item) {
-        viewList.deletedCommunity(item);
+        if (viewList != null && item != null) {
+            viewList.deletedCommunity(item);
+        }
     }
 
     @Override
     public void dettachFirebase() {
-        interactorCommunity.dettachFirebase();
+        if (interactorCommunity != null) {
+            interactorCommunity.dettachFirebase();
+        }
     }
 
     @Override
     public void editCommunity(PoCommunity community) {
-        interactorCommunity.editCommunity(community);
+        if (interactorCommunity != null && community != null) {
+            interactorCommunity.editCommunity(community);
+        }
     }
 
     @Override
     public void editedCommunity() {
-        viewForm.editedCommunity();
+        if (viewForm != null) {
+            viewForm.editedCommunity();
+        }
     }
 
     @Override
     public void instanceFirebase() {
-        interactorCommunity.instanceFirebase();
+        if (interactorCommunity != null) {
+            interactorCommunity.instanceFirebase();
+        }
     }
 
     @Override
     public void returnList(List<PoCommunity> list) {
-        viewList.returnList(list);
+        if (viewList != null && list != null) {
+            viewList.returnList(list);
+        }
     }
 
     @Override
     public void returnListEmpty() {
-        viewList.returnListEmpty();
+        if (viewList != null) {
+            viewList.returnListEmpty();
+        }
     }
 
     @Override
     public void validateCommunity(PoCommunity community) {
-        boolean error = false;
-        if (TextUtils.equals("", community.getCode())) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_CODE_EMPTY);
-        } else if (community.getCode().length() < 6) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_CODE_SHORT);
-        } else if (community.getCode().length() > 24) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_CODE_LONG);
-        }
-        if (TextUtils.equals("", community.getPostal())) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_POSTAL_EMPTY);
-        } else if (community.getPostal().length() < 5) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_POSTAL_SHORT);
-        } else if (community.getPostal().length() > 5) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_POSTAL_LONG);
-        }
-        if (TextUtils.equals("", community.getProvince())) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_PROVINCE_EMPTY);
-        }
-        if (TextUtils.equals("", community.getMunicipality())) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_MUNICIPALITY_EMPTY);
-        }
-        if (TextUtils.equals("", community.getNumber())) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_NUMBER_EMPTY);
-        }
-        if (community.getFlats() == 0) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_FLATS_EMPTY);
-        }
-        if (TextUtils.equals("", community.getStreet())) {
-            error = true;
-            viewForm.validationResponse(community, ERROR_STREET_EMPTY);
-        }
+        if (viewForm != null && community != null) {
+            boolean error = false;
+            if (TextUtils.equals("", community.getCode())) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_CODE_EMPTY);
+            } else if (community.getCode().length() < 6) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_CODE_SHORT);
+            } else if (community.getCode().length() > 24) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_CODE_LONG);
+            }
+            if (TextUtils.equals("", community.getPostal())) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_POSTAL_EMPTY);
+            } else if (community.getPostal().length() < 5) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_POSTAL_SHORT);
+            } else if (community.getPostal().length() > 5) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_POSTAL_LONG);
+            }
+            if (TextUtils.equals("", community.getProvince())) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_PROVINCE_EMPTY);
+            }
+            if (TextUtils.equals("", community.getMunicipality())) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_MUNICIPALITY_EMPTY);
+            }
+            if (TextUtils.equals("", community.getNumber())) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_NUMBER_EMPTY);
+            }
+            if (community.getFlats() == 0) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_FLATS_EMPTY);
+            }
+            if (TextUtils.equals("", community.getStreet())) {
+                error = true;
+                viewForm.validationResponse(community, ERROR_STREET_EMPTY);
+            }
 
-        if (!error) {
-            viewForm.validationResponse(community, SUCCESS);
+            if (!error) {
+                viewForm.validationResponse(community, SUCCESS);
+            }
         }
     }
 }

@@ -33,7 +33,9 @@ public class InteractorUserImpl implements InteractorUser {
     public void deleteUser(PoUser item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(true);
-        listener.deletedUser(item);
+        if (listener != null) {
+            listener.deletedUser(item);
+        }
     }
 
     @Override
@@ -51,7 +53,9 @@ public class InteractorUserImpl implements InteractorUser {
         databaseReference.child("floor").setValue(user.getFloor());
         databaseReference.child("name").setValue(user.getName());
         databaseReference.child("phone").setValue(user.getPhone());
-        listener.editedUser();
+        if (listener != null) {
+            listener.editedUser();
+        }
     }
 
     @Override
@@ -69,18 +73,26 @@ public class InteractorUserImpl implements InteractorUser {
                         }
                     }
                     if (list.size() > 0) {
-                        listener.returnList(list);
+                        if (listener != null) {
+                            listener.returnList(list);
+                        }
                     } else {
-                        listener.returnListEmpty();
+                        if (listener != null) {
+                            listener.returnListEmpty();
+                        }
                     }
                 } else {
-                    listener.returnListEmpty();
+                    if (listener != null) {
+                        listener.returnListEmpty();
+                    }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listener.returnListEmpty();
+                if (listener != null) {
+                    listener.returnListEmpty();
+                }
             }
         };
     }

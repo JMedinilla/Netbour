@@ -123,7 +123,9 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
             }
-            presenterIncidence.instanceFirebase(code);
+            if (presenterIncidence != null) {
+                presenterIncidence.instanceFirebase(code);
+            }
         }
 
         createMenu();
@@ -149,14 +151,20 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     public void onStart() {
         super.onStart();
         loadingDialogShow();
-        callbackBack.backFromForm();
-        presenterIncidence.attachFirebase();
+        if (callbackBack != null) {
+            callbackBack.backFromForm();
+        }
+        if (presenterIncidence != null) {
+            presenterIncidence.attachFirebase();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterIncidence.dettachFirebase();
+        if (presenterIncidence != null) {
+            presenterIncidence.dettachFirebase();
+        }
         loadingDialogHide();
     }
 
@@ -190,23 +198,31 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
             if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                 showDeleteDialog(incidence, position);
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
 
     @Override
     public void deletedIncidence(PoIncidence item) {
-        callback.deletedIncidence(item);
+        if (callback != null) {
+            callback.deletedIncidence(item);
+        }
     }
 
     @Override
     public void editElement(PoIncidence incidence) {
         if (incidence != null) {
             if (userEmail.equals(incidence.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                callback.sendIncidence(incidence);
+                if (callback != null) {
+                    callback.sendIncidence(incidence);
+                }
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
@@ -304,7 +320,9 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
     }
 
     private void deleteResponse(int position) {
-        presenterIncidence.deleteIncidence(adpIncidence.getItem(position));
+        if (presenterIncidence != null) {
+            presenterIncidence.deleteIncidence(adpIncidence.getItem(position));
+        }
     }
 
     private void loadingDialogCreate() {

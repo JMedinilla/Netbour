@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
@@ -21,7 +20,6 @@ import com.codetroopers.betterpickers.datepicker.DatePickerDialogFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterMeeting;
@@ -32,12 +30,8 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
 
     @BindView(R.id.fragFormMeetingDate)
     EditText fragFormMeetingDate;
-    @BindView(R.id.fragFormMeetingPicker)
-    ImageButton fragFormMeetingPicker;
     @BindView(R.id.fragFormMeetingDescription)
     EditText fragFormMeetingDescription;
-    @BindView(R.id.fragFormMeetingSave)
-    FButton fragFormMeetingSave;
 
     @OnClick({R.id.fragFormMeetingPicker, R.id.fragFormMeetingSave})
     public void onViewClicked(View view) {
@@ -51,7 +45,9 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
                         email, fragFormMeetingDate.getText().toString().replaceAll("\\s+", " ").trim(),
                         fragFormMeetingDescription.getText().toString().replaceAll("\\s+", " ").trim()
                 );
-                presenterMeeting.validateMeeting(meeting);
+                if (presenterMeeting != null) {
+                    presenterMeeting.validateMeeting(meeting);
+                }
                 break;
         }
     }
@@ -109,17 +105,23 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
     @Override
     public void onDetach() {
         super.onDetach();
-        callback = null;
+        if (callback != null) {
+            callback = null;
+        }
     }
 
     @Override
     public void addedMeeting() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
     public void editedMeeting() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
@@ -129,7 +131,9 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
                 if (updateMode) {
                     showEditDialog(meeting);
                 } else {
-                    presenterMeeting.addMeeting(meeting, code);
+                    if (presenterMeeting != null) {
+                        presenterMeeting.addMeeting(meeting, code);
+                    }
                 }
                 break;
             case PresenterMeeting.ERROR_DATE_EMPTY:
@@ -150,7 +154,9 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
     private void editResponse(PoMeeting meeting) {
         updateItem.setDate(meeting.getDate());
         updateItem.setDescription(meeting.getDescription());
-        presenterMeeting.editMeeting(updateItem, code);
+        if (presenterMeeting != null) {
+            presenterMeeting.editMeeting(updateItem, code);
+        }
     }
 
     private void openDatePicker() {
@@ -213,7 +219,9 @@ public class FrgFormMeeting extends Fragment implements PresenterMeeting.ViewFor
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            callback.nothingChanged();
+            if (callback != null) {
+                callback.nothingChanged();
+            }
         }
     }
 }

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceAlignmentEnum;
@@ -39,8 +38,6 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
     private Context context;
 
     static class ViewHolder {
-        @BindView(R.id.adapterDocument_imgPhoto)
-        ImageView adapterDocumentImgPhoto;
         @BindView(R.id.adapterDocument_txtTitle)
         TextView adapterDocumentTxtTitle;
         @BindView(R.id.adapterDocument_txtDescription)
@@ -52,8 +49,6 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
             ButterKnife.bind(this, view);
         }
     }
-
-    private ViewHolder holder;
 
     public AdpDocument(@NonNull Context context, List<PoDocument> list, IAdapter callAdapter, IAdapter.IDocument callDocument, IAdapter.IWeb callWeb) {
         super(context, R.layout.adapter_document, list);
@@ -73,6 +68,7 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -81,7 +77,7 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
             convertView.setTag(holder);
         }
         final PoDocument document = getItem(position);
-        if (document != null) {
+        if (document != null && holder != null) {
             holder.adapterDocumentTxtTitle.setText(document.getTitle());
             holder.adapterDocumentTxtDescription.setText(document.getDescription());
             holder.adapterDocumentTxtDescription.setMaxLines(2);
@@ -100,7 +96,9 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callWeb.openLink(document.getLink());
+                            if (callWeb != null) {
+                                callWeb.openLink(document.getLink());
+                            }
                         }
                     });
             HamButton.Builder builderEdit = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -110,7 +108,9 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callDocument.editElement(getItem(position));
+                            if (callDocument != null) {
+                                callDocument.editElement(getItem(position));
+                            }
                         }
                     });
             HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -120,7 +120,9 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callDocument.deleteElement(getItem(position), position);
+                            if (callDocument != null) {
+                                callDocument.deleteElement(getItem(position), position);
+                            }
                         }
                     });
             HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -130,7 +132,9 @@ public class AdpDocument extends ArrayAdapter<PoDocument> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callAdapter.reportElement();
+                            if (callAdapter != null) {
+                                callAdapter.reportElement();
+                            }
                         }
                     });
             holder.boomMenuButton.addBuilder(builderOpen);

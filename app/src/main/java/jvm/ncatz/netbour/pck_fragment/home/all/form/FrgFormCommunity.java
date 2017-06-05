@@ -17,7 +17,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterCommunity;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
@@ -40,8 +39,6 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
     EditText fragFormCommunityFlats;
     @BindView(R.id.fragFormCommunityStreet)
     EditText fragFormCommunityStreet;
-    @BindView(R.id.fragFormCommunitySave)
-    FButton fragFormCommunitySave;
 
     @OnClick(R.id.fragFormCommunitySave)
     public void onViewClicked() {
@@ -58,7 +55,9 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
                 fragFormCommunityProvince.getText().toString().replaceAll("\\s+", " ").trim(),
                 fragFormCommunityStreet.getText().toString().replaceAll("\\s+", " ").trim()
         );
-        presenterCommunity.validateCommunity(community);
+        if (presenterCommunity != null) {
+            presenterCommunity.validateCommunity(community);
+        }
     }
 
     private PresenterForm callback;
@@ -119,12 +118,16 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
 
     @Override
     public void addedCommunity() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
     public void editedCommunity() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
@@ -134,7 +137,9 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
                 if (updateMode) {
                     showEditDialog(community);
                 } else {
-                    presenterCommunity.addCommunity(community);
+                    if (presenterCommunity != null) {
+                        presenterCommunity.addCommunity(community);
+                    }
                 }
                 break;
             case PresenterCommunity.ERROR_CODE_EMPTY:
@@ -174,7 +179,9 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
     }
 
     private void editResponse(PoCommunity community) {
-        presenterCommunity.editCommunity(community);
+        if (presenterCommunity != null) {
+            presenterCommunity.editCommunity(community);
+        }
     }
 
     private void showEditDialog(final PoCommunity community) {
@@ -271,7 +278,9 @@ public class FrgFormCommunity extends Fragment implements PresenterCommunity.Vie
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            callback.nothingChanged();
+            if (callback != null) {
+                callback.nothingChanged();
+            }
         }
     }
 }

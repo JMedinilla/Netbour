@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -61,8 +60,6 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     EditText frgProfileFloor;
     @BindView(R.id.frgProfileDoor)
     EditText frgProfileDoor;
-    @BindView(R.id.btnSave)
-    ImageButton btnSave;
 
     @OnClick({R.id.btnSave})
     public void onViewClicked(View view) {
@@ -148,7 +145,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PHOTO_PICKER:
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK && data != null) {
                     Uri uri = data.getData();
                     imageConfirmation(uri);
                 }
@@ -213,7 +210,9 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            callback.newImage(us.getPhoto());
+                            if (callback != null) {
+                                callback.newImage(us.getPhoto());
+                            }
                             return false;
                         }
                     })
@@ -281,12 +280,16 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
 
     @Override
     public void updatedValues() {
-        callback.updatedField(getString(R.string.updated_fields));
+        if (callback != null) {
+            callback.updatedField(getString(R.string.updated_fields));
+        }
     }
 
     @Override
     public void updatedImage() {
-        callback.updatedField(getString(R.string.updated_image));
+        if (callback != null) {
+            callback.updatedField(getString(R.string.updated_image));
+        }
     }
 
     private void imageConfirmation(final Uri uri) {

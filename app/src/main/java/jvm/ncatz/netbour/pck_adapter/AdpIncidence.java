@@ -92,7 +92,7 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             convertView.setTag(holder);
         }
         final PoIncidence incidence = getItem(position);
-        if (incidence != null) {
+        if (incidence != null && holder != null) {
             Glide.with(context).load(incidence.getPhoto()).asBitmap().error(R.drawable.glide_error)
                     .listener(new RequestListener<String, Bitmap>() {
                         @Override
@@ -135,7 +135,9 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callZoom.zoomImage(position);
+                            if (callZoom != null) {
+                                callZoom.zoomImage(position);
+                            }
                         }
                     });
             HamButton.Builder builderEdit = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -145,7 +147,9 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callIncidence.editElement(getItem(position));
+                            if (callIncidence != null) {
+                                callIncidence.editElement(getItem(position));
+                            }
                         }
                     });
             HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -155,7 +159,9 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callIncidence.deleteElement(getItem(position), position);
+                            if (callIncidence != null) {
+                                callIncidence.deleteElement(getItem(position), position);
+                            }
                         }
                     });
             HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -165,7 +171,9 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callAdapter.reportElement();
+                            if (callAdapter != null) {
+                                callAdapter.reportElement();
+                            }
                         }
                     });
             holder.boomMenuButton.addBuilder(builderZoom);

@@ -24,99 +24,129 @@ public class PresenterIncidenceImpl implements PresenterIncidence, InteractorInc
 
     @Override
     public void addIncidence(PoIncidence incidence, String code, Uri photoUri) {
-        interactorIncidence.addIncidence(incidence, code, photoUri);
+        if (interactorIncidence != null && incidence != null && code != null && photoUri != null) {
+            interactorIncidence.addIncidence(incidence, code, photoUri);
+        }
     }
 
     @Override
     public void endImagePushError() {
-        viewForm.endImagePushError();
+        if (viewForm != null) {
+            viewForm.endImagePushError();
+        }
     }
 
     @Override
     public void endImagePushSuccess() {
-        viewForm.endImagePushSuccess();
+        if (viewForm != null) {
+            viewForm.endImagePushSuccess();
+        }
     }
 
     @Override
     public void addedIncidence() {
-        viewForm.addedIncidence();
+        if (viewForm != null) {
+            viewForm.addedIncidence();
+        }
     }
 
     @Override
     public void deleteIncidence(PoIncidence item) {
-        interactorIncidence.deleteIncidence(item);
+        if (interactorIncidence != null && item != null) {
+            interactorIncidence.deleteIncidence(item);
+        }
     }
 
     @Override
     public void deletedIncidence(PoIncidence item) {
-        viewList.deletedIncidence(item);
+        if (viewList != null && item != null) {
+            viewList.deletedIncidence(item);
+        }
     }
 
     @Override
     public void dettachFirebase() {
-        interactorIncidence.dettachFirebase();
+        if (interactorIncidence != null) {
+            interactorIncidence.dettachFirebase();
+        }
     }
 
     @Override
     public void attachFirebase() {
-        interactorIncidence.attachFirebase();
+        if (interactorIncidence != null) {
+            interactorIncidence.attachFirebase();
+        }
     }
 
     @Override
     public void editIncidence(PoIncidence incidence, String code) {
-        interactorIncidence.editIncidence(incidence, code);
+        if (interactorIncidence != null && incidence != null && code != null) {
+            interactorIncidence.editIncidence(incidence, code);
+        }
     }
 
     @Override
     public void editedIncidence() {
-        viewForm.editedIncidence();
+        if (viewForm != null) {
+            viewForm.editedIncidence();
+        }
     }
 
     @Override
     public void instanceFirebase(String code) {
-        interactorIncidence.instanceFirebase(code);
+        if (interactorIncidence != null && code != null) {
+            interactorIncidence.instanceFirebase(code);
+        }
     }
 
     @Override
     public void returnList(List<PoIncidence> list) {
-        viewList.returnList(list);
+        if (viewList != null && list != null) {
+            viewList.returnList(list);
+        }
     }
 
     @Override
     public void returnListEmpty() {
-        viewList.returnListEmpty();
+        if (viewList != null) {
+            viewList.returnListEmpty();
+        }
     }
 
     @Override
     public void setImageProgress(double progress) {
-        viewForm.setImageProgress(progress);
+        if (viewForm != null) {
+            viewForm.setImageProgress(progress);
+        }
     }
 
     @Override
     public void validateIncidence(PoIncidence incidence) {
-        boolean error = false;
-        if (TextUtils.equals("", incidence.getTitle())) {
-            error = true;
-            viewForm.validationResponse(incidence, ERROR_TITLE_EMPTY);
-        } else if (incidence.getTitle().length() < 6) {
-            error = true;
-            viewForm.validationResponse(incidence, ERROR_TITLE_SHORT);
-        } else if (incidence.getTitle().length() > 36) {
-            error = true;
-            viewForm.validationResponse(incidence, ERROR_TITLE_LONG);
-        }
-        if (TextUtils.equals("", incidence.getDescription())) {
-            error = true;
-            viewForm.validationResponse(incidence, ERROR_DESCRIPTION_EMPTY);
-        } else if (incidence.getDescription().length() < 0) {
-            error = true;
-            viewForm.validationResponse(incidence, ERROR_DESCRIPTION_SHORT);
-        } else if (incidence.getDescription().length() > 400) {
-            error = true;
-            viewForm.validationResponse(incidence, ERROR_DESCRIPTION_LONG);
-        }
-        if (!error) {
-            viewForm.validationResponse(incidence, SUCCESS);
+        if (viewForm != null && incidence != null) {
+            boolean error = false;
+            if (TextUtils.equals("", incidence.getTitle())) {
+                error = true;
+                viewForm.validationResponse(incidence, ERROR_TITLE_EMPTY);
+            } else if (incidence.getTitle().length() < 6) {
+                error = true;
+                viewForm.validationResponse(incidence, ERROR_TITLE_SHORT);
+            } else if (incidence.getTitle().length() > 36) {
+                error = true;
+                viewForm.validationResponse(incidence, ERROR_TITLE_LONG);
+            }
+            if (TextUtils.equals("", incidence.getDescription())) {
+                error = true;
+                viewForm.validationResponse(incidence, ERROR_DESCRIPTION_EMPTY);
+            } else if (incidence.getDescription().length() < 0) {
+                error = true;
+                viewForm.validationResponse(incidence, ERROR_DESCRIPTION_SHORT);
+            } else if (incidence.getDescription().length() > 400) {
+                error = true;
+                viewForm.validationResponse(incidence, ERROR_DESCRIPTION_LONG);
+            }
+            if (!error) {
+                viewForm.validationResponse(incidence, SUCCESS);
+            }
         }
     }
 }

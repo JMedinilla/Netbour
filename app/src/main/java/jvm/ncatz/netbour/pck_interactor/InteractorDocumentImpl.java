@@ -29,7 +29,9 @@ public class InteractorDocumentImpl implements InteractorDocument {
     public void addDocument(PoDocument document, String code) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(code).child("documents").child(String.valueOf(document.getKey()));
         databaseReference.setValue(document);
-        listener.addedDocument();
+        if (listener != null) {
+            listener.addedDocument();
+        }
     }
 
     @Override
@@ -41,7 +43,9 @@ public class InteractorDocumentImpl implements InteractorDocument {
     public void deleteDocument(PoDocument item) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("communities").child(communityCode).child("documents").child(String.valueOf(item.getKey()));
         databaseReference.child("deleted").setValue(true);
-        listener.deletedDocument(item);
+        if (listener != null) {
+            listener.deletedDocument(item);
+        }
     }
 
     @Override
@@ -57,7 +61,9 @@ public class InteractorDocumentImpl implements InteractorDocument {
         databaseReference.child("description").setValue(document.getDescription());
         databaseReference.child("link").setValue(document.getLink());
         databaseReference.child("title").setValue(document.getTitle());
-        listener.editedDocument();
+        if (listener != null) {
+            listener.editedDocument();
+        }
     }
 
     @Override
@@ -76,18 +82,26 @@ public class InteractorDocumentImpl implements InteractorDocument {
                         }
                     }
                     if (list.size() > 0) {
-                        listener.returnList(list);
+                        if (listener != null) {
+                            listener.returnList(list);
+                        }
                     } else {
-                        listener.returnListEmpty();
+                        if (listener != null) {
+                            listener.returnListEmpty();
+                        }
                     }
                 } else {
-                    listener.returnListEmpty();
+                    if (listener != null) {
+                        listener.returnListEmpty();
+                    }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listener.returnListEmpty();
+                if (listener != null) {
+                    listener.returnListEmpty();
+                }
             }
         };
     }

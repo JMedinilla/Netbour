@@ -103,7 +103,9 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
             }
-            presenterMeeting.instanceFirebase(code);
+            if (presenterMeeting != null) {
+                presenterMeeting.instanceFirebase(code);
+            }
         }
     }
 
@@ -126,14 +128,20 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
     public void onStart() {
         super.onStart();
         loadingDialogShow();
-        callbackBack.backFromForm();
-        presenterMeeting.attachFirebase();
+        if (callbackBack != null) {
+            callbackBack.backFromForm();
+        }
+        if (presenterMeeting != null) {
+            presenterMeeting.attachFirebase();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterMeeting.dettachFirebase();
+        if (presenterMeeting != null) {
+            presenterMeeting.dettachFirebase();
+        }
         loadingDialogHide();
     }
 
@@ -151,7 +159,9 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
             if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                 showDeleteDialog(meeting, position);
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
@@ -165,9 +175,13 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
     public void editElement(PoMeeting meeting) {
         if (meeting != null) {
             if (userEmail.equals(meeting.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                callback.sendMeeting(meeting);
+                if (callback != null) {
+                    callback.sendMeeting(meeting);
+                }
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
@@ -200,7 +214,9 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
     }
 
     private void deleteResponse(int position) {
-        presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
+        if (presenterMeeting != null) {
+            presenterMeeting.deleteMeeting(adpMeeting.getItem(position));
+        }
     }
 
     private void loadingDialogCreate() {

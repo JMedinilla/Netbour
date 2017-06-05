@@ -20,93 +20,117 @@ public class PresenterProfileImpl implements PresenterProfile, InteractorProfile
 
     @Override
     public void attachFirebase() {
-        interactorProfile.attachFirebase();
+        if (interactorProfile != null) {
+            interactorProfile.attachFirebase();
+        }
     }
 
     @Override
     public void dettachFirebase() {
-        interactorProfile.dettachFirebase();
+        if (interactorProfile != null) {
+            interactorProfile.dettachFirebase();
+        }
     }
 
     @Override
     public void instanceFirebase() {
-        interactorProfile.instanceFirebase();
+        if (interactorProfile != null) {
+            interactorProfile.instanceFirebase();
+        }
     }
 
     @Override
     public void pushImage(long key, Uri uri) {
-        interactorProfile.pushImage(key, uri);
+        if (interactorProfile != null && uri != null) {
+            interactorProfile.pushImage(key, uri);
+        }
     }
 
     @Override
     public void pushValues(long key, String name, String phone, String floor, String door) {
-        interactorProfile.pushValues(key, name, phone, floor, door);
+        if (interactorProfile != null && name != null && phone != null && floor != null && door != null) {
+            interactorProfile.pushValues(key, name, phone, floor, door);
+        }
     }
 
     @Override
     public void endImagePushError() {
-        view.endImagePushError();
+        if (view != null) {
+            view.endImagePushError();
+        }
     }
 
     @Override
     public void endImagePushSuccess() {
-        view.endImagePushSuccess();
+        if (view != null) {
+            view.endImagePushSuccess();
+        }
     }
 
     @Override
     public void returnProfileUser(PoUser us) {
-        view.returnProfileUser(us);
+        if (view != null && us != null) {
+            view.returnProfileUser(us);
+        }
     }
 
     @Override
     public void setImageProgress(double bytesTransferred) {
-        view.setImageProgress(bytesTransferred);
+        if (view != null) {
+            view.setImageProgress(bytesTransferred);
+        }
     }
 
     @Override
     public void updatedImage() {
-        view.updatedImage();
+        if (interactorProfile != null) {
+            view.updatedImage();
+        }
     }
 
     @Override
     public void updatedValues() {
-        view.updatedValues();
+        if (view != null) {
+            view.updatedValues();
+        }
     }
 
     @Override
     public void validateValues(String name, String phone, String floor, String door) {
-        boolean error = false;
-        if (TextUtils.equals("", floor)) {
-            error = true;
-            view.validateFlatResponse(ERROR_FLOOR_EMPTY, floor, door);
-        } else {
-            if (TextUtils.equals("", door)) {
+        if (view != null && name != null && phone != null && floor != null && door != null) {
+            boolean error = false;
+            if (TextUtils.equals("", floor)) {
                 error = true;
-                view.validateFlatResponse(ERROR_DOOR_EMPTY, floor, door);
+                view.validateFlatResponse(ERROR_FLOOR_EMPTY, floor, door);
+            } else {
+                if (TextUtils.equals("", door)) {
+                    error = true;
+                    view.validateFlatResponse(ERROR_DOOR_EMPTY, floor, door);
+                }
             }
-        }
-        if (TextUtils.equals("", name)) {
-            error = true;
-            view.validateNameResponse(ERROR_NAME_EMPTY, name);
-        } else if (name.length() < 3) {
-            error = true;
-            view.validateNameResponse(ERROR_NAME_SHORT, name);
-        } else if (name.length() > 24) {
-            error = true;
-            view.validateNameResponse(ERROR_NAME_LONG, name);
-        }
-        if (TextUtils.equals("", phone)) {
-            error = true;
-            view.validatePhoneResponse(ERROR_PHONE_EMPTY, phone);
-        } else if (phone.length() < 9) {
-            error = true;
-            view.validatePhoneResponse(ERROR_PHONE_SHORT, phone);
-        } else if (phone.length() > 9) {
-            error = true;
-            view.validatePhoneResponse(ERROR_PHONE_LONG, phone);
-        }
-        if (!error) {
-            view.validationResponse(name, phone, floor, door);
+            if (TextUtils.equals("", name)) {
+                error = true;
+                view.validateNameResponse(ERROR_NAME_EMPTY, name);
+            } else if (name.length() < 3) {
+                error = true;
+                view.validateNameResponse(ERROR_NAME_SHORT, name);
+            } else if (name.length() > 24) {
+                error = true;
+                view.validateNameResponse(ERROR_NAME_LONG, name);
+            }
+            if (TextUtils.equals("", phone)) {
+                error = true;
+                view.validatePhoneResponse(ERROR_PHONE_EMPTY, phone);
+            } else if (phone.length() < 9) {
+                error = true;
+                view.validatePhoneResponse(ERROR_PHONE_SHORT, phone);
+            } else if (phone.length() > 9) {
+                error = true;
+                view.validatePhoneResponse(ERROR_PHONE_LONG, phone);
+            }
+            if (!error) {
+                view.validationResponse(name, phone, floor, door);
+            }
         }
     }
 }

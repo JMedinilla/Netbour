@@ -916,8 +916,12 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
     private void showMeetings() {
         if (!"".equals(actual_code)) {
             if (fragment_opened != FRAGMENT_LIST_MEETING) {
-                actionButton.setVisibility(View.VISIBLE);
-                actionButton.setImageResource(R.drawable.plus);
+                if (actual_category == PoUser.GROUP_ADMIN || actual_category == PoUser.GROUP_PRESIDENT) {
+                    actionButton.setVisibility(View.VISIBLE);
+                    actionButton.setImageResource(R.drawable.plus);
+                } else {
+                    actionButton.setVisibility(View.INVISIBLE);
+                }
 
                 Bundle bundle = new Bundle();
                 bundle.putString("userEmail", actual_email);

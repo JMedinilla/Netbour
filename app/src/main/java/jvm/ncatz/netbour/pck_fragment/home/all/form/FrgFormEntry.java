@@ -17,7 +17,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterEntry;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
@@ -30,8 +29,6 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
     EditText fragFormEntryTitle;
     @BindView(R.id.fragFormEntryDescription)
     EditText fragFormEntryDescription;
-    @BindView(R.id.fragFormEntrySave)
-    FButton fragFormEntrySave;
 
     @OnClick({R.id.fragFormEntrySave})
     public void onViewClicked(View view) {
@@ -45,7 +42,9 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                         fragFormEntryDescription.getText().toString().replaceAll("\\s+", " ").trim(),
                         fragFormEntryTitle.getText().toString().replaceAll("\\s+", " ").trim()
                 );
-                presenterEntry.validateEntry(entry);
+                if (presenterEntry != null) {
+                    presenterEntry.validateEntry(entry);
+                }
                 break;
         }
     }
@@ -115,12 +114,16 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
 
     @Override
     public void addedEntry() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
     public void editedEntry() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
@@ -130,7 +133,9 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
                 if (updateMode) {
                     showEditDialog(entry);
                 } else {
-                    presenterEntry.addEntry(entry, code);
+                    if (presenterEntry != null) {
+                        presenterEntry.addEntry(entry, code);
+                    }
                 }
                 break;
             case PresenterEntry.ERROR_TITLE_EMPTY:
@@ -158,7 +163,9 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
         updateItem.setTitle(entry.getTitle());
         updateItem.setContent(entry.getContent());
         updateItem.setCategory(entry.getCategory());
-        presenterEntry.editEntry(updateItem, code);
+        if (presenterEntry != null) {
+            presenterEntry.editEntry(updateItem, code);
+        }
     }
 
     private void showEditDialog(final PoEntry entry) {
@@ -207,7 +214,9 @@ public class FrgFormEntry extends Fragment implements PresenterEntry.ViewForm {
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            callback.nothingChanged();
+            if (callback != null) {
+                callback.nothingChanged();
+            }
         }
     }
 }

@@ -58,8 +58,6 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
         }
     }
 
-    private ViewHolder holder;
-
     public AdpEntry(@NonNull Context context, List<PoEntry> list, IAdapter callAdapter, IAdapter.IEntry callEntry) {
         super(context, R.layout.adapter_entry, list);
         this.context = context;
@@ -77,6 +75,7 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -85,7 +84,7 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
             convertView.setTag(holder);
         }
         final PoEntry entry = getItem(position);
-        if (entry != null) {
+        if (entry != null && holder != null) {
             Date date = new Date(entry.getDate());
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
@@ -119,7 +118,9 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callEntry.editElement(getItem(position));
+                            if (callEntry != null) {
+                                callEntry.editElement(getItem(position));
+                            }
                         }
                     });
             HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -129,7 +130,9 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callEntry.deleteElement(getItem(position), position);
+                            if (callEntry != null) {
+                                callEntry.deleteElement(getItem(position), position);
+                            }
                         }
                     });
             HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -139,7 +142,9 @@ public class AdpEntry extends ArrayAdapter<PoEntry> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callAdapter.reportElement();
+                            if (callAdapter != null) {
+                                callAdapter.reportElement();
+                            }
                         }
                     });
             holder.boomMenuButton.addBuilder(builderEdit);

@@ -131,11 +131,15 @@ public class FrgLogin extends Fragment {
                             if (us.getEmail().equals(user.getEmail())) {
                                 if (us.isDeleted()) {
                                     FirebaseAuth.getInstance().signOut();
-                                    callback.deletedUser();
+                                    if (callback != null) {
+                                        callback.deletedUser();
+                                    }
                                 } else {
                                     fragFormLoginSave.setEnabled(false);
                                     fragFormLoginRegister.setEnabled(false);
-                                    callback.userIsLogged();
+                                    if (callback != null) {
+                                        callback.userIsLogged();
+                                    }
                                 }
                             }
                         }
@@ -194,7 +198,9 @@ public class FrgLogin extends Fragment {
                         if (task.isSuccessful()) {
                             checkUser();
                         } else {
-                            callback.logFail();
+                            if (callback != null) {
+                                callback.logFail();
+                            }
                             activateButton();
                         }
                     }

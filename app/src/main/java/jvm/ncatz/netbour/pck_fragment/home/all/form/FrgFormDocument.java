@@ -17,7 +17,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterDocument;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
@@ -32,8 +31,6 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
     EditText fragFormDocumentLink;
     @BindView(R.id.fragFormDocumentDescription)
     EditText fragFormDocumentDescription;
-    @BindView(R.id.fragFormDocumentSave)
-    FButton fragFormDocumentSave;
 
     @OnClick(R.id.fragFormDocumentSave)
     public void onViewClicked() {
@@ -43,7 +40,9 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
                 fragFormDocumentLink.getText().toString().replaceAll("\\s+", " ").trim(),
                 fragFormDocumentTitle.getText().toString().replaceAll("\\s+", " ").trim()
         );
-        presenterDocument.validateDocument(document);
+        if (presenterDocument != null) {
+            presenterDocument.validateDocument(document);
+        }
     }
 
     private PresenterForm callback;
@@ -105,12 +104,16 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
 
     @Override
     public void addedDocument() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
     public void editedDocument() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
@@ -120,7 +123,9 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
                 if (updateMode) {
                     showEditDialog(document);
                 } else {
-                    presenterDocument.addDocument(document, code);
+                    if (presenterDocument != null) {
+                        presenterDocument.addDocument(document, code);
+                    }
                 }
                 break;
             case PresenterDocument.ERROR_TITLE_EMPTY:
@@ -154,7 +159,9 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
         updateItem.setTitle(document.getTitle());
         updateItem.setLink(document.getLink());
         updateItem.setDescription(document.getDescription());
-        presenterDocument.editDocument(updateItem, code);
+        if (presenterDocument != null) {
+            presenterDocument.editDocument(updateItem, code);
+        }
     }
 
     private void showEditDialog(final PoDocument document) {
@@ -215,7 +222,9 @@ public class FrgFormDocument extends Fragment implements PresenterDocument.ViewF
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            callback.nothingChanged();
+            if (callback != null) {
+                callback.nothingChanged();
+            }
         }
     }
 }

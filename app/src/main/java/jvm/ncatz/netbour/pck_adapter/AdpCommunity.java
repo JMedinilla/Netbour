@@ -84,7 +84,7 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
             convertView.setTag(holder);
         }
         PoCommunity community = getItem(position);
-        if (community != null) {
+        if (community != null && holder != null) {
             holder.adapterCommunityTxtMunicipality.setText(community.getMunicipality() + ",");
             holder.adapterCommunityTxtProvince.setText(community.getProvince());
             holder.adapterCommunityTxtPostal.setText(community.getPostal());
@@ -105,7 +105,9 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callCode.selectCode(position);
+                            if (callCode != null) {
+                                callCode.selectCode(position);
+                            }
                         }
                     });
             HamButton.Builder builderEdit = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -115,7 +117,9 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callCommunity.editElement(getItem(position));
+                            if (callCommunity != null) {
+                                callCommunity.editElement(getItem(position));
+                            }
                         }
                     });
             HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -125,7 +129,9 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callCommunity.deleteElement(getItem(position), position);
+                            if (callCommunity != null) {
+                                callCommunity.deleteElement(getItem(position), position);
+                            }
                         }
                     });
             HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -135,7 +141,9 @@ public class AdpCommunity extends ArrayAdapter<PoCommunity> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callAdapter.reportElement();
+                            if (callAdapter != null) {
+                                callAdapter.reportElement();
+                            }
                         }
                     });
             holder.boomMenuButton.addBuilder(builderCode);

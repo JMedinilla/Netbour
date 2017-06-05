@@ -23,91 +23,115 @@ public class PresenterDocumentImpl implements PresenterDocument, InteractorDocum
 
     @Override
     public void addDocument(PoDocument document, String code) {
-        interactorDocument.addDocument(document, code);
+        if (viewForm != null && document != null && code != null) {
+            interactorDocument.addDocument(document, code);
+        }
     }
 
     @Override
     public void addedDocument() {
-        viewForm.addedDocument();
+        if (viewForm != null) {
+            viewForm.addedDocument();
+        }
     }
 
     @Override
     public void attachFirebase() {
-        interactorDocument.attachFirebase();
+        if (interactorDocument != null) {
+            interactorDocument.attachFirebase();
+        }
     }
 
     @Override
     public void deleteDocument(PoDocument item) {
-        interactorDocument.deleteDocument(item);
+        if (interactorDocument != null && item != null) {
+            interactorDocument.deleteDocument(item);
+        }
     }
 
     @Override
     public void deletedDocument(PoDocument item) {
-        viewList.deletedDocument(item);
+        if (viewList != null && item != null) {
+            viewList.deletedDocument(item);
+        }
     }
 
     @Override
     public void dettachFirebase() {
-        interactorDocument.dettachFirebase();
+        if (interactorDocument != null) {
+            interactorDocument.dettachFirebase();
+        }
     }
 
     @Override
     public void editDocument(PoDocument document, String code) {
-        interactorDocument.editDocument(document, code);
+        if (interactorDocument != null && document != null && code != null) {
+            interactorDocument.editDocument(document, code);
+        }
     }
 
     @Override
     public void editedDocument() {
-        viewForm.editedDocument();
+        if (viewForm != null) {
+            viewForm.editedDocument();
+        }
     }
 
     @Override
     public void instanceFirebase(String code) {
-        interactorDocument.instanceFirebase(code);
+        if (interactorDocument != null && code != null) {
+            interactorDocument.instanceFirebase(code);
+        }
     }
 
     @Override
     public void returnList(List<PoDocument> list) {
-        viewList.returnList(list);
+        if (viewList != null && list != null) {
+            viewList.returnList(list);
+        }
     }
 
     @Override
     public void returnListEmpty() {
-        viewList.returnListEmpty();
+        if (viewList != null) {
+            viewList.returnListEmpty();
+        }
     }
 
     @Override
     public void validateDocument(PoDocument document) {
-        boolean error = false;
-        if (TextUtils.equals("", document.getTitle())) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_TITLE_EMPTY);
-        } else if (document.getTitle().length() < 6) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_TITLE_SHORT);
-        } else if (document.getTitle().length() > 36) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_TITLE_LONG);
-        }
-        if (TextUtils.equals("", document.getLink())) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_LINK_EMPTY);
-        } else if (document.getLink().length() < 15) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_LINK_SHORT);
-        }
-        if (TextUtils.equals("", document.getDescription())) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_DESCRIPTION_EMPTY);
-        } else if (document.getDescription().length() < 0) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_DESCRIPTION_SHORT);
-        } else if (document.getDescription().length() > 400) {
-            error = true;
-            viewForm.validationResponse(document, ERROR_DESCRIPTION_LONG);
-        }
-        if (!error) {
-            viewForm.validationResponse(document, SUCCESS);
+        if (viewForm != null && document != null) {
+            boolean error = false;
+            if (TextUtils.equals("", document.getTitle())) {
+                error = true;
+                viewForm.validationResponse(document, ERROR_TITLE_EMPTY);
+            } else if (document.getTitle().length() < 6) {
+                error = true;
+                viewForm.validationResponse(document, ERROR_TITLE_SHORT);
+            } else if (document.getTitle().length() > 36) {
+                error = true;
+                viewForm.validationResponse(document, ERROR_TITLE_LONG);
+            }
+            if (TextUtils.equals("", document.getLink())) {
+                error = true;
+                viewForm.validationResponse(document, ERROR_LINK_EMPTY);
+            } else if (document.getLink().length() < 15) {
+                error = true;
+                viewForm.validationResponse(document, ERROR_LINK_SHORT);
+            }
+            if (TextUtils.equals("", document.getDescription())) {
+                error = true;
+                viewForm.validationResponse(document, ERROR_DESCRIPTION_EMPTY);
+            } else if (document.getDescription().length() < 0) {
+                error = true;
+                viewForm.validationResponse(document, ERROR_DESCRIPTION_SHORT);
+            } else if (document.getDescription().length() > 400) {
+                error = true;
+                viewForm.validationResponse(document, ERROR_DESCRIPTION_LONG);
+            }
+            if (!error) {
+                viewForm.validationResponse(document, SUCCESS);
+            }
         }
     }
 }

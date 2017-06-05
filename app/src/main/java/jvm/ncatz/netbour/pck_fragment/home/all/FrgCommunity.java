@@ -113,7 +113,9 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
 
         createMenu();
 
-        presenterCommunity.instanceFirebase();
+        if (presenterCommunity != null) {
+            presenterCommunity.instanceFirebase();
+        }
     }
 
     @Nullable
@@ -135,14 +137,20 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     public void onStart() {
         super.onStart();
         loadingDialogShow();
-        callbackBack.backFromForm();
-        presenterCommunity.attachFirebase();
+        if (callbackBack != null) {
+            callbackBack.backFromForm();
+        }
+        if (presenterCommunity != null) {
+            presenterCommunity.attachFirebase();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterCommunity.dettachFirebase();
+        if (presenterCommunity != null) {
+            presenterCommunity.dettachFirebase();
+        }
         loadingDialogHide();
     }
 
@@ -176,7 +184,9 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
             if (userCategory == PoUser.GROUP_ADMIN) {
                 showDeleteDialog(community, position);
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
@@ -189,9 +199,13 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     @Override
     public void editElement(PoCommunity community) {
         if (userCategory == PoUser.GROUP_ADMIN) {
-            callback.sendCommunity(community);
+            if (callback != null) {
+                callback.sendCommunity(community);
+            }
         } else {
-            callSnack.sendSnack(getString(R.string.no_permission));
+            if (callback != null) {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
         }
     }
 
@@ -221,7 +235,9 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     public void selectCode(int position) {
         PoCommunity com = adpCommunity.getItem(position);
         if (com != null) {
-            callback.changeCode(com.getCode());
+            if (callback != null) {
+                callback.changeCode(com.getCode());
+            }
         }
     }
 
@@ -274,7 +290,9 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
     }
 
     private void deleteResponse(int position) {
-        presenterCommunity.deleteCommunity(adpCommunity.getItem(position));
+        if (presenterCommunity != null) {
+            presenterCommunity.deleteCommunity(adpCommunity.getItem(position));
+        }
     }
 
     private void loadingDialogCreate() {

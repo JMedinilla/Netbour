@@ -33,28 +33,30 @@ public class FrgHome extends Fragment {
             R.id.homeMeetings, R.id.homeUsers,
             R.id.homeCommunities})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.homeIncidences:
-                callback.fromHome(TO_INCIDENTS);
-                break;
-            case R.id.homeDocuments:
-                callback.fromHome(TO_DOCUMENTS);
-                break;
-            case R.id.homeBoard:
-                callback.fromHome(TO_BOARD);
-                break;
-            case R.id.homeComBoard:
-                callback.fromHome(TO_COMBOARD);
-                break;
-            case R.id.homeMeetings:
-                callback.fromHome(TO_MEETINGS);
-                break;
-            case R.id.homeUsers:
-                callback.fromHome(TO_USERS);
-                break;
-            case R.id.homeCommunities:
-                callback.fromHome(TO_COMMUNITIES);
-                break;
+        if (callback != null) {
+            switch (view.getId()) {
+                case R.id.homeIncidences:
+                    callback.fromHome(TO_INCIDENTS);
+                    break;
+                case R.id.homeDocuments:
+                    callback.fromHome(TO_DOCUMENTS);
+                    break;
+                case R.id.homeBoard:
+                    callback.fromHome(TO_BOARD);
+                    break;
+                case R.id.homeComBoard:
+                    callback.fromHome(TO_COMBOARD);
+                    break;
+                case R.id.homeMeetings:
+                    callback.fromHome(TO_MEETINGS);
+                    break;
+                case R.id.homeUsers:
+                    callback.fromHome(TO_USERS);
+                    break;
+                case R.id.homeCommunities:
+                    callback.fromHome(TO_COMMUNITIES);
+                    break;
+            }
         }
     }
 
@@ -82,11 +84,6 @@ public class FrgHome extends Fragment {
         if (bundle != null) {
             userCategory = bundle.getInt("userCategory");
         }
-
-        if (userCategory != PoUser.GROUP_ADMIN) {
-            homeCommunities.setEnabled(false);
-            homeCommunities.setVisibility(View.GONE);
-        }
     }
 
     @Nullable
@@ -95,6 +92,15 @@ public class FrgHome extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (userCategory != PoUser.GROUP_ADMIN) {
+            homeCommunities.setEnabled(false);
+            homeCommunities.setVisibility(View.GONE);
+        }
     }
 
     @Override

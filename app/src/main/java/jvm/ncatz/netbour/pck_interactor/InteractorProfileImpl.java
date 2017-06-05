@@ -56,20 +56,28 @@ public class InteractorProfileImpl implements InteractorProfile {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             PoUser us = snapshot.getValue(PoUser.class);
-                            listener.returnProfileUser(us);
+                            if (listener != null) {
+                                listener.returnProfileUser(us);
+                            }
                         }
                     } else {
-                        listener.returnProfileUser(null);
+                        if (listener != null) {
+                            listener.returnProfileUser(null);
+                        }
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    listener.returnProfileUser(null);
+                    if (listener != null) {
+                        listener.returnProfileUser(null);
+                    }
                 }
             };
         } else {
-            listener.returnProfileUser(null);
+            if (listener != null) {
+                listener.returnProfileUser(null);
+            }
         }
     }
 
@@ -84,20 +92,26 @@ public class InteractorProfileImpl implements InteractorProfile {
                         if (u != null) {
                             setImage(key, u);
                         }
-                        listener.endImagePushSuccess();
+                        if (listener != null) {
+                            listener.endImagePushSuccess();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        listener.endImagePushError();
+                        if (listener != null) {
+                            listener.endImagePushError();
+                        }
                     }
                 })
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                        listener.setImageProgress(progress);
+                        if (listener != null) {
+                            listener.setImageProgress(progress);
+                        }
                     }
                 });
     }
@@ -111,7 +125,9 @@ public class InteractorProfileImpl implements InteractorProfile {
         reference.child("name").setValue(name);
         reference.child("phone").setValue(phone);
 
-        listener.updatedValues();
+        if (listener != null) {
+            listener.updatedValues();
+        }
     }
 
     private void setImage(long key, Uri url) {
@@ -119,6 +135,8 @@ public class InteractorProfileImpl implements InteractorProfile {
                 .getReference().child("users").child(String.valueOf(key)).child("photo");
         refName.setValue(url.toString());
 
-        listener.updatedImage();
+        if (listener != null) {
+            listener.updatedImage();
+        }
     }
 }

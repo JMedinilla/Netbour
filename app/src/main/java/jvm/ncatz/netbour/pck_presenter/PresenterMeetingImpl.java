@@ -23,78 +23,102 @@ public class PresenterMeetingImpl implements PresenterMeeting, InteractorMeeting
 
     @Override
     public void addMeeting(PoMeeting meeting, String code) {
-        interactorMeeting.addMeeting(meeting, code);
+        if (interactorMeeting != null && meeting != null && code != null) {
+            interactorMeeting.addMeeting(meeting, code);
+        }
     }
 
     @Override
     public void addedMeeting() {
-        viewForm.addedMeeting();
+        if (viewForm != null) {
+            viewForm.addedMeeting();
+        }
     }
 
     @Override
     public void attachFirebase() {
-        interactorMeeting.attachFirebase();
+        if (interactorMeeting != null) {
+            interactorMeeting.attachFirebase();
+        }
     }
 
     @Override
     public void deleteMeeting(PoMeeting item) {
-        interactorMeeting.deleteMeeting(item);
+        if (interactorMeeting != null && item != null) {
+            interactorMeeting.deleteMeeting(item);
+        }
     }
 
     @Override
     public void deletedMeeting(PoMeeting item) {
-        viewList.deletedMeeting(item);
+        if (viewList != null && item != null) {
+            viewList.deletedMeeting(item);
+        }
     }
 
     @Override
     public void dettachFirebase() {
-        interactorMeeting.dettachFirebase();
+        if (interactorMeeting != null) {
+            interactorMeeting.dettachFirebase();
+        }
     }
 
     @Override
     public void editMeeting(PoMeeting meeting, String code) {
-        interactorMeeting.editMeeting(meeting, code);
+        if (interactorMeeting != null && meeting != null && code != null) {
+            interactorMeeting.editMeeting(meeting, code);
+        }
     }
 
     @Override
     public void editedMeeting() {
-        viewForm.editedMeeting();
+        if (viewForm != null) {
+            viewForm.editedMeeting();
+        }
     }
 
     @Override
     public void instanceFirebase(String code) {
-        interactorMeeting.instanceFirebase(code);
+        if (interactorMeeting != null && code != null) {
+            interactorMeeting.instanceFirebase(code);
+        }
     }
 
     @Override
     public void returnList(List<PoMeeting> list) {
-        viewList.returnList(list);
+        if (viewList != null && list != null) {
+            viewList.returnList(list);
+        }
     }
 
     @Override
     public void returnListEmpty() {
-        viewList.returnListEmpty();
+        if (viewList != null) {
+            viewList.returnListEmpty();
+        }
     }
 
     @Override
     public void validateMeeting(PoMeeting meeting) {
-        boolean error = false;
-        if (TextUtils.equals("", meeting.getDate())) {
-            error = true;
-            viewForm.validationResponse(meeting, ERROR_DATE_EMPTY);
-        }
-        if (TextUtils.equals("", meeting.getDescription())) {
-            error = true;
-            viewForm.validationResponse(meeting, ERROR_DESCRIPTION_EMPTY);
-        } else if (meeting.getDescription().length() < 0) {
-            error = true;
-            viewForm.validationResponse(meeting, ERROR_DESCRIPTION_SHORT);
-        } else if (meeting.getDescription().length() > 400) {
-            error = true;
-            viewForm.validationResponse(meeting, ERROR_DESCRIPTION_LONG);
-        }
-        if (!error) {
-            viewForm.validationResponse(meeting, SUCCESS);
+        if (viewForm != null && meeting != null) {
+            boolean error = false;
+            if (TextUtils.equals("", meeting.getDate())) {
+                error = true;
+                viewForm.validationResponse(meeting, ERROR_DATE_EMPTY);
+            }
+            if (TextUtils.equals("", meeting.getDescription())) {
+                error = true;
+                viewForm.validationResponse(meeting, ERROR_DESCRIPTION_EMPTY);
+            } else if (meeting.getDescription().length() < 0) {
+                error = true;
+                viewForm.validationResponse(meeting, ERROR_DESCRIPTION_SHORT);
+            } else if (meeting.getDescription().length() > 400) {
+                error = true;
+                viewForm.validationResponse(meeting, ERROR_DESCRIPTION_LONG);
+            }
+            if (!error) {
+                viewForm.validationResponse(meeting, SUCCESS);
+            }
         }
     }
 }

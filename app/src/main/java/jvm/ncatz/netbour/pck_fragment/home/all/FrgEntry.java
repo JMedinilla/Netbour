@@ -124,9 +124,13 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
                 to = arrayList.toArray(new String[arrayList.size()]);
             }
             if (cat == PoEntry.CATEGORY_FIRST) {
-                presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
+                if (presenterEntry != null) {
+                    presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
+                }
             } else {
-                presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_SECOND);
+                if (presenterEntry != null) {
+                    presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_SECOND);
+                }
             }
         }
 
@@ -153,19 +157,27 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
         super.onStart();
         loadingDialogShow();
         if (cat == PoEntry.CATEGORY_SECOND) {
-            callbackBack.backFromForm();
-        } else {
-            if (userCategory == PoUser.GROUP_ADMIN || userCategory == PoUser.GROUP_PRESIDENT) {
+            if (callbackBack != null) {
                 callbackBack.backFromForm();
             }
+        } else {
+            if (userCategory == PoUser.GROUP_ADMIN || userCategory == PoUser.GROUP_PRESIDENT) {
+                if (callbackBack != null) {
+                    callbackBack.backFromForm();
+                }
+            }
         }
-        presenterEntry.attachFirebase();
+        if (presenterEntry != null) {
+            presenterEntry.attachFirebase();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterEntry.dettachFirebase();
+        if (presenterEntry != null) {
+            presenterEntry.dettachFirebase();
+        }
         loadingDialogHide();
     }
 
@@ -199,7 +211,9 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
             if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
                 showDeleteDialog(entry, position);
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
@@ -213,9 +227,13 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
     public void editElement(PoEntry entry) {
         if (entry != null) {
             if (userEmail.equals(entry.getAuthorEmail()) || userCategory == PoUser.GROUP_ADMIN) {
-                callback.sendEntry(entry);
+                if (callback != null) {
+                    callback.sendEntry(entry);
+                }
             } else {
-                callSnack.sendSnack(getString(R.string.no_permission));
+                if (callSnack != null) {
+                    callSnack.sendSnack(getString(R.string.no_permission));
+                }
             }
         }
     }
@@ -310,7 +328,9 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
     }
 
     private void deleteResponse(int position) {
-        presenterEntry.deleteEntry(adpEntry.getItem(position));
+        if (presenterEntry != null) {
+            presenterEntry.deleteEntry(adpEntry.getItem(position));
+        }
     }
 
     private void loadingDialogCreate() {

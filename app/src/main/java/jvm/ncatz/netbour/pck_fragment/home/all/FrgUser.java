@@ -108,7 +108,9 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapte
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
             }
-            presenterUser.instanceFirebase(code);
+            if (presenterUser != null) {
+                presenterUser.instanceFirebase(code);
+            }
         }
 
         createMenu();
@@ -134,13 +136,17 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapte
     public void onStart() {
         super.onStart();
         loadingDialogShow();
-        presenterUser.attachFirebase();
+        if (presenterUser != null) {
+            presenterUser.attachFirebase();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenterUser.dettachFirebase();
+        if (presenterUser != null) {
+            presenterUser.dettachFirebase();
+        }
         loadingDialogHide();
     }
 
@@ -174,7 +180,9 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapte
                 showDeleteDialog(user, position);
             }
         } else {
-            callSnack.sendSnack(getString(R.string.no_permission));
+            if (callSnack != null) {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
         }
     }
 
@@ -186,9 +194,13 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapte
     @Override
     public void editElement(PoUser user) {
         if (userCategory == PoUser.GROUP_ADMIN) {
-            callback.sendUser(user);
+            if (callback != null) {
+                callback.sendUser(user);
+            }
         } else {
-            callSnack.sendSnack(getString(R.string.no_permission));
+            if (callSnack != null) {
+                callSnack.sendSnack(getString(R.string.no_permission));
+            }
         }
     }
 
@@ -287,7 +299,9 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapte
     }
 
     private void deleteResponse(int position) {
-        presenterUser.deleteUser(adpUser.getItem(position));
+        if (presenterUser != null) {
+            presenterUser.deleteUser(adpUser.getItem(position));
+        }
     }
 
     private void loadingDialogCreate() {

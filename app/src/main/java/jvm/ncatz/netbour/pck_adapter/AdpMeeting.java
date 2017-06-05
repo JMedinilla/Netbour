@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceAlignmentEnum;
@@ -38,8 +37,6 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
     private Context context;
 
     static class ViewHolder {
-        @BindView(R.id.adapterMeeting_imgPhoto)
-        ImageView adapterMeetingImgPhoto;
         @BindView(R.id.adapterMeeting_txtDate)
         TextView adapterMeetingTxtDate;
         @BindView(R.id.adapterMeeting_txtDescription)
@@ -51,8 +48,6 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
             ButterKnife.bind(this, view);
         }
     }
-
-    private ViewHolder holder;
 
     public AdpMeeting(@NonNull Context context, List<PoMeeting> list, IAdapter callAdapter, IAdapter.IMeeting callMeeting) {
         super(context, R.layout.adapter_meeting, list);
@@ -71,6 +66,7 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
@@ -79,7 +75,7 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
             convertView.setTag(holder);
         }
         final PoMeeting meeting = getItem(position);
-        if (meeting != null) {
+        if (meeting != null && holder != null) {
             holder.adapterMeetingTxtDate.setText(meeting.getDate());
             holder.adapterMeetingTxtDescription.setText(meeting.getDescription());
             holder.adapterMeetingTxtDescription.setMaxLines(2);
@@ -98,7 +94,9 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callMeeting.editElement(getItem(position));
+                            if (callMeeting != null) {
+                                callMeeting.editElement(getItem(position));
+                            }
                         }
                     });
             HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -108,7 +106,9 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callMeeting.deleteElement(getItem(position), position);
+                            if (callMeeting != null) {
+                                callMeeting.deleteElement(getItem(position), position);
+                            }
                         }
                     });
             HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -118,7 +118,9 @@ public class AdpMeeting extends ArrayAdapter<PoMeeting> {
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
-                            callAdapter.reportElement();
+                            if (callMeeting != null) {
+                                callAdapter.reportElement();
+                            }
                         }
                     });
             holder.boomMenuButton.addBuilder(builderEdit);

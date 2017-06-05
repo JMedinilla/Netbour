@@ -18,7 +18,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.hoang8f.widget.FButton;
 import jvm.ncatz.netbour.R;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterForm;
 import jvm.ncatz.netbour.pck_interface.presenter.PresenterUser;
@@ -39,8 +38,6 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
     RadioButton fragFormUserCategoryFirst;
     @BindView(R.id.fragFormUserCategorySecond)
     RadioButton fragFormUserCategorySecond;
-    @BindView(R.id.fragFormUserSave)
-    FButton fragFormUserSave;
 
     @OnClick({R.id.fragFormUserCategoryFirst, R.id.fragFormUserCategorySecond, R.id.fragFormUserSave})
     public void onViewClicked(View view) {
@@ -62,7 +59,9 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
                         fragFormUserPhone.getText().toString().replaceAll("\\s+", " ").trim(),
                         ""
                 );
-                presenterUser.validateUser(user, "", updateMode);
+                if (presenterUser != null) {
+                    presenterUser.validateUser(user, "", updateMode);
+                }
                 break;
         }
     }
@@ -133,7 +132,9 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
 
     @Override
     public void editedUser() {
-        callback.closeFormCall();
+        if (callback != null) {
+            callback.closeFormCall();
+        }
     }
 
     @Override
@@ -177,7 +178,9 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
         updateItem.setFloor(user.getFloor());
         updateItem.setDoor(user.getDoor());
         updateItem.setCategory(user.getCategory());
-        presenterUser.editUser(updateItem);
+        if (presenterUser != null) {
+            presenterUser.editUser(updateItem);
+        }
     }
 
     private void showEditDialog(final PoUser user) {
@@ -282,7 +285,9 @@ public class FrgFormUser extends Fragment implements PresenterUser.ViewForm {
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            callback.nothingChanged();
+            if (callback != null) {
+                callback.nothingChanged();
+            }
         }
     }
 }
