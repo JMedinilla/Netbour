@@ -3,6 +3,7 @@ package jvm.ncatz.netbour;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -36,6 +37,10 @@ import info.hoang8f.widget.FButton;
 
 public class ActivityAbout extends MaterialAboutActivity {
 
+    private MediaPlayer player;
+
+    private int count;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -50,6 +55,8 @@ public class ActivityAbout extends MaterialAboutActivity {
     @NonNull
     @Override
     protected MaterialAboutList getMaterialAboutList(@NonNull Context context) {
+        count = 0;
+
         MaterialAboutCard.Builder builderCardApp = new MaterialAboutCard.Builder();
         builderCardApp.title(R.string.aboutApp);
         MaterialAboutCard.Builder builderCardAuthor = new MaterialAboutCard.Builder();
@@ -84,7 +91,23 @@ public class ActivityAbout extends MaterialAboutActivity {
         MaterialAboutActionItem itemAppVersion = new MaterialAboutActionItem(
                 getString(R.string.app_version_title),
                 getString(R.string.app_version_sub),
-                iconAppVersion, null);
+                iconAppVersion,
+                new MaterialAboutItemOnClickListener() {
+                    @Override
+                    public void onClick(boolean b) {
+                        count++;
+                        if (count == 7) {
+                            try {
+                                stopPlaying();
+                                player = MediaPlayer.create(ActivityAbout.this, R.raw.easteregg);
+                                player.start();
+                                count = 0;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
         MaterialAboutActionItem itemAppRepository = new MaterialAboutActionItem(
                 getString(R.string.app_repository_title),
                 getString(R.string.app_repository_sub),
@@ -303,5 +326,13 @@ public class ActivityAbout extends MaterialAboutActivity {
                 .to("javimedinilla@gmail.com")
                 .subject(subj)
                 .start();
+    }
+
+    private void stopPlaying() {
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
     }
 }
