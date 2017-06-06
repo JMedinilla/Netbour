@@ -431,6 +431,14 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
     }
 
     @Override
+    public void newName(String name) {
+        actual_name = name;
+        if (!"".equals(actual_name)) {
+            profile_name.setText(actual_name);
+        }
+    }
+
+    @Override
     public void nothingChanged() {
         showSnackbar(getString(R.string.no_edit_changes), DURATION_SHORT);
     }

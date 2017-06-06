@@ -28,6 +28,6 @@ public interface InteractorProfile {
 
         void updatedImage();
 
-        void updatedValues();
+        void updatedValues(String name);
     }
 }

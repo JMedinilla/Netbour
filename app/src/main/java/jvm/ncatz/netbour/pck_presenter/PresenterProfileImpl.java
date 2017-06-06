@@ -89,9 +89,9 @@ public class PresenterProfileImpl implements PresenterProfile, InteractorProfile
     }
 
     @Override
-    public void updatedValues() {
+    public void updatedValues(String name) {
         if (view != null) {
-            view.updatedValues();
+            view.updatedValues(name);
         }
     }
 
@@ -114,7 +114,7 @@ public class PresenterProfileImpl implements PresenterProfile, InteractorProfile
             } else if (name.length() < 3) {
                 error = true;
                 view.validateNameResponse(ERROR_NAME_SHORT, name);
-            } else if (name.length() > 24) {
+            } else if (name.length() > 36) {
                 error = true;
                 view.validateNameResponse(ERROR_NAME_LONG, name);
             }

@@ -48,6 +48,6 @@ public interface PresenterProfile {
 
         void validationResponse(String name, String phone, String floor, String door);
 
-        void updatedValues();
+        void updatedValues(String name);
     }
 }

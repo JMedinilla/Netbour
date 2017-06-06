@@ -141,9 +141,9 @@ public class FrgRegister extends Fragment {
         } else if (user.getName().length() < 3) {
             error = true;
             fragFormRegisterName.setError(getString(R.string.ERROR_SHORT_3));
-        } else if (user.getName().length() > 24) {
+        } else if (user.getName().length() > 36) {
             error = true;
-            fragFormRegisterName.setError(getString(R.string.ERROR_LONG_24));
+            fragFormRegisterName.setError(getString(R.string.ERROR_LONG_36));
         }
         if (TextUtils.equals("", user.getPhone())) {
             error = true;

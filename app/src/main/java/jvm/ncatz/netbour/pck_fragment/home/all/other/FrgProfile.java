@@ -90,6 +90,8 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
 
         void newImage(String photo);
 
+        void newName(String name);
+
         void updatedField(String msg);
     }
 
@@ -253,7 +255,7 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
                 frgProfileName.setError(getString(R.string.ERROR_SHORT_3));
                 break;
             case PresenterProfile.ERROR_NAME_LONG:
-                frgProfileName.setError(getString(R.string.ERROR_LONG_24));
+                frgProfileName.setError(getString(R.string.ERROR_LONG_36));
                 break;
         }
     }
@@ -279,9 +281,10 @@ public class FrgProfile extends Fragment implements PresenterProfile.View {
     }
 
     @Override
-    public void updatedValues() {
+    public void updatedValues(String name) {
         if (callback != null) {
             callback.updatedField(getString(R.string.updated_fields));
+            callback.newName(name);
         }
     }
 

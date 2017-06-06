@@ -126,7 +126,7 @@ public class InteractorProfileImpl implements InteractorProfile {
         reference.child("phone").setValue(phone);
 
         if (listener != null) {
-            listener.updatedValues();
+            listener.updatedValues(name);
         }
     }
 
