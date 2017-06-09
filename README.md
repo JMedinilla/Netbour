@@ -1,8 +1,8 @@
 # Netbour
-<img src="readme/logo.png" alt="Netbour" style="width: 200px;"/>
+<img src="readme/logo.png" alt="Netbour" style="width: 120px;"/>
 
 # Javier J. Medinilla Agüera
-<img src="readme/jmedinilla.png" alt="JMedinilla" style="width: 200px;"/>
+<img src="readme/jmedinilla.png" alt="JMedinilla" style="width: 120px;"/>
 
 ## Índice
 
@@ -16,7 +16,6 @@
 	- Ejemplos de consultas a la base de datos
 5. [Especificaciones del sistema](#especificaciones-del-sistema)
 	- Justificación de las herramientas utilizadas
-	- Configuración de la aplicación
 	- Especificaciones hardware del sistema
 6. [Especificaciones del software](#especificaciones-del-software)
 	- Navegación de la aplicación y descripción de operaciones
@@ -312,10 +311,6 @@ Una de las pocas contrapartes de Firebase, además de su estructura JSON, que no
 
 El desarrollo de la aplicación Android se ha realizado en **Android Studio 2.3.2**, con **Firebase 9.6.1** y una web configurada con Apache y PHP para Wordpress en el *hosting* **Siteground**. También se ha utilizado, de forma puntual **Sublime Text** para la edición de texto, **Photoshop** para la creación del logo de la aplicación y **MySQL Workbench** para realizar el diseño de la base de datos. Para el control de versiones y almacenamiento del código fuente de la aplicación, se ha escogido un repositorio público en la web **Github**, usando la consola de Git para Windows.
 
-### Configuración de la aplicación
-
-- **[EN CONSTRUCCIÓN]**
-
 ### Especificaciones hardware del sistema
 
 En cuanto al servidor, no es necesaria ninguna especificación de su hardware, debido a que el servidor es una herramienta de Google, alojada en sus servidores, que cuenta con una zona de almacenamiento dedicada a cada base de datos que creen los desarrolladores, usando la cantidad de CPU y RAM que sea necesaria, siempre y cuando no supere un límite que pueda perjudicar al resto de usuarios de Firebase.
@@ -392,95 +387,283 @@ Proveedor: -
 
 ### Navegación de la aplicación y descripción de operaciones
 
-#### SplashScreen
-Ventana de inicio de la aplicación. Durante el visionado de este cuadro de diálogo se estarán recuperando los datos del usuario conectado, de modo que se abra el Login en caso de que no haya ninguna sesión iniciada, o Home si ya ha habido una conexión anterior.
+##### Pantalla de bievenida
+<img src="readme/views/c1.png" style="height: 380px;"/>
 
-![1](readme/views/v1.png)
+**Usuario:**
+Administrador y vecinos.
 
-#### Inicio de sesión
-Ventana de inicio de sesión, para usuarios ya existentes. Desde esta vista se puede, o bien introducir tus datos de inicio de sesión, o dirigirse a la ventana de registro para crear una cuenta nueva dado un código de comunidad.
+**Objetivo:**
+Recuperar los datos del usuario con una sesión iniciada anteriormente, en caso de existir.
 
-![2](readme/views/v2.png)
+**Descripción:**
+Pantalla en modo diálogo que muestra el logo de la aplicación y un icono de carga, dando a entender al usuario que se están realizando las operaciones previas necesarias al uso de la aplicación, como recuperar los datos del usuario ya conectado en la aplicación, en caso de que lo huebiera. En caso de no existir dicha sesión con anterioridad, esta pantalla debería durar no más de un segundo.
 
-#### Registro
-Ventana de registro, que permite al usuario crearse una cuenta totalmente nueva, siempre y cuando disponga de un código de comunidad, ya que en caso contrario, no podrá ver ninguna información cuando entre a la aplicación.
 
-![3](readme/views/v3.png)
 
-#### Menú
-NavigationDrawe de la aplicación. Al conectarse, si eres un usuario podrás ver la ventana Home, mientras que los administradores serán redirigidos automáticamente a la ventana Comunidades, ya que antes de poder ver cualquier otra sección, tendrás que seleccionar el código de la comunidad que quieren revisar.
+##### Inicio de sesión
+<img src="readme/views/c2.png" style="height: 380px;"/>
 
-![4](readme/views/v4.png)
+**Usuario:**
+Administrador y vecinos.
 
-#### Comunidades
-Lista de comunidades para el administrador. Esta opción no está disponible para los usuarios normales, y permite al administrador crear, editar y eliminar una comunidad de vecinos, así como seleccionarla para ver, gracias a su código, el resto de apartados de la aplicación que tengan que ver con una comunidad concreta.
+**Objetivo:**
+Iniciar sesión en la aplicación con una cuenta ya existente.
 
-![5](readme/views/v5.png)
+**Descripción:**
+Pantalla de inicio de sesión para que el usuario pueda entrar en la aplicación, dada una cuenta existente, accediendo a los distintos apartados de la misma. La pantalla cuenta con campos de texto para ingresar el correo electrónico y la contraseña con la que se ha realizado la contraseña, y un botón para dirigirse a la pantalla de registro de usuario en caso de no disponer de ninguna.
 
-#### Formulario Comunidades
-Formulario para la creación de una nueva comunidad, o la edición de una ya existente. Todos los datos introducidos, a excepción del código de comunidad, serán meramente informativos y no tendrán ninguna relevancia real, mientras que el código de la comunidad será el que los usuarios tengan que introducir en el futuro a la hora de crearse una cuenta.
+##### Registro de usuario
+<img src="readme/views/c3.png" style="height: 380px;"/>
 
-![6](readme/views/v6.png)
+**Usuario:**
+Vecinos.
 
-#### Incidencias
-Lista de incidencias de la comunidad. En esencia, todas las listas de la aplicación son exactamente iguales, y el único cambio real se da en el tipo de elementos que carga. Las incidencias representan problemas dentro de la comunidad que los vecinos muestran con el fin de que puedan ser arreglados, o notificar al resto de vecinos del inmueble.
+**Objetivo:**
+Creación de una nueva cuenta de usuario.
 
-![7](readme/views/v7.png)
+**Descripción:**
+Pantalla de creación de usuarios, pensada para los vecinos, de forma que puedan crear un usuario vinculado a un código de comuinidad para acceder a sus apartados. Esta pantalla cuenta con siete apartados a rellenar, todos obligatorios, como son el código de la comunidad, el correo electrónico para el inicio de sesión, nombre del usuario, teléfono, vivienda y la contraseña a asignar al correo electrónico. Todos estos campos tienen restricciones de tamaño, indicando la cantidad mínima o máxima de caracteres en caso de haberse sobrepasado. Además de eso, ninguno de ellos, salvo el correo electrónico, que debe cumplir un formato de correo correcto, tiene restricciones en cuanto a formato o caracteres, permitiendo incluso el uso de emoticonos.
 
-#### Menú contextual
-Menú que contienen todos las vistas que contienen una lista, a excepción de las juntas. Este menú muestra las distintas opciones que tiene el usuario para ordenar los elementos que está viendo en pantalla. Si se pulsaran dos veces seguidas sobre el mismo elemento de orden, se realizaría el orden inverso.
+##### Menú
+<img src="readme/views/c4.png" style="height: 380px;"/>
 
-![8](readme/views/v8.png)
+**Usuario:**
+Administrador y vecinos.
 
-#### Formulario Incidencias
-Formulario de incidencias. A grandes rasgos, todos los formularios de la aplicación son iguales. La única diferencia de este radica en la fotografía. El usuario podrá, pulsando en la imagen, seleccionar una imagen de su propia galería, siempre y cuando haya aceptado previamente los permisos de lectura de almacenamiento externo.
+**Objetivo:**
+Acceder a los distintos apartados de la aplicación.
 
-![9](readme/views/v9.png)
+**Descripción:**
+Apartado global a todos los apartados de la aplicación, que permite al usuario seleccionar la sección a la que quiere acceder, como el menú principal de secciones, el perfil del usuario, los ajustes de la aplicación, la información de la comunidad, información del autor de la aplicación y una opción para el cierre de la sesión y el cierre de la aplicación.
 
-#### Tablón
-Lista de entradas de la comunidad, pensada para que el administrador y el presidente puedan crear notificaciones escritas a los vecinos, con avisos importantes o no, referentes a la comunidad como entidad, ya que hay un segundo tablón, especialmente creado para los propios vecinos, que pueden crear entradas de menor importancia yh con relevancia personal, informando de temas relevantes a la comunidad.
+##### Perfil
+<img src="readme/views/c5.png" style="height: 380px;"/>
 
-![10](readme/views/v10.png)
+**Usuario:**
+Administrador y vecinos
 
-#### Documentos
-Lista de documentos. Tanto el administrador como el presidente pueden introducir, editar y eliminar documentos en esta lista, que consta de un formulario en el que introducir un título, una descripción, y el enlace hacia el mismo, dando la opción a los vecinos de visitar en enlace adjunto al elemento.
+**Objetivo:**
+Editar información personal
 
-![11](readme/views/v11.png)
+**Descripción:**
+Apartado de la aplicación que permite a los distintos usuarios observar sus propios datos, como el avatar, el correo electrónico, nombre, teléfono y vivienda, permitiendo también la edición de todos estos apartados, exceptuando el correo, que es totalmente invariable, incluído en este apartado únicamente por información.
 
-#### Juntas
-Lista de juntas de la comunidad. Únicamente el administrador puede acceder a la creación de este elemento, al cual introducirá una fecha, y la información relevante de la propia junta que debería interesar a los vecinos.
+##### Acerca de
+<img src="readme/views/c6.png" style="height: 380px;"/>
 
-![12](readme/views/v12.png)
+**Usuario:**
+Usuarios con acceso al proyecto integrado (apartado no incluído en versión comercial).
 
-#### Usuarios
-Lista de usuarios dados de alta con el código de la comunidad que se está visualizando. Como se puede ver, el resto de usuarios podrán ver el nombre, el teléfono y la vivienda, introducidos por el propio usuario, y el email con el que inician sesión, que es invariable y serviría para mediar en casos de suplantación. Una vez el usuario ha ingresado en la comunidad, podrán ir al perfil para cambiar su fotografía también.
+**Objetivo:**
+Acceder a la información relevante de la aplicación y el desarrollador de la misma.
 
-![13](readme/views/v13.png)
+**Descripción:**
+Actividad extra de la aplicación para la versión de presentación como Proyecto Integrado, mostrando información de la aplicación, como su logo, nombre, versión, repositorio y librerías en uso, asó como información del desarrollador de la aplicación, como su correo electrónico, página web y perfiles sociales.
 
-#### Perfil
-Perfil del usuario conectado. Este cuenta con campos que muestran su información, siendo posible modificar el nombre, el teléfono y la vivienda, pulsando en el botón situado a la derecha de los cuatro campos. Al igual que con las incidencias, el usuario podrá pulsar en la imagen para cambiarla por otra de la galería.
+##### Información
+<img src="readme/views/c7.png" style="height: 380px;"/>
 
-![14](readme/views/v14.png)
+**Usuario:**
+Administrador y vecinos.
 
-#### Acerca de
-Apartado exclusivo para el proyecto integrado. Muestra información de la aplicación y toda la información relevante de su autor.
+**Objetivo:**
+Mostrar información de la comunidad de vecinos.
 
-![15](readme/views/v15.png)
+**Descripción:**
+Apartado de la aplicación que muestra, tanto a los vecinos, al ser su comunidad, como al administrador, en caso de tener alguna seleccionada, información de la misma, mostrando datos como el código comunitario usado durante el registro, la localización de la comunidad, indicando su provincia y localidad, el código postal, calle en la que se encuentra, su número, y la cantidad de viviendas con las que cuenta la comunidad.
 
-#### Licencias de terceros
-Apartados de la vista **Acerca de**, donde se pueden ver todas las librerías de terceros utilizadas en el proyecto, así como la licencia bajo la cual están registradas y un enlace directo a la página que la ofrece. También cuentan con la línea que les corresponde dentro del archivo de compilación. Pulsando en los botones de **Apache** y **MIT**, se podrá ver en que consisten ambas licencias, que son las que se encuentran presentes entre las librerías añadidas al proyecto.
+##### Licencias de terceros
+<img src="readme/views/c8.png" style="height: 380px;"/>
 
-![16](readme/views/v16.png)
+**Usuario:**
+Usuarios con acceso al apartado de información de la aplicación.
 
-#### Swipe Menu
-Todas las listas cuentan con un menú de deslizamiento para sus elementos, donde se pueden encontrar tres opciones, para editar, eliminar o informar al administrador del elemento, a modo de reporte del mismo, en caso de existir algún problema con él o que el resto de vecinos consideren que no debiera encontrarse ahí.
+**Objetivo:**
+Mostrar las librerías de terceros usadas en el desarrollo del proyecto.
 
-![17](readme/views/v17.png)
+**Descripción:**
+Diálogo adicional que muestra a los usuarios todas las librerías utilizadas en el desarrollo de la aplicación, tanto sus nombres, como el repositorio e incluso la línea de compilación que corresponde a la mencionada librería dentro del proyecto. Esta lista cuenta, además, con ejemplos de las licencias Apache y MIT, siendo estas todas las utilizadas por las íbrerías añadidas a la aplicación.
 
-#### Confirmación de edición
-Cuadro de diálogo que aparece cuando se intenta editar un elemento de la lista. En caso de que toda la información introducida sea válida, se procederá a mostrar al usuario una previsualización de los cambios realizados, mostrando en gris los campos que no han variado, en rojo el valor antiguo y en verde el nuevo.
+##### Comunidades
+<img src="readme/views/c9.png" style="height: 380px;"/>
 
-![18](readme/views/v18.png)
+**Usuario:**
+Administrador.
+
+**Objetivo:**
+Visualizar y manejar la lista de comunidades en uso por los usuarios administradores.
+
+**Descripción:**
+Lista de comunidades con las que cuenta el usuario administrador, permitiendo la visualización de todas y el manejo de las mismas mediante las opciones de menú contextual que acompañan a cada elemento de la lista. Esta vista cuenta con una opción para ordenar la lista mediante distintos atributos de los elementos y un botón extra para añadir nuevos elementos, accediendo a un formulario.
+
+##### Comunidades (formulario)
+<img src="readme/views/c10.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador.
+
+**Objetivo:**
+Crear o modificar una comunidad.
+
+**Descripción:**
+Vista de la aplicación que permite, añadir si se accede desde el botón de la lista, o editar una comunidad si se accede mediante la opción contextual de un elemento de la lista de comunidades. Este formulario cuenta con los campos necesarios para una comunidad, que son un código de registro para que los usuarios puedan acceder a ella, y a como campos informativos, el código postal, la provincia, el municipio, la calle, el número y la cantidad de viviendas de las que dispone la comunidad. Todos estos campos son obligatorios y cuentan con limitadores de tamaño, tanto mínimos como máximos, y no disponen, ninguno de ellos, de carácteres censurados, permitiendo incluso añadir emoticonos.
+
+##### Incidencias
+<img src="readme/views/c11.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Visualizar y manejar la lista de incidencias de la comunidad.
+
+**Descripción:**
+Lista de incidencias con las que cuenta la comunidad de vecinos, permitiendo la visualización de todas y el manejo de las mismas mediante las opciones de menú contextual que acompañan a cada elemento de la lista. Esta vista cuenta con una opción para ordenar la lista mediante distintos atributos de los elementos y un botón extra para añadir nuevos elementos, accediendo a un formulario.
+
+##### Incidencias (formulario)
+<img src="readme/views/c12.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Crear o modificar una incidencia.
+
+**Descripción:**
+Vista de la aplicación que permite, añadir si se accede desde el botón de la lista, o editar una incidencia si se accede mediante la opción contextual de un elemento de la lista de incidencias. Este formulario cuenta con los campos necesarios para una incidencia, que son un título, una descripción y una fotografía. Todos estos campos son obligatorios y cuentan con limitadores de tamaño, tanto mínimos como máximos, y no disponen, ninguno de ellos, de carácteres censurados, permitiendo incluso añadir emoticonos.
+
+##### Menú contextual
+<img src="readme/views/c13.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Usar las opciones para ordenar las listas.
+
+**Descripción:**
+Opciones de orden para cada una de las listas de la aplicación, contando en cada una, con atributos específicos según el tipo de elementos que podamos encontrar en ese apartado. Estas opciones ordenarán todos los elementos de la lista de formna ascendente primero y de forma descendente en caso de pulsar otra vez sobre la misma opción. Estas opciones de orden no se muestran al usuario de ninguna forma informativa, presuponiendo que el propio orden será fácilmente visible mediante los propios elementos de la lista.
+
+##### Documentos
+<img src="readme/views/c14.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Visualizar y manejar la lista de documentos de la comunidad.
+
+**Descripción:**
+Lista de documentos con las que cuenta la comunidad de vecinos, permitiendo la visualización de todas y el manejo de las mismas mediante las opciones de menú contextual que acompañan a cada elemento de la lista. Esta vista cuenta con una opción para ordenar la lista mediante distintos atributos de los elementos y un botón extra para añadir nuevos elementos, accediendo a un formulario.
+
+##### Documentos (formulario)
+<img src="readme/views/c15.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Crear o modificar un documento.
+
+**Descripción:**
+Vista de la aplicación que permite, añadir si se accede desde el botón de la lista, o editar un documento si se accede mediante la opción contextual de un elemento de la lista de documentos. Este formulario cuenta con los campos necesarios para un documento, que son un título, una descripción y un enlace externo. Todos estos campos son obligatorios y cuentan con limitadores de tamaño, tanto mínimos como máximos, y no disponen, ninguno de ellos, de carácteres censurados, permitiendo incluso añadir emoticonos.
+
+##### Tablón
+<img src="readme/views/c16.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Visualizar y manejar la lista de entradas de la comunidad.
+
+**Descripción:**
+Lista de entradas con las que cuenta la comunidad de vecinos, permitiendo la visualización de todas y el manejo de las mismas mediante las opciones de menú contextual que acompañan a cada elemento de la lista. Esta vista cuenta con una opción para ordenar la lista mediante distintos atributos de los elementos y un botón extra para añadir nuevos elementos, accediendo a un formulario.
+
+##### Tablón (formulario)
+<img src="readme/views/c17.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos
+
+**Objetivo:**
+Crear o modificar una entrada.
+
+**Descripción:**
+Vista de la aplicación que permite, añadir si se accede desde el botón de la lista, o editar una entrada si se accede mediante la opción contextual de un elemento de la lista de entradas. Este formulario cuenta con los campos necesarios para una entrada, que son un título y una descripción. Todos estos campos son obligatorios y cuentan con limitadores de tamaño, tanto mínimos como máximos, y no disponen, ninguno de ellos, de carácteres censurados, permitiendo incluso añadir emoticonos.
+
+##### Juntas
+<img src="readme/views/c18.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Visualizar y manejar la lista de juntas de la comunidad.
+
+**Descripción:**
+Lista de juntas con las que cuenta la comunidad de vecinos, permitiendo la visualización de todas y el manejo de las mismas mediante las opciones de menú contextual que acompañan a cada elemento de la lista. Esta vista cuenta con una opción para ordenar la lista mediante distintos atributos de los elementos y un botón extra para añadir nuevos elementos, accediendo a un formulario.
+
+##### Juntas (formulario)
+<img src="readme/views/c19.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Crear o modificar una junta.
+
+**Descripción:**
+Vista de la aplicación que permite, añadir si se accede desde el botón de la lista, o editar una junta si se accede mediante la opción contextual de un elemento de la lista de juntas. Este formulario cuenta con los campos necesarios para una junta, que son una fecha y una descripción. Todos estos campos son obligatorios y cuentan con limitadores de tamaño, tanto mínimos como máximos, y no disponen, ninguno de ellos, de carácteres censurados, permitiendo incluso añadir emoticonos.
+
+##### Usuarios
+<img src="readme/views/c20.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Visualizar y manejar (administrador) la lista de usuarios de la comunidad.
+
+**Descripción:**
+Lista de usuarios con las que cuenta la comunidad de vecinos, permitiendo la visualización de todas y el manejo de las mismas mediante las opciones de menú contextual que acompañan a cada elemento de la lista. Esta vista cuenta con una opción para ordenar la lista mediante distintos atributos de los elementos y un botón extra para añadir nuevos elementos, accediendo a un formulario.
+
+##### Opciones
+<img src="readme/views/c21.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Opciones contextuales de los elementos de cada lista.
+
+**Descripción:**
+Opciones de menú contextual para cada elemento de la lista. Estas opciones varían, tanto en opciones como tal, o en funcionalidad según el usuario que las utilice. Los elementos con fotografía como las incidencias o los usuarios cuentan con una opción de ampliación de la misma, las comunidades tienen una cuarta opción para que el administrador pueda seleccionar su código y acceder a sus elementos, y todas las listas cuentan con opciones para editar, eliminar o reportar el elemento pulsado. La funcionalidad de estas opciones también se verán modificadas, advirtiendo al usuario de que no tiene permisos para editar o eliminar los distintos elementos si no es un usuario administrador o el propio autor del elemento seleccionado. La opción de reporte permite al usuario enviar un correo electrónico a las direcciones de correo de los administradores de la comunidad.
+
+##### Permisos
+<img src="readme/views/c22.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Conceder los permisos necesarios para la acción.
+
+**Descripción:**
+Diálogo de permisos para pedir al usuario que los conceda, antes de acceder a la funcionalidad que los necesita. En este caso la aplicación cuenta únicamente con un permiso para leer la memoria externa del dispositivo, de forma que el usuario pueda agregar una fotografía como avatar o a una incidencia de la comunidad.
+
+##### Edición
+<img src="readme/views/c23.png" style="height: 380px;"/>
+
+**Usuario:**
+Administrador y vecinos.
+
+**Objetivo:**
+Mostrar un diálogo informativo con los cambios realizados.
+
+**Descripción:**
+Cuadro de diálogo que disponen los distintos formularios de la aplicación para mostrar al usuarios los cambios realizados sobre el elemento de la lista, esperando la confirmación de los mismos para ser guardados, mostrando en rojo el valor anterior, en verde el valor nuevo y en gris ambos valores en caso de que dicho atributo no hubiera recibido ninguna modificación.
 
 ## Código fuente relevante
 
@@ -524,7 +707,7 @@ Mientras que otros apartados que se esperan a lo largo del futuro, bastante más
 
 - Traducción de todo el código de la aplicación de Java a **Kotlin**
 - Versión para iOS en **Swift**
-- Versión web mediante **JavaScript**
+- Versión web
 
 ## Apéndice
 
@@ -540,7 +723,7 @@ Tutores laborales en la empresa seleccionada para las prácticas:
 
 Autor del diseño original del logo de la aplicación y la traducción al catalán de la misma:
 
-- **Oriol Monte I Gomez**, estudiante de Económicas en la Universidad de Girona.
+- **Oriol Monte I Gomez**, estudiante en la Universidad de Girona.
 
 
 ## Bibliografía

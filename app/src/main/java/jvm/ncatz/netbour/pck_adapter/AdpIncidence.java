@@ -124,8 +124,8 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
             holder.boomMenuButton.clearBuilders();
             holder.boomMenuButton.setNormalColor(R.color.colorPrimary);
             holder.boomMenuButton.setButtonEnum(ButtonEnum.Ham);
-            holder.boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
             holder.boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
+            holder.boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
             holder.boomMenuButton.setButtonPlaceAlignmentEnum(ButtonPlaceAlignmentEnum.Center);
 
             HamButton.Builder builderZoom = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
@@ -142,7 +142,7 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
                     });
             HamButton.Builder builderEdit = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
                     .normalImageRes(R.drawable.tooltip_edit_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
-                    .normalColorRes(R.color.green_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .normalColorRes(R.color.blue_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
                     .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuEdit).subNormalText(context.getString(R.string.swipeMenuEditSub) + " " + instance)
                     .listener(new OnBMClickListener() {
                         @Override
@@ -154,7 +154,7 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
                     });
             HamButton.Builder builderDelete = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
                     .normalImageRes(R.drawable.delete_empty_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
-                    .normalColorRes(R.color.red_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .normalColorRes(R.color.blue_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
                     .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuDelete).subNormalText(context.getString(R.string.swipeMenuDeleteSub) + " " + instance)
                     .listener(new OnBMClickListener() {
                         @Override
@@ -166,7 +166,7 @@ public class AdpIncidence extends ArrayAdapter<PoIncidence> {
                     });
             HamButton.Builder builderReport = new HamButton.Builder().buttonWidth(Util.dp2px(280)).buttonHeight(Util.dp2px(60))
                     .normalImageRes(R.drawable.alert_decagram_white).imagePadding(new Rect(Util.dp2px(5), Util.dp2px(5), Util.dp2px(5), Util.dp2px(5)))
-                    .normalColorRes(R.color.purple_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
+                    .normalColorRes(R.color.blue_400).highlightedColorRes(R.color.black).textSize(20).normalTextColorRes(R.color.white).subTextSize(12)
                     .highlightedTextColorRes(R.color.white).normalTextRes(R.string.swipeMenuReport).subNormalText(context.getString(R.string.swipeMenuReportSub))
                     .listener(new OnBMClickListener() {
                         @Override

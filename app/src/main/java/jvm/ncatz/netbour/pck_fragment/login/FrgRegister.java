@@ -50,7 +50,7 @@ public class FrgRegister extends Fragment {
             long currentTime = System.currentTimeMillis();
             PoUser user = new PoUser(
                     false, PoUser.GROUP_NEIGHBOUR,
-                    currentTime, fragFormRegisterCode.getText().toString(),
+                    currentTime, fragFormRegisterCode.getText().toString().toLowerCase(),
                     fragFormRegisterDoor.getText().toString(), fragFormRegisterEmail.getText().toString(),
                     fragFormRegisterFloor.getText().toString(), fragFormRegisterName.getText().toString(),
                     fragFormRegisterPhone.getText().toString(),

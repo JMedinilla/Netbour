@@ -38,7 +38,7 @@
     <string name="app_name">Netbour</string>
     <string name="app_repository_sub">/JMedinilla/Netbour</string>
     <string name="app_repository_title">Netbour</string>
-    <string name="app_version_sub">0.9</string>
+    <string name="app_version_sub">1.0</string>
     <string name="app_version_title">Versión</string>
     <string name="author_email_sub">Haz click para enviar un correo</string>
     <string name="author_email_subject">Cuéntame algo</string>
@@ -129,7 +129,6 @@
     <string name="image_confirm_title">¿Enviar imagen?</string>
     <string name="image_pick">Elige una imagen de la galería</string>
     <string name="incidence_deleted">¡Incidencia eliminada!</string>
-    <string name="invalidUser">Usuario incorrecto</string>
     <string name="loginFieldEmpty">¡El correo o la contraseña están vacíos!</string>
     <string name="meeting_deleted">¡Junta eliminada!</string>
     <string name="mit_button">Licencia MIT</string>

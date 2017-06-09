@@ -106,18 +106,18 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
 
         titleSort = false;
 
-        List<PoDocument> list = new ArrayList<>();
-        adpDocument = new AdpDocument(getActivity(), list, this, this, this);
-        presenterDocument = new PresenterDocumentImpl(null, this);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             String code = bundle.getString("comcode");
             userEmail = bundle.getString("userEmail");
             userCategory = bundle.getInt("userCategory");
-            if (presenterDocument != null) {
-                presenterDocument.instanceFirebase(code);
-            }
+
+            List<PoDocument> list = new ArrayList<>();
+            adpDocument = new AdpDocument(getActivity(), list, this, this, this);
+            presenterDocument = new PresenterDocumentImpl(null, this);
+            presenterDocument.instanceFirebase(code);
+
             ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
@@ -159,6 +159,7 @@ public class FrgDocument extends Fragment implements PresenterDocument.ViewList,
     @Override
     public void onStop() {
         super.onStop();
+        resetSort();
         if (presenterDocument != null) {
             presenterDocument.dettachFirebase();
         }

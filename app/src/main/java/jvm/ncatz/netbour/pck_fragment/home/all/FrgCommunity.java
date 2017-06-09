@@ -98,24 +98,22 @@ public class FrgCommunity extends Fragment implements PresenterCommunity.ViewLis
         flatsSort = false;
         postalSort = false;
 
-        List<PoCommunity> list = new ArrayList<>();
-        adpCommunity = new AdpCommunity(getActivity(), list, this, this, this);
-        presenterCommunity = new PresenterCommunityImpl(null, this);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             userCategory = bundle.getInt("userCategory");
             ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
+
+            List<PoCommunity> list = new ArrayList<>();
+            adpCommunity = new AdpCommunity(getActivity(), list, this, this, this);
+            presenterCommunity = new PresenterCommunityImpl(null, this);
+            presenterCommunity.instanceFirebase();
+
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
             }
         }
 
         createMenu();
-
-        if (presenterCommunity != null) {
-            presenterCommunity.instanceFirebase();
-        }
     }
 
     @Nullable

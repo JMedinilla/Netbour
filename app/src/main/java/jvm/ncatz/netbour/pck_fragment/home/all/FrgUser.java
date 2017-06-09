@@ -96,20 +96,19 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapte
         nameSort = false;
         phoneSort = false;
 
-        List<PoUser> list = new ArrayList<>();
-        adpUser = new AdpUser(getActivity(), list, this, this, this);
-        presenterUser = new PresenterUserImpl(null, this);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             userCategory = bundle.getInt("userCategory");
             String code = bundle.getString("comcode");
+
+            List<PoUser> list = new ArrayList<>();
+            adpUser = new AdpUser(getActivity(), list, this, this, this);
+            presenterUser = new PresenterUserImpl(null, this);
+            presenterUser.instanceFirebase(code);
+
             ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
-            }
-            if (presenterUser != null) {
-                presenterUser.instanceFirebase(code);
             }
         }
 
@@ -144,6 +143,7 @@ public class FrgUser extends Fragment implements PresenterUser.ViewList, IAdapte
     @Override
     public void onStop() {
         super.onStop();
+        resetSort();
         if (presenterUser != null) {
             presenterUser.dettachFirebase();
         }

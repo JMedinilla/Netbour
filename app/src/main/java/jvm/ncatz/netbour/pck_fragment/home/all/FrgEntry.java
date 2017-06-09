@@ -109,10 +109,6 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
         dateSort = false;
         titleSort = false;
 
-        List<PoEntry> list = new ArrayList<>();
-        adpEntry = new AdpEntry(getActivity(), list, this, this);
-        presenterEntry = new PresenterEntryImpl(null, this);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             userEmail = bundle.getString("userEmail");
@@ -120,17 +116,18 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
             String code = bundle.getString("comcode");
             userCategory = bundle.getInt("userCategory");
             ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
+
+            List<PoEntry> list = new ArrayList<>();
+            adpEntry = new AdpEntry(getActivity(), list, this, this);
+            presenterEntry = new PresenterEntryImpl(null, this);
+            if (cat == PoEntry.CATEGORY_FIRST) {
+                presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
+            } else {
+                presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_SECOND);
+            }
+
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
-            }
-            if (cat == PoEntry.CATEGORY_FIRST) {
-                if (presenterEntry != null) {
-                    presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_FIRST);
-                }
-            } else {
-                if (presenterEntry != null) {
-                    presenterEntry.instanceFirebase(code, PoEntry.CATEGORY_SECOND);
-                }
             }
         }
 
@@ -175,6 +172,7 @@ public class FrgEntry extends Fragment implements PresenterEntry.ViewList, IAdap
     @Override
     public void onStop() {
         super.onStop();
+        resetSort();
         if (presenterEntry != null) {
             presenterEntry.dettachFirebase();
         }

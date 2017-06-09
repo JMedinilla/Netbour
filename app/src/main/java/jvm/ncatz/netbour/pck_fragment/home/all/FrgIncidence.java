@@ -110,21 +110,20 @@ public class FrgIncidence extends Fragment implements PresenterIncidence.ViewLis
         dateSort = false;
         titleSort = false;
 
-        List<PoIncidence> list = new ArrayList<>();
-        adpIncidence = new AdpIncidence(getActivity(), list, this, this, this);
-        presenterIncidence = new PresenterIncidenceImpl(null, this);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             userEmail = bundle.getString("userEmail");
             String code = bundle.getString("comcode");
             userCategory = bundle.getInt("userCategory");
             ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
+
+            List<PoIncidence> list = new ArrayList<>();
+            adpIncidence = new AdpIncidence(getActivity(), list, this, this, this);
+            presenterIncidence = new PresenterIncidenceImpl(null, this);
+            presenterIncidence.instanceFirebase(code);
+
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
-            }
-            if (presenterIncidence != null) {
-                presenterIncidence.instanceFirebase(code);
             }
         }
 

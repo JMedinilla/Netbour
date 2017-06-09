@@ -90,21 +90,20 @@ public class FrgMeeting extends Fragment implements PresenterMeeting.ViewList, I
 
         loadingDialogCreate();
 
-        List<PoMeeting> list = new ArrayList<>();
-        adpMeeting = new AdpMeeting(getActivity(), list, this, this);
-        presenterMeeting = new PresenterMeetingImpl(null, this);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             userEmail = bundle.getString("userEmail");
             String code = bundle.getString("comcode");
             userCategory = bundle.getInt("userCategory");
             ArrayList<String> arrayList = bundle.getStringArrayList("adminEmails");
+
+            List<PoMeeting> list = new ArrayList<>();
+            adpMeeting = new AdpMeeting(getActivity(), list, this, this);
+            presenterMeeting = new PresenterMeetingImpl(null, this);
+            presenterMeeting.instanceFirebase(code);
+
             if (arrayList != null) {
                 to = arrayList.toArray(new String[arrayList.size()]);
-            }
-            if (presenterMeeting != null) {
-                presenterMeeting.instanceFirebase(code);
             }
         }
     }
