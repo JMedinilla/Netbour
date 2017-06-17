@@ -16,10 +16,6 @@
         android:id="@+id/groupOthers"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/groupOthers_Settings"
-            android:icon="@drawable/settings"
-            android:title="@string/groupOthers_Settings" />
-        <item
             android:id="@+id/groupOthers_Information"
             android:icon="@drawable/information"
             android:title="@string/groupOthers_Information" />

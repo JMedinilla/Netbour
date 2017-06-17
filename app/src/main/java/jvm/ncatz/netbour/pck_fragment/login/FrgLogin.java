@@ -1,6 +1,7 @@
 package jvm.ncatz.netbour.pck_fragment.login;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +67,43 @@ public class FrgLogin extends Fragment {
                 callback.openRegister();
                 break;
         }
+    }
+
+    @OnClick(R.id.fragFormLoginReset)
+    public void onViewClicked() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_reset_title);
+        builder.setMessage(R.string.dialog_reset_message);
+
+        final EditText input = new EditText(getActivity());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        builder.setView(input);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String em = input.getText().toString();
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                if (!"".equals(em)) {
+                    auth.sendPasswordResetEmail(em).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getActivity(), R.string.dialog_reset_success, Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getActivity(), R.string.dialog_reset_fail, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(getActivity(), R.string.dialog_reset_empty, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+
+        builder.create().show();
     }
 
     private AlertDialog loading;

@@ -664,10 +664,6 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
                         showProfile();
                         transaction = true;
                         break;
-                    case R.id.groupOthers_Settings:
-                        showSettings();
-                        transaction = true;
-                        break;
                     case R.id.groupOthers_Information:
                         showInformation();
                         if (!"".equals(actual_code)) {
@@ -963,10 +959,6 @@ public class ActivityHome extends AppCompatActivity implements FrgHome.HomeInter
             fragment_opened = FRAGMENT_PROFILE;
             in_home = false;
         }
-    }
-
-    private void showSettings() {
-        //
     }
 
     private void showSnackbar(String message, int duration) {

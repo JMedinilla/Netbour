@@ -209,4 +209,12 @@
     <string name="swipeMenuZoom">"Ampliar"</string>
     <string name="swipeMenuZoomSub">"Prem aquest element per a veure la imatge"</string>
     <string name="use_instance">"usuari"</string>
+    <string name="invalidUser">"Email en ús o erroni"</string>
+    <string name="load_error">"Error al carregar, prova-ho més tard"</string>
+    <string name="fragFormLoginReset">"M'he oblidat la paraula de pas"</string>
+    <string name="dialog_reset_title">"Reiniciar paraula de pas"</string>
+    <string name="dialog_reset_message">"Escriu el teu correu"</string>
+    <string name="dialog_reset_success">"Missatge enviat"</string>
+    <string name="dialog_reset_fail">"Hi ha hagut un error enviant el missatge"</string>
+    <string name="dialog_reset_empty">"El correu no pot ser buit"</string>
 </resources>

@@ -16,6 +16,7 @@
 	- Ejemplos de consultas a la base de datos
 5. [Especificaciones del sistema](#especificaciones-del-sistema)
 	- Justificación de las herramientas utilizadas
+	- Instalación y configuración de la aplicación
 	- Especificaciones hardware del sistema
 6. [Especificaciones del software](#especificaciones-del-software)
 	- Navegación de la aplicación y descripción de operaciones
@@ -311,6 +312,30 @@ Una de las pocas contrapartes de Firebase, además de su estructura JSON, que no
 
 El desarrollo de la aplicación Android se ha realizado en **Android Studio 2.3.2**, con **Firebase 9.6.1** y una web configurada con Apache y PHP para Wordpress en el *hosting* **Siteground**. También se ha utilizado, de forma puntual **Sublime Text** para la edición de texto, **Photoshop** para la creación del logo de la aplicación y **MySQL Workbench** para realizar el diseño de la base de datos. Para el control de versiones y almacenamiento del código fuente de la aplicación, se ha escogido un repositorio público en la web **Github**, usando la consola de Git para Windows.
 
+### Instalación y configuración de la aplicación
+
+Netbour no precisa de ningún tipo de conguración inicial u opcional de sus funcionalidades para su utilización, y la instalación se realizará desde su repositorio correspondiente en Google Play sin ningún tipo de prerequisito necesario.
+
+En cuanto a las librerías utilizadas para este proyecto, se presentan todas a continuación con una breve descripción de su funcionalidad:
+
+- **BoomMenu** -> Permite crear un menú de opciones con animaciones
+- **AutofitTextView** -> Campo de texto que ajusta el tamaño de su contenido al tamaño predefinido del componente
+- **BetterPickers** -> Diálogos personalizados con funciones concretas para el manejo de fechas
+- **RoundCornerProgressBar** -> Diálogos de progreso definido
+- **EmailIntentBuilder** -> Intent que permite enviar un correo electrónico mediante la aplicación de correo por defecto del sistema, sin necesidad de mostrar una lista de aplicaciones para realizar la acción
+- **MaterialDesignColors** -> Incluye en el fichero de colores toda la escala de colores Material
+- **Glide** -> Permite la descarga asíncrona de imágenes
+- **PhotoView** -> Sustitución para el ImageView que permite realizar ampliación a la imagen
+- **MaterialAboutLibrary** -> Permite incluir apartados de información sobre la aplicación y el desarrollador siguiendo patrones de Material Design
+- **ButterKnife** -> Realiza las inyecciones de los componentes de la interfaz en un solo click y ahorrando líneas de código mediante su sintaxis
+- **Iconics y MaterialDesignIconicTypeface** -> Librerías para utilizar iconos Material Degign sin necesidad de incluirlos al proyecto
+- **DialogPlus** -> Permite al desarrollador crear diálogos totalmente personalizados en cuanto a su función y posición en la pantalla
+- **FloatlabeledEditText** -> Campo de inserción de texto con pista flotante animada
+- **AVLoadingDialog** -> Diálogos indefinidos
+- **ContextMenu** -> Implementa un menú contextual de casillas desplegables
+- **CircleImageView** -> Sustitución circular al ImageView
+- **FlatButton** -> Botones de apariencia personalizada.
+
 ### Especificaciones hardware del sistema
 
 En cuanto al servidor, no es necesaria ninguna especificación de su hardware, debido a que el servidor es una herramienta de Google, alojada en sus servidores, que cuenta con una zona de almacenamiento dedicada a cada base de datos que creen los desarrolladores, usando la cantidad de CPU y RAM que sea necesaria, siempre y cuando no supere un límite que pueda perjudicar al resto de usuarios de Firebase.
@@ -408,7 +433,7 @@ Pantalla en modo diálogo que muestra el logo de la aplicación y un icono de ca
 Administrador y vecinos.
 
 **Objetivo:**
-Iniciar sesión en la aplicación con una cuenta ya existente.
+Iniciar sesión en la aplicación con una cuenta ya existente o recuperar/modificar la contraseña de la cuenta.
 
 **Descripción:**
 Pantalla de inicio de sesión para que el usuario pueda entrar en la aplicación, dada una cuenta existente, accediendo a los distintos apartados de la misma. La pantalla cuenta con campos de texto para ingresar el correo electrónico y la contraseña con la que se ha realizado la contraseña, y un botón para dirigirse a la pantalla de registro de usuario en caso de no disponer de ninguna.
@@ -435,7 +460,7 @@ Administrador y vecinos.
 Acceder a los distintos apartados de la aplicación.
 
 **Descripción:**
-Apartado global a todos los apartados de la aplicación, que permite al usuario seleccionar la sección a la que quiere acceder, como el menú principal de secciones, el perfil del usuario, los ajustes de la aplicación, la información de la comunidad, información del autor de la aplicación y una opción para el cierre de la sesión y el cierre de la aplicación.
+Apartado global a todos los apartados de la aplicación, que permite al usuario seleccionar la sección a la que quiere acceder, como el menú principal de secciones, el perfil del usuario, la información de la comunidad, información del autor de la aplicación y una opción para el cierre de la sesión y el cierre de la aplicación.
 
 ##### Perfil
 <img src="readme/views/c5.png" style="height: 380px;"/>
@@ -667,7 +692,106 @@ Cuadro de diálogo que disponen los distintos formularios de la aplicación para
 
 ## Código fuente relevante
 
-- **[EN CONSTRUCCIÓN]**
+###### Recuperar contraseña
+
+Para que el usuario pueda recuperar su contraseña desde el login en caso de olvido, podrá usar la funcionalidad de Firebase para este fin, mediante una única línea de código.
+
+```java
+String email = input.getText().toString();
+FirebaseAuth auth = FirebaseAuth.getInstance();
+if (!"".equals(email)) {
+	auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+		@Override
+		public void onComplete(@NonNull Task<Void> task) {
+			if (task.isSuccessful()) {
+            	// - - -
+			} else {
+            	// - - -
+			}
+		}
+	});
+} else {
+	// - - -
+}
+```
+
+###### Recuperar una imagen desde la galería
+
+Cuando el usuario elige una imagen para su perfil o una nueva incidencia, verá un diálogo de confirmación donde se ha colocado la imagen para su visualización previa, la cual se realiza desde la propia Uri obtenida de la galería.
+
+```java
+Bitmap bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+
+float aspectRatio = bmp.getWidth() / (float) bmp.getHeight();
+int width = 480;
+int height = Math.round(width / aspectRatio);
+bmp = Bitmap.createScaledBitmap(bmp, width, height, false);
+
+img.setImageBitmap(bmp);
+img.invalidate();
+```
+
+###### Reinsertar elementos eliminados
+
+En una aplicación de manejo de datos a gran escala siempre es importante disponer de una funcionalidad para recuperar el último elemento eliminado en caso de haber sido un error del momento, almacenando el objeto eliminado mientras dure el mensaje informativo de la eliminación.
+
+```java
+public void deletedIncidence(final PoIncidence item) {
+	Snackbar snackbar;
+    snackbar = Snackbar.make(coordinatorLayout, getString(R.string.incidence_deleted), Snackbar.LENGTH_LONG);
+    	@Override
+        public void onClick(View v) {
+        	presenterHome.reInsertIncidence(item, actual_code);
+        }
+    });
+    snackbar.show();
+}
+```
+
+###### Pulsación lógica del botón de retroceso
+
+En el caso de esta aplicación, cuando el usuario pulsa el botón de retroceso, habrá que comprobar en primer lugar si el menú está abierto, procedienco a su cierre. En caso contrario, habrá qué comprobar qué tipo de fragment está abierto en el momento, si una lista o un formulario, siendo el proceso lógico volver hacia atrás con normalidad si es un formulario o mostrar el menú principal de listas en caso de ser una lista. Sin embargo, el administrador no podrá acceder a este menú si no ha elegido primero una comunidad a visualizar, por lo que será redirigido a esta. En caso de que el usuario ya se encuentre en el menú, se procede a comprobar el número de pulsaciones, ya que al pulsar una vez, se mostrará un mensaje y se contarán dos segundos para que el usuario pulse de nuevo, permitiendo la pulsación de retroceso que cerrará la aplicación si se pulsa de nuevo dentro de esos dos segundos de margen.
+
+```java
+@Override
+public void onBackPressed() {
+    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        drawerLayout.closeDrawers();
+    } else {
+        if (!form_opened) {
+            if (in_home) {
+                if (doubleBackToExit) {
+                    super.onBackPressed();
+                }
+                this.doubleBackToExit = true;
+                showSnackbar(getString(R.string.pressBack), DURATION_SHORT);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExit = false;
+                    }
+                }, 2000);
+            } else if ("".equals(actual_code)) {
+                showCommunities();
+            } else {
+                showHome();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
+}
+```
+
+###### Modelo View-Presenter-Interactor
+
+En esta aplicación se ha seguido el modelo presentador para algunas vistas, mientras que los principales vistas del programa cuentan con un modelo presentador-interactor, que distingue las funcionalidades que puede contener cada uno de ellos.
+
+La vista dispondrá de un objeto presentador, el presentador un objeto de tipo interactor y de la propia vista, y el interactor tendrá un objeto del mismo presentador que lo alberga. Esto permite una conexión directa entre clases que permite a la vista entregar un objeto al presenter, el cual hará con él acciones distintas: en caso de que el uso de este objeto vaya a ser local (como una validación), será controlado por el presenter y devuelto posteriormente a la vista mediante la instancia de esta, pero si el objeto está pensado para su uso mediante la red (interacción con la base de datos), será redirigido al interactor, que realizará con él las acciones necesarios, y enviará una respuesta al presentador, que a su vez se la entregará a la vista para ser mostrada al usuario.
+
+El motivo de esta implementación se basa en los lenguajes que pueda utilizar el proyecto, de forma que las acciones específicas del lenguaje, como la conexión a internet, se realice en una clase exclusiva de Android en este caso, y que el presentador solo contenga acciones generales, para que este pueda ser intercambiado entre proyectos, si, por ejemplo, se debieran realizar el mismo tipo de comprobaciones en un proyecto similar, o en la propia contraparte del servidor.
+
+Sin embargo este modelo ha sido implementado con la única intención de encapsular en clases los distintos métodos según sus funciones. Aquellos que interactúan con Firebase serán encontrados en el Interactor y los que realicen comprobaciones sobre los distintos objetos, los contendrá el Presenter.
 
 ## Conclusiones del proyecto
 

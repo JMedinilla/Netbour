@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/fragFormLoginImage"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/app_name"
         android:src="@drawable/logo300" />
@@ -123,6 +123,20 @@
         android:background="@drawable/form_background"
         android:padding="8dp"
         android:text="@string/fragFormLoginRegister"
+        android:textColor="@color/grey_500"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/fragFormLoginReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragFormLoginRegister"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/form_background"
+        android:padding="8dp"
+        android:text="@string/fragFormLoginReset"
         android:textColor="@color/grey_500"
         android:textSize="18sp"
         android:textStyle="italic" />

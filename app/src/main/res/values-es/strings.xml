@@ -209,4 +209,12 @@
     <string name="swipeMenuZoom">Ampliar</string>
     <string name="swipeMenuZoomSub">Pulsa este elemento para ampliar la imagen</string>
     <string name="use_instance">usuario</string>
+    <string name="invalidUser">Email en uso o erróneo</string>
+    <string name="load_error">Error al cargar, inténtalo más tarde</string>
+    <string name="fragFormLoginReset">He olvidado mi contraseña</string>
+    <string name="dialog_reset_title">Resetear contraseña</string>
+    <string name="dialog_reset_message">Escribe tu correo:</string>
+    <string name="dialog_reset_success">Mensaje enviado</string>
+    <string name="dialog_reset_fail">Ha ocurrido un error enviando el mensaje</string>
+    <string name="dialog_reset_empty">El correo no puede estar vacío</string>
 </resources>

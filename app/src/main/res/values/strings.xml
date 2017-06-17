@@ -211,4 +211,10 @@
     <string name="swipeMenuCodeOpen">Click this element to open the document</string>
     <string name="swipeMenuOpen">Open document</string>
     <string name="load_error">Error loading, try again later</string>
+    <string name="fragFormLoginReset">I forgot my password</string>
+    <string name="dialog_reset_title">Reset password</string>
+    <string name="dialog_reset_message">Enter your email:</string>
+    <string name="dialog_reset_success">Email sent</string>
+    <string name="dialog_reset_fail">There was an error sending the email</string>
+    <string name="dialog_reset_empty">Email cannot be empty</string>
 </resources>
